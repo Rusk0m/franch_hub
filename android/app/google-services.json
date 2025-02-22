@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "812987492440",
+    "project_id": "franch-hub",
+    "storage_bucket": "franch-hub.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812987492440:android:6c0cd1e8d5758be302822d",
+        "android_client_info": {
+          "package_name": "com.example.franch_hub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc9P-lbWoPFUNmUXmhX8fv2BttO7aahRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
