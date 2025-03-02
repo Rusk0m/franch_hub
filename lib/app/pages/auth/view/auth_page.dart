@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:franch_hub/app/blocs/authentication/auth_bloc.dart';
+import 'package:franch_hub/app/pages/auth/widgets/widgets.dart';
 import 'package:franch_hub/app/theme/theme.dart';
 
 class AuthPage extends StatelessWidget {
@@ -7,10 +10,10 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _emailController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+
     return Scaffold(
-      /*appBar: AppBar(
-        title: Text('Franch Hub'),
-      ),*/
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -20,31 +23,16 @@ class AuthPage extends StatelessWidget {
                 SizedBox(
                   height: 75,
                 ),
-                Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.amber[300]!, width: 3),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.amber[300]!.withOpacity(0.4),
-                          blurRadius: 55,
-                          spreadRadius: 35,
-                        ),
-                      ]),
-                  child: Icon(
-                    Icons.paste,
-                    color: Colors.amber[400],
-                    size: 100,
-                  ),
-                ),
+                TitleIcon(),
                 SizedBox(
                   height: 75,
                 ),
-                Text(
-                  'Welcome Back!',
-                  style: FlutterTextTheme.custom(context:context,fontSize: 40,fontWeight: FontWeight.w400,color: Colors.amber),
-                ),
+                Text('Welcome Back!',
+                    style: FlutterTextTheme.custom(
+                        context: context,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).focusColor)),
                 Text(
                   'Sing in your account',
                   style: FlutterTextTheme.titleLarge(context),
@@ -52,32 +40,20 @@ class AuthPage extends StatelessWidget {
                 SizedBox(
                   height: 50,
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(24)),
-                    ),
-                    labelText: 'Username',
-                    prefixIcon: Icon(Icons.person),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-                  ),
-                ),
+                AuthTextField(
+                  controller: _emailController,
+                    label: 'Username',
+                    prefixIcon: Icons.person,
+                    isPassword: false),
                 SizedBox(
                   height: 20,
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(24)),
-                    ),
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.security),
-                    suffixIcon: Icon(Icons.remove_red_eye),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-                  ),
-                ),
+                AuthTextField(
+                  controller: _passwordController,
+                    label: 'Password',
+                    prefixIcon: Icons.security,
+                    suffixIcon: Icons.remove_red_eye,
+                    isPassword: true),
                 SizedBox(
                   height: 3,
                 ),
@@ -93,14 +69,16 @@ class AuthPage extends StatelessWidget {
                   height: 25,
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<AuthBloc>().add(LoginRequested(email: _emailController.text, password: _passwordController.text));
+                    },
                     style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStatePropertyAll(Theme.of(context).colorScheme.primary)),
+                        backgroundColor: WidgetStatePropertyAll(
+                            Theme.of(context).colorScheme.primary)),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
-                        'LOGIN',
+                        'Login',
                         style: FlutterTextTheme.custom(
                             color: Theme.of(context).colorScheme.surface,
                             fontWeight: FontWeight.w200,
@@ -111,68 +89,21 @@ class AuthPage extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      height: 2,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.transparent,
-                            Colors.amber,
-                            Colors.transparent
-                          ],
-                          stops: [0.0, 0.5, 1.0],
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Container(
-                        color: Theme.of(context).colorScheme.surface,
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: Text(
-                          'Or Continue With',
-                          style:FlutterTextTheme.bodyLarge(context),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                TextDivider(),
                 SizedBox(
                   height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(), // Круглая форма
-                        padding: EdgeInsets.all(10), // Отступы внутри кнопки
-                        minimumSize:
-                            Size.square(50), // Минимальный размер (60x60)
-                      ),
-                      child: Icon(
-                        FontAwesomeIcons.google,
-                        size: 30,
-                      ),
+                    SingInButton(
+                      icon: FontAwesomeIcons.google,
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(), // Круглая форма
-                        padding: EdgeInsets.all(10), // Отступы внутри кнопки
-                        minimumSize:
-                            Size.square(50), // Минимальный размер (60x60)
-                      ),
-                      child: Icon(
-                        FontAwesomeIcons.apple,
-                        size: 30,
-                      ),
+                    SingInButton(
+                      icon: FontAwesomeIcons.apple,
                     ),
                   ],
                 )

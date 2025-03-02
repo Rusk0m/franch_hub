@@ -24,6 +24,7 @@ class FlutterAppTheme {
         brightness: Brightness.dark,
         seedColor: Colors.amber,
       ),
+      focusColor: Colors.amber,
       snackBarTheme: const SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
       ),

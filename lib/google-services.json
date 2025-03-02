@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "812987492440",
+    "project_id": "franch-hub",
+    "storage_bucket": "franch-hub.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812987492440:android:6c0cd1e8d5758be302822d",
+        "android_client_info": {
+          "package_name": "com.example.franch_hub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812987492440-5vodpvf7ncmeerk3btlfgt6ndlst5e75.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.franch_hub",
+            "certificate_hash": "4dbd40725fd1cf61348607b45aa6c27c1fbde8f7"
+          }
+        },
+        {
+          "client_id": "812987492440-r3bo4j7d262o9dn0qnabs3ibiv3e2v94.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc9P-lbWoPFUNmUXmhX8fv2BttO7aahRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812987492440-r3bo4j7d262o9dn0qnabs3ibiv3e2v94.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "812987492440-7av8k6u1uvvfoo8ra7iecjhqdl1dktu0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.franchHub"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
