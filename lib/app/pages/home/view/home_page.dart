@@ -1,125 +1,88 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:franch_hub/app/blocs/authentication/auth_bloc.dart';
-import 'package:franch_hub/app/theme/text_theme.dart';
+import 'package:franch_hub/app/pages/comparison_franchise/view/comparison_franchise_page.dart';
+import 'package:franch_hub/app/pages/franchise_catalog/view/franchise_catalog_page.dart';
+import 'package:franch_hub/app/pages/home/cubit/home_cubit.dart';
+import 'package:franch_hub/app/pages/profile/profile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+  static Page<void> page() => const MaterialPage<void>(child: HomePage());
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => HomeCubit(),
+      child: const HomeView(),
+    );
+  }
+}
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final selectedTab = context.select((HomeCubit cubit) => cubit.state.tab);
+
     return Scaffold(
       body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
-            child: Stack(children: [
-              ListView(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CircleAvatar(
-                        maxRadius: 30,
-                        minRadius: 25,
-                        child: Icon(
-                          Icons.person,
-                          size: 45,
-                        ),
-                      ),
-                      Text(
-                        'Franch Hub',
-                        style: FlutterTextTheme.headlineMedium(context),
-                      ),
-                      CircleAvatar(
-                        maxRadius: 30,
-                        minRadius: 25,
-                        child: Icon(
-                          Icons.notifications,
-                          size: 35,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SearchBar(
-                    leading: Icon(Icons.search),
-                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                        vertical: 2.0, horizontal: 15)),
-                    hintText: 'Search',
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 250,
-                    width: MediaQuery
-                        .sizeOf(context)
-                        .width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.green,
-                      image: DecorationImage(
-                          colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.darken),
-                          fit: BoxFit.cover, // Масштабирование картинки
-                          image: NetworkImage(
-                              'https://imgs.search.brave.com/r8slpduXzDDG_ACyfROf3PEpNy4o4Fi3VYBFBroRui0/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzAyLzI4LzkwLzY0/LzM2MF9GXzIyODkw/NjQ2NF9jM3ZYUVVm/SkxpQW9sNVJKZTNr/emF1MkhCcjViMkll/VS5qcGc')
-                      ),
-                    ),
-                    child: Align(
-                      alignment: FractionalOffset(0.2, 0.9),
-                      child: Text('Find Your Perfect Franchise',
-                        style: FlutterTextTheme.custom(context: context,color: Colors.white,fontSize: 26,),),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'Explore Our Franchise',
-                    style: FlutterTextTheme.titleLarge(context),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
+        child: Stack(children: [
+          IndexedStack(
+            index: selectedTab.index,
+            children: [
+              FranchiseCatalogPage(),
+              ComparisonFranchisePage(),
+              ProfilePage()
+            ],
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+              child: BottomNavigationBar(
+                  currentIndex: selectedTab.index,
+                  onTap: (index) => context.read<HomeCubit>().setTab(HomeTab.values[index]),
+                  // 🛠️ Фиксирует стиль
+                  type: BottomNavigationBarType.fixed,
+                  backgroundColor: Theme.of(context).colorScheme.onSecondary,
+                  items: [
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.home,),
+                        label: 'Catalog'),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.align_vertical_bottom_outlined),
+                        label: 'Comparison'),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.person),
+                        label: 'Profile'),
+                  ]),
+            ),
+          )
+        ]),
+      )),
+    );
+  }
+}
 
-                  ElevatedButton(onPressed: (){context.read<AuthBloc>().add(LogoutRequested());}, child: Text('LogOut'))
-                ],
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
-                  child: BottomNavigationBar(
-                    // 🛠️ Фиксирует стиль
-                      type: BottomNavigationBarType.fixed,
-                      backgroundColor: Theme
-                          .of(context)
-                          .colorScheme
-                          .onSecondary,
-                      items: [
-                        BottomNavigationBarItem(
-                            icon: Icon(
-                              Icons.home,
-                            ),
-                            label: 'Home'),
-                        BottomNavigationBarItem(
-                            icon: Icon(Icons.open_in_new_rounded),
-                            label: 'Open Dialog'),
-                        BottomNavigationBarItem(
-                            icon: Icon(Icons.open_in_new_rounded),
-                            label: 'Open Dialog'),
-                        BottomNavigationBarItem(
-                            icon: Icon(Icons.open_in_new_rounded),
-                            label: 'Open Dialog'),
-                      ]),
-                ),
-              )
-            ]),
-          )),
+class _HomeTabButton extends StatelessWidget {
+  const _HomeTabButton({
+    required this.groupValue,
+    required this.value,
+    required this.icon,
+  });
+
+  final HomeTab groupValue;
+  final HomeTab value;
+  final Widget icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      iconSize: 32,
+      onPressed: () => context.read<HomeCubit>().setTab(value),
+      color: groupValue != value ? null : Colors.green,
+      icon: icon,
     );
   }
 }
