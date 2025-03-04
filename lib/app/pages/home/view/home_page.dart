@@ -26,63 +26,34 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
-        child: Stack(children: [
-          IndexedStack(
-            index: selectedTab.index,
-            children: [
-              FranchiseCatalogPage(),
-              ComparisonFranchisePage(),
-              ProfilePage()
-            ],
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(25)),
-              child: BottomNavigationBar(
-                  currentIndex: selectedTab.index,
-                  onTap: (index) => context.read<HomeCubit>().setTab(HomeTab.values[index]),
-                  // 🛠️ Фиксирует стиль
-                  type: BottomNavigationBarType.fixed,
-                  backgroundColor: Theme.of(context).colorScheme.onSecondary,
-                  items: [
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.home,),
-                        label: 'Catalog'),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.align_vertical_bottom_outlined),
-                        label: 'Comparison'),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.person),
-                        label: 'Profile'),
-                  ]),
-            ),
-          )
-        ]),
+        padding: const EdgeInsets.only(top: 10.0, right: 10,left: 10),
+        child: IndexedStack(
+          index: selectedTab.index,
+          children: [
+            FranchiseCatalogPage(),
+            ComparisonFranchisePage(),
+            ProfilePage()
+          ],
+        ),
       )),
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: selectedTab.index,
+          onTap: (index) => context.read<HomeCubit>().setTab(HomeTab.values[index]),
+          // 🛠️ Фиксирует стиль
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home,),
+                label: 'Catalog'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.align_vertical_bottom_outlined),
+                label: 'Comparison'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile'),
+          ]),
     );
   }
 }
 
-class _HomeTabButton extends StatelessWidget {
-  const _HomeTabButton({
-    required this.groupValue,
-    required this.value,
-    required this.icon,
-  });
-
-  final HomeTab groupValue;
-  final HomeTab value;
-  final Widget icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      iconSize: 32,
-      onPressed: () => context.read<HomeCubit>().setTab(value),
-      color: groupValue != value ? null : Colors.green,
-      icon: icon,
-    );
-  }
-}

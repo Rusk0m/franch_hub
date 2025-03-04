@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:franch_hub/app/routes/app_routes.dart';
 import 'package:franch_hub/app/theme/theme.dart';
 
 class FranchiseCard extends StatelessWidget {
@@ -30,10 +31,11 @@ class FranchiseCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          // Обработка нажатия на карточку
+          Navigator.pushNamed(context, AppRouter.franchiseDetail);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
           children: [
             // Блок с изображением
             ClipRRect(
@@ -52,12 +54,15 @@ class FranchiseCard extends StatelessWidget {
                 ),
               ),
             ),
-
+            SizedBox(
+              height: 5,
+            ),
             // Контент
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   // Заголовок
                   Text(
@@ -68,9 +73,7 @@ class FranchiseCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-
                   const SizedBox(height: 8),
-
                   // Показатели
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,25 +90,17 @@ class FranchiseCard extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 12),
-
-                  /*// Описание
-                  Text(
-                    description,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),*/
+                  const SizedBox(height: 10),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ElevatedButton(
                           onPressed: () {},
                           style: ButtonStyle(
                               backgroundColor: WidgetStatePropertyAll(
                                   Theme.of(context).colorScheme.onPrimary)),
-                          child: Text('More Details',style: FlutterTextTheme.bodyLarge(context),)),
-                      Expanded(child: IconButton(onPressed: () {}, icon: Icon(Icons.add)))
+                          child: Text('More Details',style: FlutterTextTheme.bodySmall(context),)),
+                      IconButton(onPressed: () {}, icon: Icon(Icons.add))
                     ],
                   )
                 ],
@@ -125,7 +120,7 @@ class FranchiseCard extends StatelessWidget {
   }) {
     return Column(
       children: [
-        Icon(icon, size: 28, color: Colors.blue),
+        Icon(icon, size: 28),
         const SizedBox(height: 4),
         Text(
           value,
