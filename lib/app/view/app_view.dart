@@ -19,7 +19,6 @@ class AppView extends StatelessWidget {
           darkTheme: FlutterAppTheme.dark,
           themeMode: ThemeMode.system,
           onGenerateRoute: AppRouter.generateRoute,
-          //initialRoute: AppRouter.home,
           home: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
             switch (state) {
               case Authenticated _:

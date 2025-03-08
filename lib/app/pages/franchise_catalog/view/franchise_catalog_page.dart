@@ -55,9 +55,9 @@ class FranchiseCatalogPage extends StatelessWidget {
                 children: [
                   Text(
                     'Find Your Perfect Franchise',
-                    style: FlutterTextTheme.titleLarge(context),
+                    style: FlutterTextTheme.custom(context: context,color: Colors.white,fontSize: 24,fontWeight: FontWeight.w400),
                   ),
-                  Text('Xnjndkfksadgfks'),
+                  Text('Xnjndkfksadgfks',style: FlutterTextTheme.custom(context: context,color: Colors.white,fontSize: 14,fontWeight: FontWeight.w400),),
                 ],
               ),
             )

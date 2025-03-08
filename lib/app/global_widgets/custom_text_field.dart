@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AuthTextField extends StatelessWidget {
-  const AuthTextField({super.key, required this.label, required this.prefixIcon, required this.isPassword, this.suffixIcon, required this.controller});
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({super.key, required this.label, this.prefixIcon, required this.isPassword, this.suffixIcon, required this.controller});
 
   final String label;
-  final IconData prefixIcon;
+  final  prefixIcon;
   final bool isPassword;
   final suffixIcon;
   final controller;
