@@ -21,9 +21,9 @@ class ProfilePage extends StatelessWidget {
                 style: FlutterTextTheme.headlineMedium(context),
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {context.read<AuthBloc>().add(LogoutRequested());},
                   icon: Icon(
-                    Icons.qr_code_2_outlined,
+                    Icons.logout,
                     size: 35,
                   ))
             ],
@@ -74,30 +74,6 @@ class ProfilePage extends StatelessWidget {
                 icon: Icons.settings,
                 title: 'General Settings',
                 routeName: AppRouter.generalSettings,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () {
-                  context.read<AuthBloc>().add(LogoutRequested());
-                },
-                child: ListTile(
-                  title: Text(
-                    'LogOut',
-                    style: FlutterTextTheme.titleLarge(context),
-                  ),
-                  leading: CircleAvatar(
-                    child: Icon(
-                      Icons.logout,
-                      size: 30,
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    size: 30,
-                  ),
-                ),
               ),
             ],
           )

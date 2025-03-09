@@ -6,14 +6,14 @@ class TitleIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(color: Colors.amber[300]!, width: 3),
           boxShadow: [
             BoxShadow(
               color: Colors.amber[300]!.withOpacity(0.4),
-              blurRadius: 55,
+              blurRadius: 45,
               spreadRadius: 35,
             ),
           ]),

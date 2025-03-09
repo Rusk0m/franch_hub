@@ -6,10 +6,11 @@ abstract class AuthEvent extends Equatable {
 }
 
 class SignUpRequested extends AuthEvent {
+  final String name;
   final String email;
   final String password;
 
-  SignUpRequested({required this.email, required this.password});
+  SignUpRequested( {required this.name,required this.email, required this.password});
 
   @override
   List<Object> get props => [email, password];
@@ -30,4 +31,6 @@ class GoogleLoginRequested extends AuthEvent {}
 class LogoutRequested extends AuthEvent {}
 
 class CheckAuthStatus extends AuthEvent{}
+
+class ToggleAuthMode extends AuthEvent {} // Переключение между входом и регистрацией
 

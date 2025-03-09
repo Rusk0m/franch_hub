@@ -44,7 +44,7 @@ class NavigationButton extends StatelessWidget {
         children: [
           CircleAvatar(child: Icon(icon, size: 30)),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            padding: const EdgeInsets.symmetric(vertical: 6.0),
             child: Text(title, style: FlutterTextTheme.titleLarge(context)),
           ),
           const Icon(Icons.arrow_forward_ios_outlined, size: 30),

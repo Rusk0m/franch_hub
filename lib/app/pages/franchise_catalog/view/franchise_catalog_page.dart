@@ -99,14 +99,7 @@ class FranchiseCatalogPage extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        ElevatedButton(
-            onPressed: () {
-              context.read<AuthBloc>().add(LogoutRequested());
-            },
-            child: Text('LogOut')),
-        SizedBox(
-          height: 400,
-        ),
+
       ],
     );
   }

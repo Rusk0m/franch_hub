@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<GoogleLoginRequested>(_onGoogleLoginRequested);
     on<LogoutRequested>(_onLogoutRequested);
     on<CheckAuthStatus>(_onCheckAuthStatus);
+    on<ToggleAuthMode>(_onToggleAuthMode);
   }
 
   Future<void> _onSignUpRequested(
@@ -25,6 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     try {
       await _authRepository.signUp(
+        name: event.name,
         email: event.email,
         password: event.password,
       );
@@ -80,6 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthError(message: e.toString()));
     }
   }
+
   Future<void> _onCheckAuthStatus(
       CheckAuthStatus event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
@@ -96,5 +99,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // Пользователь не найден, отправляем на экран входа
       emit(Unauthenticated());
     }
+  }
+
+  Future<void> _onToggleAuthMode(
+      ToggleAuthMode event, Emitter<AuthState>emit) async {
+    emit(state is AuthInitial ? AuthRegistering() : AuthInitial());
   }
 }

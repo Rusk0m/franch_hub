@@ -7,7 +7,6 @@ import 'package:franch_hub/app/models/user/user.dart';
 import 'package:franch_hub/app/repositories/cache_client.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
-//import 'package:cache/cache.dart';
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
   const SignUpWithEmailAndPasswordFailure([
@@ -157,33 +156,15 @@ class AuthenticationRepository {
   User get currentUser {
     return _cache.read<User>(key: userCacheKey) ?? User.empty;
   }
-  /*
-  Stream<User> get user {
-    return _firebaseAuth.authStateChanges().asyncMap((firebaseUser) async {
-      if (firebaseUser == null) return User.empty;
-
-      // Получаем дополнительные данные из Firestore
-      final doc =
-          await _firestore.collection('users').doc(firebaseUser.uid).get();
-      return User(
-        uid: firebaseUser.uid,
-        email: firebaseUser.email ?? '',
-        role: doc.data()?['role'] ?? 'user',
-        franchiseId: doc.data()?['franchiseId'],
-        franchisorId: doc.data()?['franchisorId'],
-        name: firebaseUser.displayName,
-        phone: firebaseUser.phoneNumber,
-        avatarUrl: firebaseUser.photoURL,
-        createdAt: doc.data()?['createdAt']?.toDate() ?? DateTime.now(),
-      );
-    });
-  }*/
 
   Future<void> signUp({
+    required String name,
     required String email,
     required String password,
     String? franchiseId,
     String? franchisorId,
+    String? avatarUrl,
+    String? phone,
   }) async {
     try {
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
@@ -193,9 +174,13 @@ class AuthenticationRepository {
 
       // Создаем запись в Firestore
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'name':name,
+        'email': email,
         'role': 'user',
         'franchiseId': franchiseId,
         'franchisorId': franchisorId,
+        'avatarUrl':avatarUrl,
+        'phone':phone,
         'createdAt': FieldValue.serverTimestamp(),
       });
     } on firebase_auth.FirebaseAuthException catch (e) {
@@ -278,9 +263,10 @@ extension on firebase_auth.User {
     return User(
         uid: uid,
         name: displayName,
+        email: email!,
         avatarUrl: photoURL,
         role: 'user',
         createdAt: DateTime.now(),
-        email: email!);
+        );
   }
 }

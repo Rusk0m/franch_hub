@@ -12,6 +12,7 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController _emailController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController _nameController = TextEditingController();
 
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -23,6 +24,7 @@ class AuthPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          bool isRegistering = state is AuthRegistering;
           if (state is AuthLoading) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -32,11 +34,11 @@ class AuthPage extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 65,
+                    height: 60,
                   ),
                   TitleIcon(),
                   SizedBox(
-                    height: 65,
+                    height: 60,
                   ),
                   Text('Welcome Back!',
                       style: FlutterTextTheme.custom(
@@ -45,15 +47,26 @@ class AuthPage extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).focusColor)),
                   Text(
-                    'Sing in your account',
+                    isRegistering
+                        ? 'Create a new account'
+                        : 'Sing in your account',
                     style: FlutterTextTheme.titleLarge(context),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 30,
                   ),
+                  if (isRegistering) ...[
+                    CustomTextField(
+                      controller: _nameController,
+                      label: 'Username',
+                      prefixIcon: Icons.account_balance_outlined,
+                      isPassword: false,
+                    ),
+                    SizedBox(height: 20),
+                  ],
                   CustomTextField(
                       controller: _emailController,
-                      label: 'Username',
+                      label: 'Email',
                       prefixIcon: Icons.person,
                       isPassword: false),
                   SizedBox(
@@ -68,22 +81,28 @@ class AuthPage extends StatelessWidget {
                   SizedBox(
                     height: 3,
                   ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      'Forgot password? ',
-                      style: TextStyle(
-                          fontSize: 16, decoration: TextDecoration.underline),
+                  if (!isRegistering)
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        'Forgot password? ',
+                        style: TextStyle(
+                            fontSize: 16, decoration: TextDecoration.underline),
+                      ),
                     ),
-                  ),
                   SizedBox(
                     height: 20,
                   ),
                   TextButton(
                       onPressed: () {
-                        context.read<AuthBloc>().add(LoginRequested(
-                            email: _emailController.text,
-                            password: _passwordController.text));
+                        isRegistering
+                            ? context.read<AuthBloc>().add(SignUpRequested(
+                                name: _nameController.text,
+                                email: _emailController.text,
+                                password: _passwordController.text))
+                            : context.read<AuthBloc>().add(LoginRequested(
+                                email: _emailController.text,
+                                password: _passwordController.text));
                       },
                       style: ButtonStyle(
                           backgroundColor: WidgetStatePropertyAll(
@@ -91,7 +110,7 @@ class AuthPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Text(
-                          'Login',
+                          isRegistering ? 'Registration' : 'Login',
                           style: FlutterTextTheme.custom(
                               color: Theme.of(context).colorScheme.surface,
                               fontWeight: FontWeight.w200,
@@ -102,7 +121,10 @@ class AuthPage extends StatelessWidget {
                   SizedBox(
                     height: 15,
                   ),
-                  TextDivider(),
+                  TextDivider(
+                    height: 2,
+                    title: 'Or Continue With',
+                  ),
                   SizedBox(
                     height: 15,
                   ),
@@ -126,8 +148,23 @@ class AuthPage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Not a register user? ',style: FlutterTextTheme.bodyLarge(context),),
-                      Text('Register Now!',style: FlutterTextTheme.custom(context: context,fontSize: 16,color:Theme.of(context).colorScheme.primary),)
+                      Text(
+                        isRegistering
+                            ? 'Already have an account? '
+                            : 'Not a registered user? ',
+                        style: FlutterTextTheme.bodyLarge(context),
+                      ),
+                      GestureDetector(
+                        onTap: () =>
+                            context.read<AuthBloc>().add(ToggleAuthMode()),
+                        child: Text(
+                          isRegistering ? 'LogIn!' : 'Register Now!',
+                          style: FlutterTextTheme.custom(
+                              context: context,
+                              fontSize: 16,
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                      )
                     ],
                   )
                 ],

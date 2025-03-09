@@ -4,8 +4,10 @@ abstract class AuthState extends Equatable {
   @override
   List<Object?> get props => [];
 }
-
 class AuthInitial extends AuthState {}
+
+// Состояние для регистрации
+class AuthRegistering extends AuthState {}
 
 //Показывает индикатор загрузки
 class AuthLoading extends AuthState {}
