@@ -15,7 +15,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       name: json['name'] as String?,
       phone: json['phone'] as String?,
       avatarUrl: json['avatarUrl'] as String?,
-      createdAt: User._dateTimeFromTimestamp(json['createdAt'] as Timestamp),
+      createdAt: User._dateTimeFromTimestamp(json['createdAt']),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{

@@ -7,7 +7,9 @@ import 'package:franch_hub/app/pages/profile/profile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
   static Page<void> page() => const MaterialPage<void>(child: HomePage());
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -16,6 +18,7 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -25,35 +28,57 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
+          bottom: false, // Отключаем нижний SafeAreas
           child: Padding(
-        padding: const EdgeInsets.only(top: 10.0, right: 10,left: 10),
-        child: IndexedStack(
-          index: selectedTab.index,
-          children: [
-            FranchiseCatalogPage(),
-            ComparisonFranchisePage(),
-            ProfilePage()
-          ],
+            padding: const EdgeInsets.only(top: 10.0, right: 10, left: 10),
+            child: IndexedStack(
+              index: selectedTab.index,
+              children: [
+                FranchiseCatalogPage(),
+                ComparisonFranchisePage(),
+                ProfilePage()
+              ],
+            ),
+          )),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: Colors.grey, width: 1.5), // Верхняя граница
+          ),
+          /*boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              spreadRadius: 2,
+            )
+          ],*/
         ),
-      )),
-      bottomNavigationBar: BottomNavigationBar(
+        child: BottomNavigationBar(
           currentIndex: selectedTab.index,
-          onTap: (index) => context.read<HomeCubit>().setTab(HomeTab.values[index]),
-          // 🛠️ Фиксирует стиль
+          onTap: (index) =>
+              context.read<HomeCubit>().setTab(HomeTab.values[index]),
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Theme.of(context).colorScheme.onPrimary,
+          backgroundColor: Colors.transparent,
+
+          // Убираем фон у самого BottomNavigationBar
+          elevation: 0,
+          // Отключаем стандартную тень
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home,),
-                label: 'Catalog'),
+              icon: Icon(Icons.home),
+              label: 'Catalog',
+            ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.align_vertical_bottom_outlined),
-                label: 'Comparison'),
+              icon: Icon(Icons.align_vertical_bottom_outlined),
+              label: 'Comparison',
+            ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile'),
-          ]),
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-

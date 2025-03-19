@@ -7,7 +7,7 @@ part 'user.g.dart';
 class User {
   final String uid;
   final String email;
-  final String role; // franchisor, franchisee, user
+  final String role;
   @JsonKey(name: 'franchiseId')
   final String? franchiseId;
   @JsonKey(name: 'franchisorId')
@@ -21,10 +21,14 @@ class User {
   )
   final DateTime createdAt;
 
-  static var empty = User(uid: '', email: '', role:'',createdAt: DateTime.now());
+  static var empty = User(
+    uid: '',
+    email: '',
+    role: '',
+    createdAt: DateTime(1970),
+  );
 
-
-  User({
+  const User({
     required this.uid,
     required this.email,
     required this.role,
@@ -39,6 +43,20 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
+  factory User.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return User(
+      uid: data['uid'] ?? doc.id,
+      email: data['email'] ?? '',
+      role: data['role'] ?? 'user',
+      franchiseId: data['franchiseId'],
+      franchisorId: data['franchisorId'],
+      name: data['name'],
+      phone: data['phone'],
+      avatarUrl: data['avatarUrl'],
+      createdAt: _dateTimeFromTimestamp(data['createdAt']),
+    );
+  }
 
   User copyWith({
     String? uid,
@@ -64,9 +82,12 @@ class User {
     );
   }
 
-  // Конвертеры для DateTime ↔ Timestamp
-  static DateTime _dateTimeFromTimestamp(Timestamp timestamp) =>
-      timestamp.toDate();
-  static Timestamp _dateTimeToTimestamp(DateTime date) =>
-      Timestamp.fromDate(date);
+  static DateTime _dateTimeFromTimestamp(dynamic timestamp) {
+    if (timestamp is Timestamp) {
+      return timestamp.toDate();
+    }
+    return DateTime.now();
+  }
+
+  static Timestamp _dateTimeToTimestamp(DateTime date) => Timestamp.fromDate(date);
 }

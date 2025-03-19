@@ -31,8 +31,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
       );
       emit(Authenticated(user: await _authRepository.user.first));
-    } catch (e) {
+    } on SignUpWithEmailAndPasswordFailure catch (e) {
       emit(AuthError(message: e.toString()));
+    }
+    catch(e){
+      emit(AuthError(message: 'Unknown error occurred'));
     }
   }
 
@@ -47,14 +50,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // Получаем первого пользователя, если он существует
       final user = await _authRepository.user.first;
 
+      print(user.name);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('user_id', user.uid);
       // Если пользователь найден, эмитим Authenticated
       emit(Authenticated(user: user));
 
-    } catch (e) {
+    } on SignUpWithEmailAndPasswordFailure catch (e) {
       emit(AuthError(message: e.toString()));
-      print('Ошибка ${e.toString()}');
+      emit(Unauthenticated());
+    }
+    catch(e){
+      emit(AuthError(message: 'Unknown error occurred'));
+      emit(Unauthenticated());
     }
   }
 
@@ -69,40 +77,47 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _onLogoutRequested(
-      LogoutRequested event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.remove('user_id');
-
-      await _authRepository.logOut();
-      emit(Unauthenticated());
-    } catch (e) {
-      emit(AuthError(message: e.toString()));
-    }
-  }
 
   Future<void> _onCheckAuthStatus(
       CheckAuthStatus event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
 
-    final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_id');
+    try {
+      // Проверяем текущего пользователя через Firebase Auth
+      final firebaseUser = _authRepository.currentFirebaseUser;
 
-    if (userId != null) {
-      // Получаем первого пользователя, если он существует
-      final user = await _authRepository.user.first;
-      // Пользователь найден, считаем его авторизованным
-      emit(Authenticated(user: user));
-    } else {
-      // Пользователь не найден, отправляем на экран входа
+      if (firebaseUser != null) {
+        // Получаем данные пользователя из Firestore
+        final user = await _authRepository.getUser(firebaseUser.uid);
+        emit(Authenticated(user: user));
+      } else {
+        emit(Unauthenticated());
+      }
+    } catch (e) {
+      emit(AuthError(message: 'Ошибка проверки авторизации'));
       emit(Unauthenticated());
     }
   }
 
   Future<void> _onToggleAuthMode(
       ToggleAuthMode event, Emitter<AuthState>emit) async {
-    emit(state is AuthInitial ? AuthRegistering() : AuthInitial());
+    // Переключаем между Unauthenticated и AuthRegistering
+    if (state is AuthRegistering) {
+      emit(Unauthenticated());
+    } else {
+      emit(AuthRegistering()); // <--- Используем новое состояние
+    }
+    print('Current state: ${state.runtimeType}');
+  }
+  Future<void> _onLogoutRequested(
+      LogoutRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      await _authRepository.logOut();
+      emit(Unauthenticated());
+    } catch (e) {
+      emit(AuthError(message: 'Ошибка выхода'));
+      emit(Unauthenticated());
+    }
   }
 }

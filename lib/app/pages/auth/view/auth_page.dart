@@ -18,8 +18,16 @@ class AuthPage extends StatelessWidget {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthError) {
+            _nameController.text = '';
+            _emailController.text = '';
+            _passwordController.text = '';
+            FocusScope.of(context).unfocus();
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
             );
           }
         },
@@ -103,6 +111,7 @@ class AuthPage extends StatelessWidget {
                             : context.read<AuthBloc>().add(LoginRequested(
                                 email: _emailController.text,
                                 password: _passwordController.text));
+                        print('Состояние: ${state.toString()}');
                       },
                       style: ButtonStyle(
                           backgroundColor: WidgetStatePropertyAll(
@@ -155,8 +164,10 @@ class AuthPage extends StatelessWidget {
                         style: FlutterTextTheme.bodyLarge(context),
                       ),
                       GestureDetector(
-                        onTap: () =>
-                            context.read<AuthBloc>().add(ToggleAuthMode()),
+                        onTap: () {
+                          context.read<AuthBloc>().add(ToggleAuthMode());
+                          print(state.toString());
+                        },
                         child: Text(
                           isRegistering ? 'LogIn!' : 'Register Now!',
                           style: FlutterTextTheme.custom(

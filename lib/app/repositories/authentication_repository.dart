@@ -2,11 +2,8 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:franch_hub/app/models/user/user.dart';
-import 'package:franch_hub/app/repositories/cache_client.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:meta/meta.dart';
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
   const SignUpWithEmailAndPasswordFailure([
@@ -127,44 +124,38 @@ class AuthenticationRepository {
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
   final FirebaseFirestore _firestore;
-  final CacheClient _cache;
 
-  AuthenticationRepository(
-      {firebase_auth.FirebaseAuth? firebaseAuth,
-      GoogleSignIn? googleSignIn,
-      FirebaseFirestore? firestore,
-      CacheClient? cache})
-      : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
+  AuthenticationRepository({
+    firebase_auth.FirebaseAuth? firebaseAuth,
+    GoogleSignIn? googleSignIn,
+    FirebaseFirestore? firestore,
+  })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard(),
-        _firestore = firestore ?? FirebaseFirestore.instance,
-        _cache = cache ?? CacheClient();
+        _firestore = firestore ?? FirebaseFirestore.instance;
 
-  @visibleForTesting
-  bool isWeb = kIsWeb;
-
-  @visibleForTesting
-  static const userCacheKey = '__user_cache_key__';
-
+  /// Поток данных пользователя с информацией из Firestore
   Stream<User> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
-      _cache.write(key: userCacheKey, value: user);
-      return user;
+    return _firebaseAuth.authStateChanges().asyncMap((firebaseUser) async {
+      if (firebaseUser == null) return User.empty;
+
+      final userDoc = await _firestore.collection('users').doc(firebaseUser.uid).get();
+
+      if (!userDoc.exists) {
+        return await _createUserFromFirebaseUser(firebaseUser);
+      }
+
+      return User.fromFirestore(userDoc);
     });
   }
 
-  User get currentUser {
-    return _cache.read<User>(key: userCacheKey) ?? User.empty;
-  }
+  /// Текущий пользователь Firebase
+  firebase_auth.User? get currentFirebaseUser => _firebaseAuth.currentUser;
 
+  /// Регистрация с email и паролем
   Future<void> signUp({
     required String name,
     required String email,
     required String password,
-    String? franchiseId,
-    String? franchisorId,
-    String? avatarUrl,
-    String? phone,
   }) async {
     try {
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
@@ -172,17 +163,11 @@ class AuthenticationRepository {
         password: password,
       );
 
-      // Создаем запись в Firestore
-      await _firestore.collection('users').doc(userCredential.user!.uid).set({
-        'name':name,
-        'email': email,
-        'role': 'user',
-        'franchiseId': franchiseId,
-        'franchisorId': franchisorId,
-        'avatarUrl':avatarUrl,
-        'phone':phone,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+      await _createUserInFirestore(
+        uid: userCredential.user!.uid,
+        email: email,
+        name: name,
+      );
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
@@ -190,6 +175,7 @@ class AuthenticationRepository {
     }
   }
 
+  /// Вход с email и паролем
   Future<void> logInWithEmailAndPassword({
     required String email,
     required String password,
@@ -206,46 +192,28 @@ class AuthenticationRepository {
     }
   }
 
+  /// Вход через Google
   Future<void> logInWithGoogle() async {
     try {
-      late final firebase_auth.AuthCredential credential;
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) throw const LogInWithGoogleFailure('Отменено пользователем');
 
-      if (isWeb) {
-        final googleProvider = firebase_auth.GoogleAuthProvider();
-        final userCredential =
-            await _firebaseAuth.signInWithPopup(googleProvider);
-        credential = userCredential.credential!;
-      } else {
-        final googleUser = await _googleSignIn.signIn();
-        final googleAuth = await googleUser!.authentication;
-        credential = firebase_auth.GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-      }
+      final googleAuth = await googleUser.authentication;
+      final credential = firebase_auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-      final userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
-
-      // Проверяем существование пользователя в Firestore
-      final doc = await _firestore
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .get();
-      if (!doc.exists) {
-        // Создаем новую запись для Google-пользователя
-        await _firestore.collection('users').doc(userCredential.user!.uid).set({
-          'role': 'user',
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-      }
+      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      await _syncUserWithFirestore(userCredential.user!);
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw LogInWithGoogleFailure.fromCode(e.code);
-    } catch (_) {
-      throw const LogInWithGoogleFailure();
+    } catch (e) {
+      throw LogInWithGoogleFailure(e.toString());
     }
   }
 
+  /// Выход из системы
   Future<void> logOut() async {
     try {
       await Future.wait([
@@ -256,17 +224,87 @@ class AuthenticationRepository {
       throw LogOutFailure();
     }
   }
+
+  /// Получение пользователя по ID
+  Future<User> getUser(String uid) async {
+    final doc = await _firestore.collection('users').doc(uid).get();
+    if (!doc.exists) throw Exception('Пользователь не найден');
+    return User.fromFirestore(doc);
+  }
+
+  //--- Приватные методы ---//
+
+  Future<User> _createUserFromFirebaseUser(firebase_auth.User firebaseUser) async {
+    final userData = {
+      'uid': firebaseUser.uid,
+      'email': firebaseUser.email ?? '',
+      'name': firebaseUser.displayName ?? 'Новый пользователь',
+      'avatarUrl': firebaseUser.photoURL,
+      'role': 'user',
+      'createdAt': FieldValue.serverTimestamp(),
+      'phone': null,
+      'franchiseId': null,
+      'franchisorId': null,
+    };
+
+    await _firestore.collection('users').doc(firebaseUser.uid).set(userData);
+    return User.fromJson(userData);
+  }
+
+  Future<void> _createUserInFirestore({
+    required String uid,
+    required String email,
+    required String name,
+  }) async {
+    await _firestore.collection('users').doc(uid).set({
+      'uid': uid,
+      'email': email,
+      'name': name,
+      'role': 'user',
+      'createdAt': FieldValue.serverTimestamp(),
+      'avatarUrl': null,
+      'phone': null,
+      'franchiseId': null,
+      'franchisorId': null,
+    });
+  }
+
+  Future<User> _syncUserWithFirestore(firebase_auth.User firebaseUser) async {
+    final userRef = _firestore.collection('users').doc(firebaseUser.uid);
+    final doc = await userRef.get();
+
+    if (!doc.exists) {
+      final newUser = {
+        'uid': firebaseUser.uid,
+        'email': firebaseUser.email ?? '',
+        'name': firebaseUser.displayName ?? 'Новый пользователь',
+        'avatarUrl': firebaseUser.photoURL,
+        'role': 'user',
+        'createdAt': FieldValue.serverTimestamp(),
+        'phone': null,
+        'franchiseId': null,
+        'franchisorId': null,
+      };
+
+      await userRef.set(newUser);
+      return User.fromJson(newUser);
+    }
+
+    return User.fromFirestore(doc);
+  }
 }
 
+/// Расширение для конвертации Firebase User в нашу модель
 extension on firebase_auth.User {
-  User get toUser {
-    return User(
-        uid: uid,
-        name: displayName,
-        email: email!,
-        avatarUrl: photoURL,
-        role: 'user',
-        createdAt: DateTime.now(),
-        );
-  }
+  User get toAppUser => User(
+    uid: uid,
+    email: email ?? '',
+    name: displayName ?? '',
+    avatarUrl: photoURL,
+    role: 'user',
+    createdAt: DateTime.now(),
+    phone: null,
+    franchiseId: null,
+    franchisorId: null,
+  );
 }
