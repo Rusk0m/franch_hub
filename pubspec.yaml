@@ -13,15 +13,16 @@ dependencies:
   cloud_firestore:
   google_sign_in: ^6.1.0
   json_annotation:
-  flutter_bloc:
   bloc:
+  flutter_bloc:
+  get_it:
   equatable:
   font_awesome_flutter: ^10.1.0
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
   intl: ^0.20.2
-  shared_preferences: ^2.5.2
+  shared_preferences:
 
 
 dev_dependencies:
