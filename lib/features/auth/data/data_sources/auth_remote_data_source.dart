@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/features/auth/data/models/user_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -28,10 +27,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         _googleSignIn = googleSignIn,
         _firestore = firestore;
 
-  /*@override
-  Stream<UserModel> get user => _firebaseAuth.authStateChanges().asyncMap((user) async {
-    // Ваша реализация
-  });*/
   @override
   Future<firebase_auth.User?> signUp(String name, String email,
       String password) async {

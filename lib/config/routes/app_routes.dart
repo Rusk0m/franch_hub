@@ -20,7 +20,7 @@ class AppRouter {
         final args = settings.arguments as String?;
         return MaterialPageRoute(builder: (_) => const FranchiseDetailPage());
       case profileSettings:
-        return MaterialPageRoute(builder: (_)=> const EditAccountPage());
+        return MaterialPageRoute(builder: (_)=>  EditAccountPage());
       case auth:
         return MaterialPageRoute(builder: (_)=> const AuthPage());
       default:

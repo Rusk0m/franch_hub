@@ -2,15 +2,16 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/features/auth/data/repository/authentication_repository_impl.dart';
+import 'package:franch_hub/features/auth/domain/repository/authentication_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthenticationRepositoryImpl _authRepository;
+  final AuthenticationRepository _authRepository;
 
-  AuthBloc({required AuthenticationRepositoryImpl authRepository})
+  AuthBloc({required AuthenticationRepository authRepository})
       : _authRepository = authRepository,
         super(AuthInitial()) {
     on<SignUpRequested>(_onSignUpRequested);

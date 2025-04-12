@@ -59,10 +59,10 @@ class HomeView extends StatelessWidget {
               icon: Icon(Icons.home),
               label: 'Catalog',
             ),
-            BottomNavigationBarItem(
+            /*BottomNavigationBarItem(
               icon: Icon(Icons.align_vertical_bottom_outlined),
               label: 'Comparison',
-            ),
+            ),*/
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profile',
