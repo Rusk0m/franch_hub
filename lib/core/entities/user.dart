@@ -2,8 +2,6 @@ class UserEntity {
   final String uid;
   final String email;
   final String role;
-  final String? franchiseId;
-  final String? franchisorId;
   final String? name;
   final String? phone;
   final String? avatarUrl;
@@ -20,8 +18,6 @@ class UserEntity {
     required this.uid,
     required this.email,
     required this.role,
-    this.franchiseId,
-    this.franchisorId,
     this.name,
     this.phone,
     this.avatarUrl,
@@ -32,8 +28,6 @@ class UserEntity {
     String? uid,
     String? email,
     String? role,
-    String? franchiseId,
-    String? franchisorId,
     String? name,
     String? phone,
     String? avatarUrl,
@@ -43,8 +37,6 @@ class UserEntity {
       uid: uid ?? this.uid,
       email: email ?? this.email,
       role: role ?? this.role,
-      franchiseId: franchiseId ?? this.franchiseId,
-      franchisorId: franchisorId ?? this.franchisorId,
       name: name ?? this.name,
       phone: phone ?? this.phone,
       avatarUrl: avatarUrl ?? this.avatarUrl,

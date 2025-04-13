@@ -9,10 +9,6 @@ class UserModel {
   final String uid;
   final String email;
   final String role;
-  @JsonKey(name: 'franchiseId')
-  final String? franchiseId;
-  @JsonKey(name: 'franchisorId')
-  final String? franchisorId;
   final String? name;
   final String? phone;
   final String? avatarUrl;
@@ -26,8 +22,6 @@ class UserModel {
     required this.uid,
     required this.email,
     required this.role,
-    this.franchiseId,
-    this.franchisorId,
     this.name,
     this.phone,
     this.avatarUrl,
@@ -43,8 +37,6 @@ class UserModel {
       uid: data['uid'] ?? doc.id,
       email: data['email'] ?? '',
       role: data['role'] ?? 'user',
-      franchiseId: data['franchiseId'],
-      franchisorId: data['franchisorId'],
       name: data['name'],
       phone: data['phone'],
       avatarUrl: data['avatarUrl'],
@@ -65,8 +57,6 @@ class UserModel {
     uid: uid,
     email: email,
     role: role,
-    franchiseId: franchiseId,
-    franchisorId: franchisorId,
     name: name,
     phone: phone,
     avatarUrl: avatarUrl,
@@ -77,8 +67,6 @@ class UserModel {
     uid: entity.uid,
     email: entity.email,
     role: entity.role,
-    franchiseId: entity.franchiseId,
-    franchisorId: entity.franchisorId,
     name: entity.name,
     phone: entity.phone,
     avatarUrl: entity.avatarUrl,
@@ -93,7 +81,5 @@ class UserModel {
     role: 'guest',
     createdAt: DateTime(1970),
     phone: null,
-    franchiseId: null,
-    franchisorId: null,
   );
 }

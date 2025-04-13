@@ -125,8 +125,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         role: 'user',
         createdAt: DateTime.now(),
         phone: null,
-        franchiseId: null,
-        franchisorId: null,
       );
 
       // 2. Сохраняем в Firestore

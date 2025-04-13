@@ -182,7 +182,5 @@ extension FirebaseUserX on firebase_auth.User {
         role: 'user',
         createdAt: DateTime.now(),
         phone: null,
-        franchiseId: null,
-        franchisorId: null,
       );
 }
