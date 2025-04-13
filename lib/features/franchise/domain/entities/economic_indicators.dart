@@ -61,4 +61,16 @@ class EconomicIndicators {
     breakevenPoint: breakevenPoint / divisor,
     netCashFlow: netCashFlow / divisor,
   );
+  Map<String, dynamic> toJson() => {
+    'currentRatio': currentRatio,
+    'quickRatio': quickRatio,
+    'returnOnSales': returnOnSales,
+    'returnOnAssets': returnOnAssets,
+    'roi': roi,
+    'autonomyRatio': autonomyRatio,
+    'debtLoad': debtLoad,
+    'royaltyPayment': royaltyPayment,
+    'breakevenPoint': breakevenPoint,
+    'netCashFlow': netCashFlow,
+  };
 }
