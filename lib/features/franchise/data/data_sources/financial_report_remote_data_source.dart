@@ -1,41 +1,78 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:franch_hub/features/franchise/data/models/economic_indicators/economic_indicators_model.dart';
+import 'package:franch_hub/features/franchise/data/models/financial_report_model/financial_report_model.dart';
 import 'package:franch_hub/features/franchise/domain/entities/economic_indicators.dart';
 import 'package:franch_hub/features/franchise/domain/entities/finantion_report.dart';
 
-class FinancialReportRemoteDataSource {
+abstract class FinancialReportRemoteDataSource {
+  Future<void> submitReport(FinancialReportModel report);
+  Future<void> submitEconomicIndicators(String branchId, int year, int month, EconomicIndicatorsModel indicators);
+  Future<List<FinancialReportModel>> getReportsForBranch(String branchId);
+  Future<List<FinancialReportModel>> getReportsForFranchise(String franchiseId);
+}
+
+class FinancialReportRemoteDataSourceImpl implements FinancialReportRemoteDataSource {
   final FirebaseFirestore _firestore;
 
-  FinancialReportRemoteDataSource(this._firestore);
+  FinancialReportRemoteDataSourceImpl({required FirebaseFirestore firestore}): _firestore = firestore;
 
-  Future<void> addFinancialReport(FinancialReport report) async {
-    final docRef = _firestore
-        .collection('franchises')
-        .doc(report.franchiseId)
-        .collection('branches')
+  @override
+  Future<void> submitReport(FinancialReportModel report) async {
+    await _firestore
+        .collection('franchise_branches')
         .doc(report.branchId)
         .collection('financial_reports')
-        .doc('${report.year}_${report.month}');
-
-    await docRef.set(report.toJson());
+        .doc('${report.year}_${report.month}')
+        .set(report.toJson());
   }
 
-  Future<void> saveIndicators({
-    required String franchiseId,
-    required String branchId,
-    required int year,
-    required int month,
-    required EconomicIndicators indicators,
-  }) async {
-    final docRef = _firestore
-        .collection('franchises')
-        .doc(franchiseId)
-        .collection('branches')
+  @override
+  Future<void> submitEconomicIndicators(
+      String branchId, int year, int month, EconomicIndicatorsModel indicators) async {
+    await _firestore
+        .collection('franchise_branches')
         .doc(branchId)
         .collection('financial_reports')
         .doc('${year}_${month}')
-        .collection('economic_indicators')
-        .doc('summary');
+        .collection('indicators')
+        .doc('summary')
+        .set(indicators.toJson());
+  }
 
-    await docRef.set(indicators.toJson());
+  @override
+  Future<List<FinancialReportModel>> getReportsForBranch(String branchId) async {
+    final snapshot = await _firestore
+        .collection('franchise_branches')
+        .doc(branchId)
+        .collection('financial_reports')
+        .get();
+
+    return snapshot.docs
+        .map((doc) => FinancialReportModel.fromJson(doc.data()))
+        .toList();
+  }
+
+  @override
+  Future<List<FinancialReportModel>> getReportsForFranchise(String franchiseId) async {
+    final branchesSnapshot = await _firestore
+        .collection('franchise_branches')
+        .where('franchiseId', isEqualTo: franchiseId)
+        .get();
+
+    List<FinancialReportModel> allReports = [];
+
+    for (var branchDoc in branchesSnapshot.docs) {
+      final reportsSnapshot = await _firestore
+          .collection('franchise_branches')
+          .doc(branchDoc.id)
+          .collection('financial_reports')
+          .get();
+
+      allReports.addAll(
+        reportsSnapshot.docs.map((doc) => FinancialReportModel.fromJson(doc.data())),
+      );
+    }
+
+    return allReports;
   }
 }

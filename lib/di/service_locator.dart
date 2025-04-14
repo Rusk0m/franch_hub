@@ -1,3 +1,12 @@
+import 'package:franch_hub/features/franchise/data/data_sources/financial_report_remote_data_source.dart';
+import 'package:franch_hub/features/franchise/data/repositories/financial_report_repository_impl.dart';
+import 'package:franch_hub/features/franchise/domain/services/economic_indicators_service.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/get_aggregated_indicators_for_franchise_use_case.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/get_economic_indicators_for_branch_use_case.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/get_reports_for_branch_use_%D1%81ase.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/get_reports_for_franchise_use_%D1%81ase.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/submit_financial_report_use_case.dart';
+import 'package:franch_hub/features/franchise/presentation/blocs/financial_report_bloc/financial_report_bloc.dart';
 import 'package:franch_hub/features/profile/domain/use_cases/update_password.dart';
 import 'package:franch_hub/features/profile/domain/use_cases/update_profile.dart';
 import 'package:franch_hub/features/settings/data/settings_repository.dart';
@@ -13,6 +22,8 @@ import 'package:franch_hub/features/profile/data/data_sources/profile_remote_dat
 import 'package:franch_hub/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:franch_hub/features/profile/domain/repositories/profile_repository.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../features/franchise/domain/repositories/financial_report_repository.dart';
 
 final sl = GetIt.instance;
 
@@ -37,6 +48,9 @@ Future<void> setupLocator() async {
       auth: sl(),
     ),
   );
+  sl.registerLazySingleton<FinancialReportRemoteDataSource>(
+          () => FinancialReportRemoteDataSourceImpl(firestore: sl()));
+
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(
@@ -49,12 +63,35 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton<ProfileRepository>(
         () => ProfileRepositoryImpl(remoteDataSource: sl()),
   );
+  sl.registerLazySingleton<FinancialReportRepository>(
+          () => FinancialReportRepositoryImpl(sl()));
+
+  // Services
+  sl.registerLazySingleton(() => EconomicIndicatorsService());
 
   //UseCase
   sl.registerLazySingleton(() => UpdateProfileUseCase(sl()));
   sl.registerLazySingleton(() => UpdatePasswordUseCase(sl()));
 
+  sl.registerLazySingleton(() => SubmitFinancialReportUseCase(
+    repository: sl(),
+    indicatorsService: sl(),
+  ));
+  sl.registerLazySingleton(() => GetReportsForBranchUseCase(sl()));
+  sl.registerLazySingleton(() => GetReportsForFranchiseUseCase(sl()));
+  sl.registerLazySingleton(() => GetEconomicIndicatorsForBranchUseCase(sl()));
+  sl.registerLazySingleton(() => GetAggregatedIndicatorsForFranchiseUseCase( repository: sl(), indicatorsService: sl()));
+
 
   // Other
   sl.registerLazySingleton(() => SettingsRepository());
+
+
+  sl.registerFactory(
+        () => FinancialReportBloc(
+      submitUseCase: sl<SubmitFinancialReportUseCase>(),
+      branchReportsUseCase: sl<GetReportsForBranchUseCase>(),
+      franchiseReportsUseCase: sl<GetReportsForFranchiseUseCase>(),
+    ),
+  );
 }

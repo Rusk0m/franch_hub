@@ -1,7 +1,7 @@
 import 'package:franch_hub/core/usecase/usecase.dart';
 import 'package:franch_hub/features/franchise/domain/entities/finantion_report.dart';
 import 'package:franch_hub/features/franchise/domain/repositories/financial_report_repository.dart';
-import 'package:franch_hub/features/franchise/domain/services/economic_indicators_servic.dart';
+import 'package:franch_hub/features/franchise/domain/services/economic_indicators_service.dart';
 
 class SubmitFinancialReportUseCase extends UseCase<void, FinancialReport> {
   final FinancialReportRepository repository;

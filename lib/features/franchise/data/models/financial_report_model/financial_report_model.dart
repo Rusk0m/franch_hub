@@ -49,4 +49,47 @@ class FinancialReportModel extends FinancialReport {
       _$FinancialReportModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$FinancialReportModelToJson(this);
+
+  FinancialReport toEntity() => FinancialReport(
+    id: id,
+    franchiseId: franchiseId,
+    branchId: branchId,
+    year: year,
+    month: month,
+    revenue: revenue,
+    netProfit: netProfit,
+    totalAssets: totalAssets,
+    ownCapital: ownCapital,
+    liabilities: liabilities,
+    inventory: inventory,
+    initialInvestment: initialInvestment,
+    fixedCosts: fixedCosts,
+    unitPrice: unitPrice,
+    variableCostsPerUnit: variableCostsPerUnit,
+    cashInflow: cashInflow,
+    cashOutflow: cashOutflow,
+    royaltyPercent: royaltyPercent,
+  );
+
+  static FinancialReportModel fromEntity(FinancialReport report) =>
+      FinancialReportModel(
+        id: report.id,
+        franchiseId: report.franchiseId,
+        branchId: report.branchId,
+        year: report.year,
+        month: report.month,
+        revenue: report.revenue,
+        netProfit: report.netProfit,
+        totalAssets: report.totalAssets,
+        ownCapital: report.ownCapital,
+        liabilities: report.liabilities,
+        inventory: report.inventory,
+        initialInvestment: report.initialInvestment,
+        fixedCosts: report.fixedCosts,
+        unitPrice: report.unitPrice,
+        variableCostsPerUnit: report.variableCostsPerUnit,
+        cashInflow: report.cashInflow,
+        cashOutflow: report.cashOutflow,
+        royaltyPercent: report.royaltyPercent,
+      );
 }
