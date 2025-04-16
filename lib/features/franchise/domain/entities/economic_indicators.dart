@@ -1,4 +1,7 @@
 class EconomicIndicators {
+  final int month;
+  final int year;
+
   final double currentRatio;
   final double quickRatio;
   final double returnOnSales;
@@ -10,7 +13,10 @@ class EconomicIndicators {
   final double breakevenPoint;
   final double netCashFlow;
 
+
   EconomicIndicators({
+    required this.month,
+    required this.year,
     required this.currentRatio,
     required this.quickRatio,
     required this.returnOnSales,
@@ -24,6 +30,8 @@ class EconomicIndicators {
   });
 
   factory EconomicIndicators.empty() => EconomicIndicators(
+    month: 1,
+    year: 2024,
     currentRatio: 0,
     quickRatio: 0,
     returnOnSales: 0,
@@ -37,6 +45,8 @@ class EconomicIndicators {
   );
 
   EconomicIndicators operator +(EconomicIndicators other) => EconomicIndicators(
+    month: month,
+    year: year,
     currentRatio: currentRatio + other.currentRatio,
     quickRatio: quickRatio + other.quickRatio,
     returnOnSales: returnOnSales + other.returnOnSales,
@@ -50,6 +60,8 @@ class EconomicIndicators {
   );
 
   EconomicIndicators operator /(num divisor) => EconomicIndicators(
+    month: month,
+    year: year,
     currentRatio: currentRatio / divisor,
     quickRatio: quickRatio / divisor,
     returnOnSales: returnOnSales / divisor,

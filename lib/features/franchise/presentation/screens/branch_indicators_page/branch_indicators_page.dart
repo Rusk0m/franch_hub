@@ -1,7 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:franch_hub/features/franchise/domain/entities/economic_indicators.dart';
-import 'package:franch_hub/features/franchise/presentation/blocs/%20economic_indicators/economic_indicators_bloc.dart';
+import 'package:franch_hub/features/franchise/presentation/blocs/ economic_indicators/economic_indicators_bloc.dart';
 
 class BranchIndicatorsPage extends StatelessWidget {
   final String branchId;
@@ -15,7 +16,8 @@ class BranchIndicatorsPage extends StatelessWidget {
       body: BlocBuilder<EconomicIndicatorsBloc, EconomicIndicatorsState>(
         builder: (context, state) {
           if (state is EconomicIndicatorsInitial) {
-            context.read<EconomicIndicatorsBloc>().add(LoadEconomicIndicatorsEvent(branchId));
+            context.read<EconomicIndicatorsBloc>().add(
+                LoadEconomicIndicatorsEvent(branchId));
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -25,27 +27,45 @@ class BranchIndicatorsPage extends StatelessWidget {
 
           if (state is EconomicIndicatorsLoaded) {
             final indicatorsList = state.indicators;
+
             if (indicatorsList.isEmpty) {
               return const Center(child: Text('Нет данных по показателям'));
             }
 
-            return ListView.builder(
-              itemCount: indicatorsList.length,
-              itemBuilder: (context, index) {
-                final ind = indicatorsList[index];
-                return Card(
-                  margin: const EdgeInsets.all(8),
-                  child: ListTile(
-                    title: Text('${ind.month}/${ind.year}'),
-                    subtitle: Text('ROI: ${ind.returnOnInvestment.toStringAsFixed(2)}%'),
-                    trailing: const Icon(Icons.bar_chart),
-                    onTap: () => showDialog(
-                      context: context,
-                      builder: (_) => _IndicatorsDetails(ind),
-                    ),
+            final months = indicatorsList.map((e) => '${e.month}/${e.year}').toList();
+            final roiValues = indicatorsList.map((e) => e.roi).toList();
+
+            return ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('ROI по месяцам',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 8),
+                      _buildRoiChart(months, roiValues),
+                    ],
                   ),
-                );
-              },
+                ),
+                const Divider(),
+                ...List.generate(indicatorsList.length, (index) {
+                  final ind = indicatorsList[index];
+                  return Card(
+                    margin: const EdgeInsets.all(8),
+                    child: ListTile(
+                      title: Text('${ind.month}/${ind.year}'),
+                      subtitle: Text('ROI: ${ind.roi.toStringAsFixed(2)}%'),
+                      trailing: const Icon(Icons.bar_chart),
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (_) => _IndicatorsDetails(ind),
+                      ),
+                    ),
+                  );
+                }),
+              ],
             );
           }
 
@@ -55,6 +75,43 @@ class BranchIndicatorsPage extends StatelessWidget {
 
           return const SizedBox.shrink();
         },
+      ),
+    );
+  }
+
+  Widget _buildRoiChart(List<String> months, List<double> values) {
+    return SizedBox(
+      height: 200,
+      child: LineChart(
+        LineChartData(
+          titlesData: FlTitlesData(
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(showTitles: true),
+            ),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  final index = value.toInt();
+                  if (index >= 0 && index < months.length) {
+                    return Text(months[index], style: const TextStyle(fontSize: 10));
+                  }
+                  return const Text('');
+                },
+              ),
+            ),
+          ),
+          borderData: FlBorderData(show: true),
+          lineBarsData: [
+            LineChartBarData(
+              spots: List.generate(values.length,
+                      (i) => FlSpot(i.toDouble(), values[i])),
+              isCurved: true,
+              color: Colors.blue,
+              dotData: FlDotData(show: true),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -73,9 +130,9 @@ class _IndicatorsDetails extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _info('Рентабельность инвестиций (ROI)', indicators.returnOnInvestment),
-          _info('Точка безубыточности', indicators.breakEvenPoint),
-          _info('Коэффициент ликвидности', indicators.liquidityRatio),
+          _info('Рентабельность инвестиций (ROI)', indicators.roi),
+          _info('Точка безубыточности', indicators.breakevenPoint),
+          _info('Коэффициент ликвидности', indicators.quickRatio),
           _info('Рентабельность активов', indicators.returnOnAssets),
           _info('Долговая нагрузка', indicators.debtLoad),
         ],

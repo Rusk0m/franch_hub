@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:franch_hub/features/franchise/data/models/economic_indicators/economic_indicators_model.dart';
 import 'package:franch_hub/features/franchise/data/models/financial_report_model/financial_report_model.dart';
 import 'package:franch_hub/features/franchise/domain/entities/economic_indicators.dart';
 import 'package:franch_hub/features/franchise/domain/entities/finantion_report.dart';
 
 abstract class FinancialReportRemoteDataSource {
   Future<void> submitReport(FinancialReportModel report);
-  Future<void> submitEconomicIndicators(String branchId, int year, int month, EconomicIndicatorsModel indicators);
+  //Future<void> submitEconomicIndicators(String branchId, int year, int month, EconomicIndicatorsModel indicators);
   Future<List<FinancialReportModel>> getReportsForBranch(String branchId);
   Future<List<FinancialReportModel>> getReportsForFranchise(String franchiseId);
 }
@@ -26,7 +25,7 @@ class FinancialReportRemoteDataSourceImpl implements FinancialReportRemoteDataSo
         .set(report.toJson());
   }
 
-  @override
+  /*@override
   Future<void> submitEconomicIndicators(
       String branchId, int year, int month, EconomicIndicatorsModel indicators) async {
     await _firestore
@@ -37,7 +36,7 @@ class FinancialReportRemoteDataSourceImpl implements FinancialReportRemoteDataSo
         .collection('indicators')
         .doc('summary')
         .set(indicators.toJson());
-  }
+  }*/
 
   @override
   Future<List<FinancialReportModel>> getReportsForBranch(String branchId) async {

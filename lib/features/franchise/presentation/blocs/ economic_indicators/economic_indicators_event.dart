@@ -7,3 +7,5 @@ class LoadEconomicIndicatorsEvent extends EconomicIndicatorsEvent {
 
   LoadEconomicIndicatorsEvent(this.branchId);
 }
+class LoadAllBranchesIndicatorsEvent extends EconomicIndicatorsEvent {}
+

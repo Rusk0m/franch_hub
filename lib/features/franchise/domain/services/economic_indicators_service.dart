@@ -4,22 +4,34 @@ import 'package:franch_hub/features/franchise/domain/entities/finantion_report.d
 
 class EconomicIndicatorsService {
   EconomicIndicators calculateIndicators(FinancialReport report) {
-    final liquidity = FinancialCalculator.currentRatio(report.totalAssets, report.liabilities);
-    final quickLiquidity = FinancialCalculator.quickRatio(report.totalAssets, report.inventory, report.liabilities);
+    final liquidity = FinancialCalculator.currentRatio(
+        report.totalAssets, report.liabilities);
+    final quickLiquidity = FinancialCalculator.quickRatio(
+        report.totalAssets, report.inventory, report.liabilities);
 
-    final profitability = FinancialCalculator.returnOnSales(report.netProfit, report.revenue);
-    final returnOnAssets = FinancialCalculator.returnOnAssets(report.netProfit, report.totalAssets);
-    final roi = FinancialCalculator.roi(report.netProfit, report.initialInvestment);
+    final profitability =
+        FinancialCalculator.returnOnSales(report.netProfit, report.revenue);
+    final returnOnAssets = FinancialCalculator.returnOnAssets(
+        report.netProfit, report.totalAssets);
+    final roi =
+        FinancialCalculator.roi(report.netProfit, report.initialInvestment);
 
-    final autonomy = FinancialCalculator.autonomyRatio(report.ownCapital, report.totalAssets);
-    final debt = FinancialCalculator.debtLoad(report.liabilities, report.ownCapital);
+    final autonomy = FinancialCalculator.autonomyRatio(
+        report.ownCapital, report.totalAssets);
+    final debt =
+        FinancialCalculator.debtLoad(report.liabilities, report.ownCapital);
 
-    final royalty = FinancialCalculator.royaltyPayment(report.revenue, report.royaltyPercent);
-    final breakeven = FinancialCalculator.breakevenPoint(report.fixedCosts, report.unitPrice, report.variableCostsPerUnit);
+    final royalty = FinancialCalculator.royaltyPayment(
+        report.revenue, report.royaltyPercent);
+    final breakeven = FinancialCalculator.breakevenPoint(
+        report.fixedCosts, report.unitPrice, report.variableCostsPerUnit);
 
-    final netCashFlow = FinancialCalculator.netCashFlow(report.cashInflow, report.cashOutflow);
+    final netCashFlow =
+        FinancialCalculator.netCashFlow(report.cashInflow, report.cashOutflow);
 
     return EconomicIndicators(
+      month: report.month,
+      year: report.year,
       currentRatio: liquidity,
       quickRatio: quickLiquidity,
       returnOnSales: profitability,
@@ -42,18 +54,30 @@ class EconomicIndicatorsService {
   }
 
   EconomicIndicators calculateFromReport(FinancialReport report) {
-    final currentRatio = FinancialCalculator.currentRatio(report.totalAssets, report.liabilities);
-    final quickRatio = FinancialCalculator.quickRatio(report.totalAssets, report.inventory, report.liabilities);
-    final returnOnSales = FinancialCalculator.returnOnSales(report.netProfit, report.revenue);
-    final returnOnAssets = FinancialCalculator.returnOnAssets(report.netProfit, report.totalAssets);
-    final roi = FinancialCalculator.roi(report.netProfit, report.initialInvestment);
-    final autonomyRatio = FinancialCalculator.autonomyRatio(report.ownCapital, report.totalAssets);
-    final debtLoad = FinancialCalculator.debtLoad(report.liabilities, report.ownCapital);
-    final royaltyPayment = FinancialCalculator.royaltyPayment(report.revenue, report.royaltyPercent);
-    final breakevenPoint = FinancialCalculator.breakevenPoint(report.fixedCosts, report.unitPrice, report.variableCostsPerUnit);
-    final netCashFlow = FinancialCalculator.netCashFlow(report.cashInflow, report.cashOutflow);
+    final currentRatio = FinancialCalculator.currentRatio(
+        report.totalAssets, report.liabilities);
+    final quickRatio = FinancialCalculator.quickRatio(
+        report.totalAssets, report.inventory, report.liabilities);
+    final returnOnSales =
+        FinancialCalculator.returnOnSales(report.netProfit, report.revenue);
+    final returnOnAssets = FinancialCalculator.returnOnAssets(
+        report.netProfit, report.totalAssets);
+    final roi =
+        FinancialCalculator.roi(report.netProfit, report.initialInvestment);
+    final autonomyRatio = FinancialCalculator.autonomyRatio(
+        report.ownCapital, report.totalAssets);
+    final debtLoad =
+        FinancialCalculator.debtLoad(report.liabilities, report.ownCapital);
+    final royaltyPayment = FinancialCalculator.royaltyPayment(
+        report.revenue, report.royaltyPercent);
+    final breakevenPoint = FinancialCalculator.breakevenPoint(
+        report.fixedCosts, report.unitPrice, report.variableCostsPerUnit);
+    final netCashFlow =
+        FinancialCalculator.netCashFlow(report.cashInflow, report.cashOutflow);
 
     return EconomicIndicators(
+      month: report.month,
+      year: report.year,
       currentRatio: currentRatio,
       quickRatio: quickRatio,
       returnOnSales: returnOnSales,
@@ -66,5 +90,4 @@ class EconomicIndicatorsService {
       netCashFlow: netCashFlow,
     );
   }
-
 }

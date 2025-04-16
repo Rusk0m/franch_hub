@@ -6,6 +6,7 @@ import 'package:franch_hub/features/franchise/domain/use_case/get_economic_indic
 import 'package:franch_hub/features/franchise/domain/use_case/get_reports_for_branch_use_%D1%81ase.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/get_reports_for_franchise_use_%D1%81ase.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/submit_financial_report_use_case.dart';
+import 'package:franch_hub/features/franchise/presentation/blocs/%20economic_indicators/economic_indicators_bloc.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/financial_report_bloc/financial_report_bloc.dart';
 import 'package:franch_hub/features/profile/domain/use_cases/update_password.dart';
 import 'package:franch_hub/features/profile/domain/use_cases/update_profile.dart';
@@ -94,4 +95,9 @@ Future<void> setupLocator() async {
       franchiseReportsUseCase: sl<GetReportsForFranchiseUseCase>(),
     ),
   );
+
+  sl.registerFactory(() => EconomicIndicatorsBloc(
+    getIndicatorsForBranch: sl(),
+    //getIndicatorsForAll: sl(),
+  ));
 }
