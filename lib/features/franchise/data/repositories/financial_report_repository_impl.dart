@@ -1,55 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:franch_hub/features/franchise/data/data_sources/financial_report_remote_data_source.dart';
 import 'package:franch_hub/features/franchise/data/models/financial_report_model/financial_report_model.dart';
 import 'package:franch_hub/features/franchise/domain/entities/economic_indicators.dart';
 import 'package:franch_hub/features/franchise/domain/entities/finantion_report.dart';
 import 'package:franch_hub/features/franchise/domain/repositories/financial_report_repository.dart';
 
 class FinancialReportRepositoryImpl implements FinancialReportRepository {
-  final FirebaseFirestore firestore;
+  final FinancialReportRemoteDataSource remoteDataSource;
 
-  FinancialReportRepositoryImpl(this.firestore);
+  FinancialReportRepositoryImpl(this.remoteDataSource);
 
   @override
   Future<void> submitReport(FinancialReport report) async {
-    await firestore
-        .collection('branches')
-        .doc(report.branchId)
-        .collection('financialReports')
-        .doc('${report.year}-${report.month}')
-        .set(report.toJson());
+    await remoteDataSource.submitReport(FinancialReportModel.fromEntity(report));
   }
 
   @override
   Future<List<FinancialReport>> getReportsForBranch(String branchId) async {
-    final snapshot = await firestore
-        .collection('branches')
-        .doc(branchId)
-        .collection('financialReports')
-        .get();
-
-    return snapshot.docs
-        .map((doc) => FinancialReportModel.fromJson(doc.data()))
-        .toList();
+    final models = await remoteDataSource.getReportsForBranch(branchId);
+    return models.map((e) => e.toEntity()).toList();
   }
 
   @override
   Future<List<FinancialReport>> getReportsForFranchise(String franchiseId) async {
-    final branchSnapshot = await firestore
-        .collection('branches')
-        .where('franchiseId', isEqualTo: franchiseId)
-        .get();
-
-    List<FinancialReport> allReports = [];
-
-    for (var branchDoc in branchSnapshot.docs) {
-      final reportsSnapshot = await branchDoc.reference.collection('financialReports').get();
-      final reports = reportsSnapshot.docs
-          .map((doc) => FinancialReportModel.fromJson(doc.data()))
-          .toList();
-      allReports.addAll(reports);
-    }
-
-    return allReports;
+    final models = await remoteDataSource.getReportsForFranchise(franchiseId);
+    return models.map((e) => e.toEntity()).toList();
   }
 
   @override
@@ -59,11 +34,6 @@ class FinancialReportRepositoryImpl implements FinancialReportRepository {
       int month,
       EconomicIndicators indicators,
       ) async {
-    await firestore
-        .collection('branches')
-        .doc(branchId)
-        .collection('economicIndicators')
-        .doc('$year-$month')
-        .set(indicators.toJson());
+    throw UnimplementedError();
   }
 }

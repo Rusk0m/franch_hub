@@ -6,7 +6,8 @@ part of 'franchise_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Franchise _$FranchiseFromJson(Map<String, dynamic> json) => Franchise(
+FranchiseModel _$FranchiseModelFromJson(Map<String, dynamic> json) =>
+    FranchiseModel(
       id: json['id'] as String,
       ownerId: json['ownerId'] as String,
       name: json['name'] as String,
@@ -18,7 +19,8 @@ Franchise _$FranchiseFromJson(Map<String, dynamic> json) => Franchise(
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
-Map<String, dynamic> _$FranchiseToJson(Franchise instance) => <String, dynamic>{
+Map<String, dynamic> _$FranchiseModelToJson(FranchiseModel instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'ownerId': instance.ownerId,
       'name': instance.name,

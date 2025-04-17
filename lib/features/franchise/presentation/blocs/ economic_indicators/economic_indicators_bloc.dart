@@ -1,45 +1,40 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/franchise/domain/entities/economic_indicators.dart';
-import 'package:franch_hub/features/franchise/domain/use_case/get_economic_indicators_for_branch_use_case.dart';
-import 'package:franch_hub/features/franchise/domain/use_case/get_economic_indicators_for_all_branches_use_case.dart';
+import 'package:franch_hub/features/franchise/domain/entities/finantion_report.dart';
+import 'package:franch_hub/features/franchise/domain/repositories/financial_report_repository.dart';
+import 'package:franch_hub/features/franchise/domain/services/economic_indicators_service.dart';
 
 part 'economic_indicators_event.dart';
 part 'economic_indicators_state.dart';
 
 class EconomicIndicatorsBloc extends Bloc<EconomicIndicatorsEvent, EconomicIndicatorsState> {
-  final GetEconomicIndicatorsForBranchUseCase getIndicatorsForBranch;
-  //final GetEconomicIndicatorsForAllBranchesUseCase getIndicatorsForAll;
+  final FinancialReportRepository reportRepository = sl();
+  final EconomicIndicatorsService indicatorsService = sl();
 
-  EconomicIndicatorsBloc({
-    required this.getIndicatorsForBranch,
-    //required this.getIndicatorsForAll,
-  }) : super(EconomicIndicatorsInitial()) {
+  EconomicIndicatorsBloc() : super(EconomicIndicatorsInitial()) {
     on<LoadEconomicIndicatorsEvent>(_onLoadForBranch);
-    //on<LoadAllBranchesIndicatorsEvent>(_onLoadForAll);
   }
 
   Future<void> _onLoadForBranch(
       LoadEconomicIndicatorsEvent event,
-      Emitter<EconomicIndicatorsState> emit) async {
+      Emitter<EconomicIndicatorsState> emit,
+      ) async {
     emit(EconomicIndicatorsLoading());
     try {
-      final indicators = await getIndicatorsForBranch(params: event.branchId);
+      final List<FinancialReport> reports = await reportRepository.getReportsForBranch(event.branchId);
+
+      // Сортировка по дате, если надо:
+      reports.sort((a, b) => DateTime(a.year, a.month).compareTo(DateTime(b.year, b.month)));
+
+      final indicators = reports
+          .map((report) => indicatorsService.calculateIndicators(report))
+          .toList();
+
       emit(EconomicIndicatorsLoaded(indicators));
     } catch (e) {
       emit(EconomicIndicatorsError(e.toString()));
     }
   }
-
-  // Future<void> _onLoadForAll(
-  //     LoadAllBranchesIndicatorsEvent event,
-  //     Emitter<EconomicIndicatorsState> emit) async {
-  //   emit(EconomicIndicatorsLoading());
-  //   try {
-  //     final indicators = await getIndicatorsForAll();
-  //     emit(EconomicIndicatorsLoaded(indicators));
-  //   } catch (e) {
-  //     emit(EconomicIndicatorsError(e.toString()));
-  //   }
-  // }
 }

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/franchise/domain/entities/finantion_report.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/get_reports_for_branch_use_%D1%81ase.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/get_reports_for_franchise_use_%D1%81ase.dart';
@@ -9,15 +10,13 @@ part 'financial_report_event.dart';
 part 'financial_report_state.dart';
 
 class FinancialReportBloc extends Bloc<FinancialReportEvent, FinancialReportState> {
-  final SubmitFinancialReportUseCase submitUseCase;
-  final GetReportsForBranchUseCase branchReportsUseCase;
-  final GetReportsForFranchiseUseCase franchiseReportsUseCase;
 
-  FinancialReportBloc({
-    required this.submitUseCase,
-    required this.branchReportsUseCase,
-    required this.franchiseReportsUseCase,
-  }) : super(FinancialReportInitial()) {
+  final SubmitFinancialReportUseCase submitUseCase =sl<SubmitFinancialReportUseCase>();
+  final GetReportsForBranchUseCase branchReportsUseCase= sl<GetReportsForBranchUseCase>();
+  final GetReportsForFranchiseUseCase franchiseReportsUseCase = sl<GetReportsForFranchiseUseCase>();
+
+  FinancialReportBloc(
+  ) : super(FinancialReportInitial()) {
     on<SubmitReportEvent>(_onSubmit);
     on<LoadReportsForBranchEvent>(_onLoadBranchReports);
     on<LoadReportsForFranchiseEvent>(_onLoadFranchiseReports);

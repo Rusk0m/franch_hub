@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:franch_hub/features/franchise/domain/entities/economic_indicators.dart';
-import 'package:franch_hub/features/franchise/presentation/blocs/ economic_indicators/economic_indicators_bloc.dart';
+import 'package:franch_hub/features/franchise/presentation/blocs/%20economic_indicators/economic_indicators_bloc.dart';
 
 class BranchIndicatorsPage extends StatelessWidget {
   final String branchId;
@@ -11,70 +11,67 @@ class BranchIndicatorsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Экономические показатели')),
-      body: BlocBuilder<EconomicIndicatorsBloc, EconomicIndicatorsState>(
-        builder: (context, state) {
-          if (state is EconomicIndicatorsInitial) {
-            context.read<EconomicIndicatorsBloc>().add(
-                LoadEconomicIndicatorsEvent(branchId));
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is EconomicIndicatorsLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is EconomicIndicatorsLoaded) {
-            final indicatorsList = state.indicators;
-
-            if (indicatorsList.isEmpty) {
-              return const Center(child: Text('Нет данных по показателям'));
+    return BlocProvider(
+      create: (_) => EconomicIndicatorsBloc()..add(LoadEconomicIndicatorsEvent(branchId)),
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Экономические показатели')),
+        body: BlocBuilder<EconomicIndicatorsBloc, EconomicIndicatorsState>(
+          builder: (context, state) {
+            if (state is EconomicIndicatorsLoading || state is EconomicIndicatorsInitial) {
+              return const Center(child: CircularProgressIndicator());
             }
 
-            final months = indicatorsList.map((e) => '${e.month}/${e.year}').toList();
-            final roiValues = indicatorsList.map((e) => e.roi).toList();
+            if (state is EconomicIndicatorsLoaded) {
+              final indicatorsList = state.indicators;
 
-            return ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('ROI по месяцам',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      _buildRoiChart(months, roiValues),
-                    ],
-                  ),
-                ),
-                const Divider(),
-                ...List.generate(indicatorsList.length, (index) {
-                  final ind = indicatorsList[index];
-                  return Card(
-                    margin: const EdgeInsets.all(8),
-                    child: ListTile(
-                      title: Text('${ind.month}/${ind.year}'),
-                      subtitle: Text('ROI: ${ind.roi.toStringAsFixed(2)}%'),
-                      trailing: const Icon(Icons.bar_chart),
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (_) => _IndicatorsDetails(ind),
-                      ),
+              if (indicatorsList.isEmpty) {
+                return const Center(child: Text('Нет данных по показателям'));
+              }
+
+              final months = indicatorsList.map((e) => '${e.month}/${e.year}').toList();
+              final roiValues = indicatorsList.map((e) => e.roi).toList();
+
+              return ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('ROI по месяцам',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 8),
+                        _buildRoiChart(months, roiValues),
+                      ],
                     ),
-                  );
-                }),
-              ],
-            );
-          }
+                  ),
+                  const Divider(),
+                  ...List.generate(indicatorsList.length, (index) {
+                    final ind = indicatorsList[index];
+                    return Card(
+                      margin: const EdgeInsets.all(8),
+                      child: ListTile(
+                        title: Text('${ind.month}/${ind.year}'),
+                        subtitle: Text('ROI: ${ind.roi.toStringAsFixed(2)}%'),
+                        trailing: const Icon(Icons.bar_chart),
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (_) => _IndicatorsDetails(ind),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              );
+            }
 
-          if (state is EconomicIndicatorsError) {
-            return Center(child: Text('Ошибка: ${state.message}'));
-          }
+            if (state is EconomicIndicatorsError) {
+              return Center(child: Text('Ошибка: ${state.message}'));
+            }
 
-          return const SizedBox.shrink();
-        },
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }

@@ -43,7 +43,7 @@ class ProfileContent extends StatelessWidget {
             children: const [
               NavigationButton(icon: Icons.person, title: 'My Account', routeName: '/profile_settings'),
               SizedBox(height: 10),
-              NavigationButton(icon: Icons.account_tree, title: 'My Franchise'),
+              NavigationButton(icon: Icons.account_tree, title: 'My Franchise',routeName: '/myFranchisesPage',),
               SizedBox(height: 10),
               NavigationButton(icon: Icons.account_balance_wallet_rounded, title: 'Transaction History'),
               SizedBox(height: 10),

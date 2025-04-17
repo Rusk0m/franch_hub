@@ -1,13 +1,20 @@
 import 'package:franch_hub/features/franchise/data/data_sources/financial_report_remote_data_source.dart';
+import 'package:franch_hub/features/franchise/data/data_sources/franchise_remote_data_source.dart';
 import 'package:franch_hub/features/franchise/data/repositories/financial_report_repository_impl.dart';
+import 'package:franch_hub/features/franchise/data/repositories/franchise_repository_implement.dart';
+import 'package:franch_hub/features/franchise/domain/repositories/franchise_repository.dart';
 import 'package:franch_hub/features/franchise/domain/services/economic_indicators_service.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/get_aggregated_indicators_for_franchise_use_case.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/get_branches_for_franchise_use_case.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/get_economic_indicators_for_branch_use_case.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/get_my_branches_use_case.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/get_my_franchises_use_case.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/get_reports_for_branch_use_%D1%81ase.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/get_reports_for_franchise_use_%D1%81ase.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/submit_financial_report_use_case.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/%20economic_indicators/economic_indicators_bloc.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/financial_report_bloc/financial_report_bloc.dart';
+import 'package:franch_hub/features/franchise/presentation/blocs/franchise_branches_bloc/franchise_branches_bloc.dart';
 import 'package:franch_hub/features/profile/domain/use_cases/update_password.dart';
 import 'package:franch_hub/features/profile/domain/use_cases/update_profile.dart';
 import 'package:franch_hub/features/settings/data/settings_repository.dart';
@@ -52,6 +59,9 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton<FinancialReportRemoteDataSource>(
           () => FinancialReportRemoteDataSourceImpl(firestore: sl()));
 
+  sl.registerLazySingleton<FranchiseRemoteDataSource>(
+          () => FranchiseRemoteDataSourceImpl(firestore: sl()));
+
 
   // Repositories
   sl.registerLazySingleton<AuthenticationRepository>(
@@ -67,6 +77,8 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton<FinancialReportRepository>(
           () => FinancialReportRepositoryImpl(sl()));
 
+  sl.registerLazySingleton<FranchiseRepository>(
+          () => FranchiseRepositoryImpl(sl()));
   // Services
   sl.registerLazySingleton(() => EconomicIndicatorsService());
 
@@ -80,8 +92,12 @@ Future<void> setupLocator() async {
   ));
   sl.registerLazySingleton(() => GetReportsForBranchUseCase(sl()));
   sl.registerLazySingleton(() => GetReportsForFranchiseUseCase(sl()));
-  sl.registerLazySingleton(() => GetEconomicIndicatorsForBranchUseCase(sl()));
+  sl.registerLazySingleton(() => GetEconomicIndicatorsForBranchUseCase());
+  sl.registerLazySingleton(() => GetBranchesForFranchiseUseCase(sl()));
+  sl.registerLazySingleton(() => GetMyBranchesUseCase(sl()));
+  sl.registerLazySingleton(() => GetMyFranchisesUseCase(sl()));
   sl.registerLazySingleton(() => GetAggregatedIndicatorsForFranchiseUseCase( repository: sl(), indicatorsService: sl()));
+
 
 
   // Other
@@ -89,15 +105,11 @@ Future<void> setupLocator() async {
 
 
   sl.registerFactory(
-        () => FinancialReportBloc(
-      submitUseCase: sl<SubmitFinancialReportUseCase>(),
-      branchReportsUseCase: sl<GetReportsForBranchUseCase>(),
-      franchiseReportsUseCase: sl<GetReportsForFranchiseUseCase>(),
-    ),
+        () => FinancialReportBloc(),
   );
 
-  sl.registerFactory(() => EconomicIndicatorsBloc(
-    getIndicatorsForBranch: sl(),
-    //getIndicatorsForAll: sl(),
+  sl.registerFactory(() => EconomicIndicatorsBloc());
+
+  sl.registerFactory(() => FranchiseBranchesBloc(
   ));
 }

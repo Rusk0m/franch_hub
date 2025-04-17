@@ -6,18 +6,24 @@ part of 'franchise_branch_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FranchiseBranch _$FranchiseBranchFromJson(Map<String, dynamic> json) =>
-    FranchiseBranch(
+FranchiseBranchModel _$FranchiseBranchModelFromJson(
+        Map<String, dynamic> json) =>
+    FranchiseBranchModel(
       id: json['id'] as String,
+      name: json['name'] as String,
       franchiseId: json['franchiseId'] as String,
       ownerId: json['ownerId'] as String,
+      location: json['location'] as String,
       royaltyPercent: (json['royaltyPercent'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$FranchiseBranchToJson(FranchiseBranch instance) =>
+Map<String, dynamic> _$FranchiseBranchModelToJson(
+        FranchiseBranchModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'name': instance.name,
       'franchiseId': instance.franchiseId,
       'ownerId': instance.ownerId,
+      'location': instance.location,
       'royaltyPercent': instance.royaltyPercent,
     };

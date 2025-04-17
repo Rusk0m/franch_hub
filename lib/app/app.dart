@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:franch_hub/app/app_view.dart';
 import 'package:franch_hub/di/service_locator.dart';
-import 'package:franch_hub/features/auth/data/repository/authentication_repository_impl.dart';
 import 'package:franch_hub/features/auth/domain/repository/authentication_repository.dart';
+import 'package:franch_hub/features/franchise/presentation/blocs/financial_report_bloc/financial_report_bloc.dart';
+import 'package:franch_hub/features/franchise/presentation/blocs/franchise_branches_bloc/franchise_branches_bloc.dart';
+import 'package:franch_hub/features/franchise/presentation/screens/my_franchise_page/my_franchise_page.dart';
 import 'package:franch_hub/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:franch_hub/features/settings/data/settings_repository.dart';
 import 'package:franch_hub/features/settings/presentation/bloc/theme_cubit.dart';
@@ -32,7 +34,10 @@ class App extends StatelessWidget {
           BlocProvider.value(
             value: LocaleCubit(sl()),
           ),
-          BlocProvider.value(value: ProfileBloc(authRepository: sl()))
+          BlocProvider.value(value: ProfileBloc(authRepository: sl())),
+          BlocProvider.value(value: FinancialReportBloc()),
+          BlocProvider.value(value: FranchiseBranchesBloc()),
+
         ], child: AppView()));
   }
 }

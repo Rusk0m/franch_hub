@@ -52,42 +52,4 @@ class EconomicIndicatorsService {
     final summed = reports.map(calculateIndicators).reduce((a, b) => a + b);
     return summed / reports.length;
   }
-
-  EconomicIndicators calculateFromReport(FinancialReport report) {
-    final currentRatio = FinancialCalculator.currentRatio(
-        report.totalAssets, report.liabilities);
-    final quickRatio = FinancialCalculator.quickRatio(
-        report.totalAssets, report.inventory, report.liabilities);
-    final returnOnSales =
-        FinancialCalculator.returnOnSales(report.netProfit, report.revenue);
-    final returnOnAssets = FinancialCalculator.returnOnAssets(
-        report.netProfit, report.totalAssets);
-    final roi =
-        FinancialCalculator.roi(report.netProfit, report.initialInvestment);
-    final autonomyRatio = FinancialCalculator.autonomyRatio(
-        report.ownCapital, report.totalAssets);
-    final debtLoad =
-        FinancialCalculator.debtLoad(report.liabilities, report.ownCapital);
-    final royaltyPayment = FinancialCalculator.royaltyPayment(
-        report.revenue, report.royaltyPercent);
-    final breakevenPoint = FinancialCalculator.breakevenPoint(
-        report.fixedCosts, report.unitPrice, report.variableCostsPerUnit);
-    final netCashFlow =
-        FinancialCalculator.netCashFlow(report.cashInflow, report.cashOutflow);
-
-    return EconomicIndicators(
-      month: report.month,
-      year: report.year,
-      currentRatio: currentRatio,
-      quickRatio: quickRatio,
-      returnOnSales: returnOnSales,
-      returnOnAssets: returnOnAssets,
-      roi: roi,
-      autonomyRatio: autonomyRatio,
-      debtLoad: debtLoad,
-      royaltyPayment: royaltyPayment,
-      breakevenPoint: breakevenPoint,
-      netCashFlow: netCashFlow,
-    );
-  }
 }

@@ -16,7 +16,7 @@ class SubmitFinancialReportUseCase extends UseCase<void, FinancialReport> {
   Future<void> call( {FinancialReport? params}) async {
     if (params == null) throw ArgumentError("Params can't be null");
 
-    final indicators = indicatorsService.calculateFromReport(params);
+    final indicators = indicatorsService.calculateIndicators(params);
 
     await repository.submitReport(params);
 

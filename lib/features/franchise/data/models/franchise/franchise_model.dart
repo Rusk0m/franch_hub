@@ -1,9 +1,10 @@
+import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'franchise_model.g.dart';
 
 @JsonSerializable()
-class Franchise {
+class FranchiseModel {
   final String id;
   final String ownerId;
   final String name;
@@ -14,7 +15,7 @@ class Franchise {
   final double royaltyPercent;
   final DateTime createdAt;
 
-  Franchise({
+  FranchiseModel({
     required this.id,
     required this.ownerId,
     required this.name,
@@ -26,8 +27,32 @@ class Franchise {
     required this.createdAt,
   });
 
-  factory Franchise.fromJson(Map<String, dynamic> json) =>
-      _$FranchiseFromJson(json);
+  factory FranchiseModel.fromJson(Map<String, dynamic> json) => _$FranchiseModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$FranchiseToJson(this);
+  Map<String, dynamic> toJson() => _$FranchiseModelToJson(this);
+
+
+  Franchise toEntity() => Franchise(
+    id: id,
+    ownerId: ownerId,
+    name: name,
+    description: description,
+    industry: industry,
+    city: city,
+    startupCost: startupCost,
+    royaltyPercent: royaltyPercent,
+    createdAt: createdAt,
+  );
+
+  factory FranchiseModel.fromEntity(Franchise entity) => FranchiseModel(
+    id: entity.id,
+    ownerId: entity.ownerId,
+    name: entity.name,
+    description: entity.description,
+    industry: entity.industry,
+    city: entity.city,
+    startupCost: entity.startupCost,
+    royaltyPercent: entity.royaltyPercent,
+    createdAt: entity.createdAt,
+  );
 }
