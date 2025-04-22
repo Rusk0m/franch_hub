@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:franch_hub/core/utils/timestamp_converter.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,6 +15,7 @@ class FranchiseModel {
   final String city;
   final double startupCost;
   final double royaltyPercent;
+  @TimestampConverter()
   final DateTime createdAt;
 
   FranchiseModel({

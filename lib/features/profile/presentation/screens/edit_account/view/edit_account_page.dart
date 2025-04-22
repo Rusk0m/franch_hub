@@ -8,7 +8,8 @@ import 'package:franch_hub/features/profile/presentation/bloc/profile_bloc.dart'
 
 class EditAccountPage extends StatelessWidget {
   final uid = sl<FirebaseAuth>().currentUser?.uid;
-   EditAccountPage();
+
+  EditAccountPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,7 @@ class EditAccountPage extends StatelessWidget {
                         phone: phoneController.text,
                       ),
                     );
+                    Navigator.of(context).pop();
                   },
                   child: state is ProfileLoading
                       ? const CircularProgressIndicator(color: Colors.white)

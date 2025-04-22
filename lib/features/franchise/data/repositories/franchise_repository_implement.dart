@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:franch_hub/features/franchise/data/data_sources/franchise_remote_data_source.dart';
-import 'package:franch_hub/features/franchise/data/models/franchise/franchise_model.dart';
-import 'package:franch_hub/features/franchise/data/models/franchise_branch/franchise_branch_model.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise_branch.dart';
 import 'package:franch_hub/features/franchise/domain/repositories/franchise_repository.dart';

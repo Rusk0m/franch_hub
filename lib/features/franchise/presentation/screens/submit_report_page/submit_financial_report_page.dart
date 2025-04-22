@@ -64,6 +64,7 @@ class _SubmitFinancialReportPageState extends State<SubmitFinancialReportPage> {
         franchiseId: widget.franchiseId,
         year: year,
         month: month,
+        submittedAt: DateTime.now(),
         revenue: double.parse(_revenueController.text),
         netProfit: double.parse(_netProfitController.text),
         totalAssets: double.parse(_totalAssetsController.text),

@@ -24,7 +24,7 @@ class FinancialCalculator {
 
   /// ROI (окупаемость инвестиций)
   static double roi(double profit, double investment) =>
-      investment != 0 ? ((profit - investment) / investment) * 100 : 0;
+      investment != 0 ? (profit  / investment) * 100 : 0;
 
   // 3. Финансовая устойчивость
 
@@ -53,13 +53,4 @@ class FinancialCalculator {
   /// Чистый денежный поток
   static double netCashFlow(double inflow, double outflow) => inflow - outflow;
 
-// 6. DCF (не используем пока, можно включить позже при необходимости)
-
-// static double discountedCashFlow(List<double> cashFlows, double discountRate) {
-//   double dcf = 0;
-//   for (int t = 0; t < cashFlows.length; t++) {
-//     dcf += cashFlows[t] / pow(1 + discountRate, t + 1);
-//   }
-//   return dcf;
-// }
 }

@@ -5,6 +5,8 @@ class FranchiseBranch {
   final String ownerId;
   final String location;
   final double royaltyPercent;// Роялти в %
+  final DateTime createdAt;
+
 
   FranchiseBranch({
     required this.id,
@@ -13,5 +15,6 @@ class FranchiseBranch {
     required this.ownerId,
     required this.location,
     required this.royaltyPercent,
+    required this.createdAt,
   });
 }

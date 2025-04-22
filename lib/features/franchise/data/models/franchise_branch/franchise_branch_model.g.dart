@@ -15,6 +15,8 @@ FranchiseBranchModel _$FranchiseBranchModelFromJson(
       ownerId: json['ownerId'] as String,
       location: json['location'] as String,
       royaltyPercent: (json['royaltyPercent'] as num).toDouble(),
+      createdAt:
+          const TimestampConverter().fromJson(json['createdAt'] as Timestamp),
     );
 
 Map<String, dynamic> _$FranchiseBranchModelToJson(
@@ -26,4 +28,5 @@ Map<String, dynamic> _$FranchiseBranchModelToJson(
       'ownerId': instance.ownerId,
       'location': instance.location,
       'royaltyPercent': instance.royaltyPercent,
+      'createdAt': const TimestampConverter().toJson(instance.createdAt),
     };

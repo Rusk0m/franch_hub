@@ -17,7 +17,7 @@ class ProfilePage extends StatelessWidget {
         if (state is! Authenticated) {
           return const AuthPage();
         }
-        return ProfileContent(user: state.user);
+        return ProfileContent();
       },
     );
   }

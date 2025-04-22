@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:franch_hub/core/utils/timestamp_converter.dart';
 import 'package:franch_hub/features/franchise/domain/entities/finantion_report.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -5,49 +7,36 @@ part 'financial_report_model.g.dart';  // Этот файл будет сген�
 
 @JsonSerializable()
 class FinancialReportModel extends FinancialReport {
-  FinancialReportModel({
-    required String id,
-    required String franchiseId,
-    required String branchId,
-    required int year,
-    required int month,
-    required double revenue,
-    required double netProfit,
-    required double totalAssets,
-    required double ownCapital,
-    required double liabilities,
-    required double inventory,
-    required double initialInvestment,
-    required double fixedCosts,
-    required double unitPrice,
-    required double variableCostsPerUnit,
-    required double cashInflow,
-    required double cashOutflow,
-    required double royaltyPercent,
-  }) : super(
-    id: id,
-    franchiseId:franchiseId,
-    branchId: branchId,
-    year: year,
-    month: month,
-    revenue: revenue,
-    netProfit: netProfit,
-    totalAssets: totalAssets,
-    ownCapital: ownCapital,
-    liabilities: liabilities,
-    inventory: inventory,
-    initialInvestment: initialInvestment,
-    fixedCosts: fixedCosts,
-    unitPrice: unitPrice,
-    variableCostsPerUnit: variableCostsPerUnit,
-    cashInflow: cashInflow,
-    cashOutflow: cashOutflow,
-    royaltyPercent: royaltyPercent,
-  );
 
+  @TimestampConverter()
+  final DateTime submittedAt;
+  FinancialReportModel({
+    required super.id,
+    required super.franchiseId,
+    required super.branchId,
+    required super.year,
+    required super.month,
+    required this.submittedAt,
+    required super.revenue,
+    required super.netProfit,
+    required super.totalAssets,
+    required super.ownCapital,
+    required super.liabilities,
+    required super.inventory,
+    required super.initialInvestment,
+    required super.fixedCosts,
+    required super.unitPrice,
+    required super.variableCostsPerUnit,
+    required super.cashInflow,
+    required super.cashOutflow,
+    required super.royaltyPercent,
+  }) : super(
+    submittedAt: submittedAt,
+  );
   factory FinancialReportModel.fromJson(Map<String, dynamic> json) =>
       _$FinancialReportModelFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$FinancialReportModelToJson(this);
 
   FinancialReport toEntity() => FinancialReport(
@@ -56,6 +45,7 @@ class FinancialReportModel extends FinancialReport {
     branchId: branchId,
     year: year,
     month: month,
+    submittedAt: submittedAt,
     revenue: revenue,
     netProfit: netProfit,
     totalAssets: totalAssets,
@@ -78,6 +68,7 @@ class FinancialReportModel extends FinancialReport {
         branchId: report.branchId,
         year: report.year,
         month: report.month,
+        submittedAt: report.submittedAt,
         revenue: report.revenue,
         netProfit: report.netProfit,
         totalAssets: report.totalAssets,

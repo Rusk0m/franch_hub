@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/franchise_bloc/franchise_bloc.dart';
-import 'package:franch_hub/features/franchise/presentation/screens/franchise_branches_page/franchise_branches_page.dart';
 
 class MyFranchisesPage extends StatelessWidget {
   final userId = sl<FirebaseAuth>().currentUser?.uid;

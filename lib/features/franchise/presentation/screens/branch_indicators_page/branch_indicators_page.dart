@@ -14,7 +14,6 @@ class BranchIndicatorsPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => EconomicIndicatorsBloc()..add(LoadEconomicIndicatorsEvent(branchId)),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Экономические показатели')),
         body: BlocBuilder<EconomicIndicatorsBloc, EconomicIndicatorsState>(
           builder: (context, state) {
             if (state is EconomicIndicatorsLoading || state is EconomicIndicatorsInitial) {

@@ -4,6 +4,7 @@ class FinancialReport {
   final String branchId;
   final int year;
   final int month;
+  final DateTime submittedAt;
 
   final double revenue; // Выручка
   final double netProfit; // Чистая прибыль
@@ -26,6 +27,7 @@ class FinancialReport {
     required this.branchId,
     required this.year,
     required this.month,
+    required this.submittedAt,
     required this.revenue,
     required this.netProfit,
     required this.totalAssets,
@@ -40,27 +42,4 @@ class FinancialReport {
     required this.cashOutflow,
     required this.royaltyPercent,
   });
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'franchiseId' :franchiseId,
-      'branchId': branchId,
-      'year': year,
-      'month': month,
-      'revenue': revenue,
-      'netProfit': netProfit,
-      'totalAssets': totalAssets,
-      'ownCapital': ownCapital,
-      'liabilities': liabilities,
-      'inventory': inventory,
-      'initialInvestment': initialInvestment,
-      'fixedCosts': fixedCosts,
-      'unitPrice': unitPrice,
-      'variableCostsPerUnit': variableCostsPerUnit,
-      'cashInflow': cashInflow,
-      'cashOutflow': cashOutflow,
-      'royaltyPercent': royaltyPercent,
-    };
-  }
-
 }

@@ -4,9 +4,9 @@ import 'package:franch_hub/features/franchise/domain/entities/finantion_report.d
 import 'package:franch_hub/features/franchise/presentation/blocs/financial_report_bloc/financial_report_bloc.dart';
 
 class BranchReportsPage extends StatelessWidget {
-  final String branchId = "6fL4Z5kIIWB68PzeLpoH";
+  final String branchId;
 
-  const BranchReportsPage({super.key, /*required this.branchId*/});
+  const BranchReportsPage({super.key, required this.branchId});
 
   @override
   Widget build(BuildContext context) {

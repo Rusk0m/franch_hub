@@ -25,6 +25,14 @@ class LoginRequested extends AuthEvent {
   @override
   List<Object> get props => [email, password];
 }
+class UpdateUser extends AuthEvent {
+  final UserEntity user;
+
+  UpdateUser(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
 
 class GoogleLoginRequested extends AuthEvent {}
 

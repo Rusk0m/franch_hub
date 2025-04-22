@@ -1,13 +1,15 @@
 // my_branches_page.dart
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:franch_hub/features/franchise/domain/entities/franchise_branch.dart';
+import 'package:franch_hub/config/routes/app_routes.dart';
+import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/branches_bloc/my_branches_bloc.dart';
 
 class MyBranchesPage extends StatelessWidget {
-  final String userId;
+  final String userId = sl<FirebaseAuth>().currentUser!.uid;
 
-  const MyBranchesPage({super.key, required this.userId});
+  MyBranchesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,11 @@ class MyBranchesPage extends StatelessWidget {
                     title: Text(branch.name),
                     subtitle: Text('Адрес: ${branch.location}'),
                     onTap: () {
-                      // Можно добавить переход к аналитике или отчётам точки
+                      Navigator.pushNamed(
+                        context,
+                        AppRouter.branchDetailsPage,
+                        arguments: branch,
+                      );
                     },
                   );
                 },

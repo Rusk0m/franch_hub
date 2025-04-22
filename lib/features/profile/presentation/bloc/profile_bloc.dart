@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/auth/domain/repository/authentication_repository.dart';
+import 'package:franch_hub/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:franch_hub/features/profile/domain/use_cases/update_password.dart';
 import 'package:franch_hub/features/profile/domain/use_cases/update_profile.dart';
 import 'dart:io';
@@ -48,20 +49,28 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       Emitter<ProfileState> emit,
       ) async {
     try {
-      // Правильный вызов UseCase
       await _updateProfile.call(
         params: UpdateProfileParams(
           uid: event.uid,
           name: event.name,
           phone: event.phone,
-          avatarUrl: '',
+          avatarUrl: event.avatarUrl,
         ),
       );
+
+      // Получаем обновлённого пользователя
+      final updatedUser = await authRepository.getUser(event.uid);
+
+      // Обновляем AuthBloc
+      sl<AuthBloc>().add(UpdateUser(updatedUser));
+
       emit(ProfileUpdateSuccess());
+      add(LoadProfile(event.uid));
     } catch (e) {
       emit(ProfileError(e.toString()));
     }
   }
+
 
   Future<void> _onUpdatePassword(
       UpdatePassword event,

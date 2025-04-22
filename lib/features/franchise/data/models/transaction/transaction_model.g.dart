@@ -6,19 +6,22 @@ part of 'transaction_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
+TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
+    TransactionModel(
       id: json['id'] as String,
+      uid: json['uid'] as String,
       branchId: json['branchId'] as String,
       amount: (json['amount'] as num).toDouble(),
       type: json['type'] as String,
-      date: DateTime.parse(json['date'] as String),
+      date: const TimestampConverter().fromJson(json['date'] as Timestamp),
     );
 
-Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
+Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'uid': instance.uid,
       'branchId': instance.branchId,
       'amount': instance.amount,
       'type': instance.type,
-      'date': instance.date.toIso8601String(),
+      'date': const TimestampConverter().toJson(instance.date),
     };

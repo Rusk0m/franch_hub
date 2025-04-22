@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:franch_hub/core/utils/timestamp_converter.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise_branch.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -11,6 +13,8 @@ class FranchiseBranchModel {
   final String ownerId;
   final String location;
   final double royaltyPercent;
+  @TimestampConverter()
+  final DateTime createdAt;
 
   FranchiseBranchModel({
     required this.id,
@@ -19,6 +23,7 @@ class FranchiseBranchModel {
     required this.ownerId,
     required this.location,
     required this.royaltyPercent,
+    required this.createdAt,
   });
 
   factory FranchiseBranchModel.fromJson(Map<String, dynamic> json) =>
@@ -33,6 +38,7 @@ class FranchiseBranchModel {
     ownerId: ownerId,
     location: location,
     royaltyPercent: royaltyPercent,
+    createdAt: createdAt,
   );
 
   factory FranchiseBranchModel.fromEntity(FranchiseBranch entity) => FranchiseBranchModel(
@@ -42,5 +48,6 @@ class FranchiseBranchModel {
     ownerId: entity.ownerId,
     location: entity.location,
     royaltyPercent: entity.royaltyPercent,
+    createdAt: entity.createdAt,
   );
 }

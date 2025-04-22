@@ -14,6 +14,8 @@ FinancialReportModel _$FinancialReportModelFromJson(
       branchId: json['branchId'] as String,
       year: (json['year'] as num).toInt(),
       month: (json['month'] as num).toInt(),
+      submittedAt:
+          const TimestampConverter().fromJson(json['submittedAt'] as Timestamp),
       revenue: (json['revenue'] as num).toDouble(),
       netProfit: (json['netProfit'] as num).toDouble(),
       totalAssets: (json['totalAssets'] as num).toDouble(),
@@ -50,4 +52,5 @@ Map<String, dynamic> _$FinancialReportModelToJson(
       'cashInflow': instance.cashInflow,
       'cashOutflow': instance.cashOutflow,
       'royaltyPercent': instance.royaltyPercent,
+      'submittedAt': const TimestampConverter().toJson(instance.submittedAt),
     };

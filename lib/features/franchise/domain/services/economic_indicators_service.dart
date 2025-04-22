@@ -13,6 +13,7 @@ class EconomicIndicatorsService {
         FinancialCalculator.returnOnSales(report.netProfit, report.revenue);
     final returnOnAssets = FinancialCalculator.returnOnAssets(
         report.netProfit, report.totalAssets);
+
     final roi =
         FinancialCalculator.roi(report.netProfit, report.initialInvestment);
 

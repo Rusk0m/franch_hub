@@ -20,6 +20,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LogoutRequested>(_onLogoutRequested);
     on<CheckAuthStatus>(_onCheckAuthStatus);
     on<ToggleAuthMode>(_onToggleAuthMode);
+    on<UpdateUser>((event, emit) {
+      emit(Authenticated(user: event.user));
+    });
+
   }
 
   Future<void> _onSignUpRequested(
