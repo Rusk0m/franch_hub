@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
-import 'package:franch_hub/features/franchise/domain/entities/franchise_branch.dart';
-import 'package:franch_hub/features/franchise/domain/use_case/get_branches_for_franchise_use_case.dart';
+import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
+import 'package:franch_hub/features/branches/domain/use_case/get_branches_for_franchise_use_case.dart';
 import 'package:franch_hub/features/franchise/domain/use_case/get_my_franchises_use_case.dart';
 
 part 'franchise_event.dart';

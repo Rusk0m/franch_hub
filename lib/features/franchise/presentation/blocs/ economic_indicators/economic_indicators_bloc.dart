@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:franch_hub/di/service_locator.dart';
-import 'package:franch_hub/features/franchise/domain/entities/economic_indicators.dart';
-import 'package:franch_hub/features/franchise/domain/entities/finantion_report.dart';
-import 'package:franch_hub/features/franchise/domain/repositories/financial_report_repository.dart';
+import 'package:franch_hub/features/financial_reports/domain/entities/economic_indicators.dart';
+import 'package:franch_hub/features/financial_reports/domain/entities/finantion_report.dart';
+import 'package:franch_hub/features/financial_reports/domain/repositories/financial_report_repository.dart';
 import 'package:franch_hub/features/franchise/domain/services/economic_indicators_service.dart';
 
 part 'economic_indicators_event.dart';

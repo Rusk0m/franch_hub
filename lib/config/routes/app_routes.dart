@@ -1,17 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:franch_hub/features/auth/presentation/screens/view/view.dart';
+import 'package:franch_hub/features/branches/presentation/screens/francise_branches_pages/branch_detail_page/branch_detail_page.dart';
+import 'package:franch_hub/features/branches/presentation/screens/francise_branches_pages/franchise_branches_page/franchise_branches_page.dart';
+import 'package:franch_hub/features/branches/presentation/screens/francise_branches_pages/my_branches_page/my_branches_page.dart';
+import 'package:franch_hub/features/financial_reports/presantations/screens/branch_indicators_page/branch_indicators_page.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
-import 'package:franch_hub/features/franchise/domain/entities/franchise_branch.dart';
-import 'package:franch_hub/features/franchise/presentation/screens/branch_indicators_page/branch_indicators_page.dart';
-import 'package:franch_hub/features/franchise/presentation/screens/francise_branches_pages/branch_detail_page/branch_detail_page.dart';
-import 'package:franch_hub/features/franchise/presentation/screens/francise_branches_pages/franchise_branches_page/franchise_branches_page.dart';
-import 'package:franch_hub/features/franchise/presentation/screens/francise_branches_pages/franchise_detail/view/franchise_detail_page.dart';
-import 'package:franch_hub/features/franchise/presentation/screens/francise_branches_pages/my_branches_page/my_branches_page.dart';
-import 'package:franch_hub/features/franchise/presentation/screens/francise_branches_pages/my_franchise_page/my_franchise_page.dart';
-import 'package:franch_hub/features/franchise/presentation/screens/transactions_page/transactions_page.dart';
+import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
+import 'package:franch_hub/features/franchise/presentation/screens/franchise_detail/view/franchise_detail_page.dart';
+import 'package:franch_hub/features/franchise/presentation/screens/my_franchise_page/my_franchise_page.dart';
 import 'package:franch_hub/features/home/presentation/view/view.dart';
 import 'package:franch_hub/features/profile/presentation/screens/edit_account/edit_account.dart';
+import 'package:franch_hub/features/transactions/presentation/screen/transactions_page/transactions_page.dart';
 
 class AppRouter {
   static const String home = '/';
