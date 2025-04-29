@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:franch_hub/core/utils/timestamp_converter.dart';
-import 'package:franch_hub/features/financial_reports/domain/entities/finantion_report.dart';
+import 'package:franch_hub/features/financial_reports/domain/entities/financial_report.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'financial_report_model.g.dart';  // Этот файл будет сгенерирован

@@ -3,7 +3,8 @@ import 'package:franch_hub/features/branches/data/repositories/branch_repository
 import 'package:franch_hub/features/branches/domain/repositories/branch_repository.dart';
 import 'package:franch_hub/features/branches/presentation/bloc/branches_bloc/my_branches_bloc.dart';
 import 'package:franch_hub/features/financial_reports/data/data_source/financial_report_remote_data_source.dart';
-import 'package:franch_hub/features/financial_reports/presantations/bloc/financial_report_bloc/financial_report_bloc.dart';
+import 'package:franch_hub/features/financial_reports/domain/use_case/watch_reports_for_branch_use_case.dart';
+import 'package:franch_hub/features/financial_reports/presentation/bloc/financial_report_bloc/financial_report_bloc.dart';
 import 'package:franch_hub/features/franchise/data/data_sources/franchise_remote_data_source.dart';
 import 'package:franch_hub/features/transactions/data/data_source/transaction_remote_data_source.dart';
 import 'package:franch_hub/features/financial_reports/data/repositories/financial_report_repository_impl.dart';
@@ -108,10 +109,7 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton(() => UpdateProfileUseCase(sl()));
   sl.registerLazySingleton(() => UpdatePasswordUseCase(sl()));
 
-  sl.registerLazySingleton(() => SubmitFinancialReportUseCase(
-    repository: sl(),
-    indicatorsService: sl(),
-  ));
+  sl.registerLazySingleton(() => SubmitFinancialReportUseCase());
   sl.registerLazySingleton(() => GetReportsForBranchUseCase(sl()));
   sl.registerLazySingleton(() => GetReportsForFranchiseUseCase(sl()));
   sl.registerLazySingleton(() => GetEconomicIndicatorsForBranchUseCase());
@@ -123,6 +121,8 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton(() => CreateTransactionUseCase());
   sl.registerLazySingleton(() => GetFilteredTransactionsUseCase());
   sl.registerLazySingleton(() => GetTransactionsForBranchUseCase());
+
+  sl.registerLazySingleton(() => WatchReportsForBranchUseCase());
 
   // Other
   sl.registerLazySingleton(() => SettingsRepository());

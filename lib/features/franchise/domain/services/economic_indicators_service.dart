@@ -1,6 +1,6 @@
 import 'package:franch_hub/core/utils/financial_calculator.dart';
 import 'package:franch_hub/features/financial_reports/domain/entities/economic_indicators.dart';
-import 'package:franch_hub/features/financial_reports/domain/entities/finantion_report.dart';
+import 'package:franch_hub/features/financial_reports/domain/entities/financial_report.dart';
 
 class EconomicIndicatorsService {
   EconomicIndicators calculateIndicators(FinancialReport report) {

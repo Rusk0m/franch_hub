@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:franch_hub/features/auth/presentation/screens/view/view.dart';
-import 'package:franch_hub/features/branches/presentation/screens/francise_branches_pages/branch_detail_page/branch_detail_page.dart';
-import 'package:franch_hub/features/branches/presentation/screens/francise_branches_pages/franchise_branches_page/franchise_branches_page.dart';
-import 'package:franch_hub/features/branches/presentation/screens/francise_branches_pages/my_branches_page/my_branches_page.dart';
-import 'package:franch_hub/features/financial_reports/presantations/screens/branch_indicators_page/branch_indicators_page.dart';
+import 'package:franch_hub/features/branches/presentation/screens/franchise_branches_pages/branch_detail_page/branch_detail_page.dart';
+import 'package:franch_hub/features/branches/presentation/screens/franchise_branches_pages/franchise_branches_page/franchise_branches_page.dart';
+import 'package:franch_hub/features/branches/presentation/screens/franchise_branches_pages/my_branches_page/my_branches_page.dart';
+import 'package:franch_hub/features/financial_reports/presentation/screens/branch_indicators_page/branch_indicators_page.dart';
+import 'package:franch_hub/features/financial_reports/presentation/screens/submit_report_page/submit_financial_report_page.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
 import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
 import 'package:franch_hub/features/franchise/presentation/screens/franchise_detail/view/franchise_detail_page.dart';
@@ -23,6 +23,7 @@ class AppRouter {
   static const String franchiseBranchesPage = '/franchise_branches_page';
   static const String branchIndicatorsPage = '/branch_indicators_page';
   static const String branchDetailsPage = '/branch_details_page';
+  static const String submitFinancialReportPage = '/submit_financial_report_page';
   static const String transactionsPage = '/transactions_page';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -38,6 +39,9 @@ class AppRouter {
       case branchDetailsPage:
         final branch = settings.arguments as FranchiseBranch;
         return MaterialPageRoute(builder: (_) => BranchDetailsPage(branch: branch,));
+      case submitFinancialReportPage:
+        final branch = settings.arguments as FranchiseBranch;
+        return MaterialPageRoute(builder: (_) => SubmitFinancialReportPage(branch: branch));
       case transactionsPage:
         final branch = settings.arguments as FranchiseBranch;
         return MaterialPageRoute(builder: (_) => TransactionsPage(branchId: branch.id));
@@ -46,7 +50,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => FranchiseBranchesPage(franchise: franchise));
       case branchIndicatorsPage:
         final branch = settings.arguments as FranchiseBranch;
-        return MaterialPageRoute(builder: (_) => BranchIndicatorsPage(branchId: branch.id,));
+        return MaterialPageRoute(builder: (_) => BranchIndicatorsPage(branch: branch,));
       case profileSettings:
         return MaterialPageRoute(builder: (_)=>  EditAccountPage());
       case auth:

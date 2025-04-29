@@ -19,4 +19,16 @@ class LoadReportsForFranchiseEvent extends FinancialReportEvent {
 
   LoadReportsForFranchiseEvent(this.franchiseId);
 }
+class StartWatchingBranchReportsEvent extends FinancialReportEvent {
+  final String branchId;
+
+  StartWatchingBranchReportsEvent(this.branchId);
+}
+
+class _BranchReportsUpdatedEvent extends FinancialReportEvent {
+  final List<FinancialReport> reports;
+
+  _BranchReportsUpdatedEvent(this.reports);
+}
+
 

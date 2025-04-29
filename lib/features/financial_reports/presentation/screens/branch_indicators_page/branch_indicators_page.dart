@@ -1,18 +1,20 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:franch_hub/config/routes/app_routes.dart';
+import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
 import 'package:franch_hub/features/financial_reports/domain/entities/economic_indicators.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/%20economic_indicators/economic_indicators_bloc.dart';
 
 class BranchIndicatorsPage extends StatelessWidget {
-  final String branchId;
+  final FranchiseBranch branch;
 
-  const BranchIndicatorsPage({super.key, required this.branchId});
+  const BranchIndicatorsPage({super.key, required this.branch});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => EconomicIndicatorsBloc()..add(LoadEconomicIndicatorsEvent(branchId)),
+      create: (_) => EconomicIndicatorsBloc()..add(LoadEconomicIndicatorsEvent(branch.id)),
       child: Scaffold(
         body: BlocBuilder<EconomicIndicatorsBloc, EconomicIndicatorsState>(
           builder: (context, state) {
@@ -70,6 +72,14 @@ class BranchIndicatorsPage extends StatelessWidget {
 
             return const SizedBox.shrink();
           },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, AppRouter.submitFinancialReportPage,
+                arguments: branch);
+          },
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
         ),
       ),
     );

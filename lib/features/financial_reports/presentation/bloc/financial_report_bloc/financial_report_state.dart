@@ -12,6 +12,8 @@ class FinancialReportLoaded extends FinancialReportState {
   FinancialReportLoaded(this.reports);
 }
 
+class FinancialReportSubmitSuccess extends FinancialReportState {}
+
 class FinancialReportSuccess extends FinancialReportState {}
 
 class FinancialReportError extends FinancialReportState {

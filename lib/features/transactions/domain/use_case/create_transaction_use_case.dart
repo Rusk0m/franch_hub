@@ -6,7 +6,6 @@ import 'package:franch_hub/features/transactions/domain/repository/transaction_r
 class CreateTransactionUseCase extends UseCase<void, TransactionEntity> {
   final TransactionRepository repository = sl();
   CreateTransactionUseCase();
-
   @override
   Future<void> call({TransactionEntity? params}) {
     if (params == null) throw ArgumentError('transaction is required');

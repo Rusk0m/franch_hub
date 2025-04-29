@@ -1,5 +1,5 @@
 import 'package:franch_hub/core/usecase/usecase.dart';
-import 'package:franch_hub/features/financial_reports/domain/entities/finantion_report.dart';
+import 'package:franch_hub/features/financial_reports/domain/entities/financial_report.dart';
 import 'package:franch_hub/features/financial_reports/domain/repositories/financial_report_repository.dart';
 
 class GetReportsForBranchUseCase extends UseCase<List<FinancialReport>, String> {

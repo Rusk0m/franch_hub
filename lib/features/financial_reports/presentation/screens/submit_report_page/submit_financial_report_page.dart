@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:franch_hub/features/financial_reports/domain/entities/finantion_report.dart';
-import 'package:franch_hub/features/financial_reports/presantations/bloc/financial_report_bloc/financial_report_bloc.dart';
+import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
+import 'package:franch_hub/features/financial_reports/domain/entities/financial_report.dart';
+import 'package:franch_hub/features/financial_reports/presentation/bloc/financial_report_bloc/financial_report_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 class SubmitFinancialReportPage extends StatefulWidget {
-  final String branchId;
-  final String franchiseId;
+  final FranchiseBranch branch;
 
   const SubmitFinancialReportPage({
     super.key,
-    required this.branchId,
-    required this.franchiseId,
+    required this.branch,
   });
 
   @override
@@ -58,29 +57,35 @@ class _SubmitFinancialReportPageState extends State<SubmitFinancialReportPage> {
 
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
-      final report = FinancialReport(
-        id: const Uuid().v4(),
-        branchId: widget.branchId,
-        franchiseId: widget.franchiseId,
-        year: year,
-        month: month,
-        submittedAt: DateTime.now(),
-        revenue: double.parse(_revenueController.text),
-        netProfit: double.parse(_netProfitController.text),
-        totalAssets: double.parse(_totalAssetsController.text),
-        ownCapital: double.parse(_ownCapitalController.text),
-        liabilities: double.parse(_liabilitiesController.text),
-        inventory: double.parse(_inventoryController.text),
-        initialInvestment: double.parse(_initialInvestmentController.text),
-        fixedCosts: double.parse(_fixedCostsController.text),
-        unitPrice: double.parse(_unitPriceController.text),
-        variableCostsPerUnit: double.parse(_variableCostsController.text),
-        cashInflow: double.parse(_cashInflowController.text),
-        cashOutflow: double.parse(_cashOutflowController.text),
-        royaltyPercent: double.parse(_royaltyController.text),
-      );
+      try {
+        final report = FinancialReport(
+          id: const Uuid().v4(),
+          branchId: widget.branch.id,
+          franchiseId: widget.branch.franchiseId,
+          year: year,
+          month: month,
+          submittedAt: DateTime.now(),
+          revenue: double.parse(_revenueController.text.trim()),
+          netProfit: double.parse(_netProfitController.text.trim()),
+          totalAssets: double.parse(_totalAssetsController.text.trim()),
+          ownCapital: double.parse(_ownCapitalController.text.trim()),
+          liabilities: double.parse(_liabilitiesController.text.trim()),
+          inventory: double.parse(_inventoryController.text.trim()),
+          initialInvestment: double.parse(_initialInvestmentController.text.trim()),
+          fixedCosts: double.parse(_fixedCostsController.text.trim()),
+          unitPrice: double.parse(_unitPriceController.text.trim()),
+          variableCostsPerUnit: double.parse(_variableCostsController.text.trim()),
+          cashInflow: double.parse(_cashInflowController.text.trim()),
+          cashOutflow: double.parse(_cashOutflowController.text.trim()),
+          royaltyPercent: double.parse(_royaltyController.text.trim()),
+        );
 
-      context.read<FinancialReportBloc>().add(SubmitReportEvent(report));
+        context.read<FinancialReportBloc>().add(SubmitReportEvent(report));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Ошибка в данных: $e')),
+        );
+      }
     }
   }
 
@@ -144,9 +149,12 @@ class _SubmitFinancialReportPageState extends State<SubmitFinancialReportPage> {
         decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
         validator: (value) {
           if (value == null || value.isEmpty) return 'Обязательное поле';
-          if (double.tryParse(value) == null) return 'Введите число';
+          final number = double.tryParse(value);
+          if (number == null) return 'Введите корректное число';
+          if (number.isNaN || number.isInfinite) return 'Некорректное число';
           return null;
         },
+
       ),
     );
   }
