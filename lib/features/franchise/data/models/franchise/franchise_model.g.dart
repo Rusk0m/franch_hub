@@ -18,6 +18,7 @@ FranchiseModel _$FranchiseModelFromJson(Map<String, dynamic> json) =>
       royaltyPercent: (json['royaltyPercent'] as num).toDouble(),
       createdAt:
           const TimestampConverter().fromJson(json['createdAt'] as Timestamp),
+      status: json['status'] as String? ?? 'pending',
     );
 
 Map<String, dynamic> _$FranchiseModelToJson(FranchiseModel instance) =>
@@ -31,4 +32,5 @@ Map<String, dynamic> _$FranchiseModelToJson(FranchiseModel instance) =>
       'startupCost': instance.startupCost,
       'royaltyPercent': instance.royaltyPercent,
       'createdAt': const TimestampConverter().toJson(instance.createdAt),
+      'status': instance.status,
     };

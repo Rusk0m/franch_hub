@@ -8,6 +8,7 @@ class Franchise {
   final double startupCost; // начальные инвестиции
   final double royaltyPercent;
   final DateTime createdAt;
+  final String status;
 
   Franchise({
     required this.id,
@@ -19,5 +20,6 @@ class Franchise {
     required this.startupCost,
     required this.royaltyPercent,
     required this.createdAt,
+    this.status = 'pending',
   });
 }

@@ -6,6 +6,15 @@ import 'package:franch_hub/features/financial_reports/data/data_source/financial
 import 'package:franch_hub/features/financial_reports/domain/use_case/watch_reports_for_branch_use_case.dart';
 import 'package:franch_hub/features/financial_reports/presentation/bloc/financial_report_bloc/financial_report_bloc.dart';
 import 'package:franch_hub/features/franchise/data/data_sources/franchise_remote_data_source.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/create_franchise_use_case.dart';
+import 'package:franch_hub/features/franchise/domain/use_case/get_all_franchise_use_case.dart';
+import 'package:franch_hub/features/franchise/presentation/blocs/franchise_bloc/franchise_bloc.dart';
+import 'package:franch_hub/features/moderation/data/data_sources/moderation_remote_data_source.dart';
+import 'package:franch_hub/features/moderation/data/repositories/moderation_repository_impl.dart';
+import 'package:franch_hub/features/moderation/domain/repositories/moderation_repository.dart';
+import 'package:franch_hub/features/moderation/domain/use_cases/get_pending_franchises.dart';
+import 'package:franch_hub/features/moderation/domain/use_cases/moderate_franchise.dart';
+import 'package:franch_hub/features/moderation/presentation/bloc/moderation_bloc.dart';
 import 'package:franch_hub/features/transactions/data/data_source/transaction_remote_data_source.dart';
 import 'package:franch_hub/features/financial_reports/data/repositories/financial_report_repository_impl.dart';
 import 'package:franch_hub/features/franchise/data/repositories/franchise_repository_implement.dart';
@@ -76,6 +85,9 @@ Future<void> setupLocator() async {
           () => BranchRemoteDataSourceImpl());
   sl.registerLazySingleton<TransactionRemoteDataSource>(
           () => TransactionRemoteDataSourceImpl());
+  sl.registerLazySingleton<ModerationRemoteDataSource>(
+        () => ModerationRemoteDataSourceImpl(firestore: sl()),
+  );
 
 
   // Repositories
@@ -100,7 +112,9 @@ Future<void> setupLocator() async {
 
   sl.registerLazySingleton<BranchRepository>(
           () => BranchRepositoryImpl());
-
+  sl.registerLazySingleton<ModerationRepository>(
+        () => ModerationRepositoryImpl(sl()),
+  );
 
   // Services
   sl.registerLazySingleton(() => EconomicIndicatorsService());
@@ -123,6 +137,10 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton(() => GetTransactionsForBranchUseCase());
 
   sl.registerLazySingleton(() => WatchReportsForBranchUseCase());
+  sl.registerLazySingleton(() => CreateFranchiseUseCase());
+  sl.registerLazySingleton(() => GetAllFranchisesUseCase());
+  sl.registerLazySingleton(() => GetPendingFranchisesUseCase(sl()));
+  sl.registerLazySingleton(() => ModerateFranchiseUseCase(sl()));
 
   // Other
   sl.registerLazySingleton(() => SettingsRepository());
@@ -131,11 +149,15 @@ Future<void> setupLocator() async {
   sl.registerFactory(
         () => FinancialReportBloc(),
   );
-
+  sl.registerFactory(
+        () => FranchiseBloc(),
+  );
   sl.registerFactory(() => EconomicIndicatorsBloc());
 
   sl.registerFactory(() => TransactionBloc());
 
   sl.registerFactory(() => BranchesBloc());
+
+  sl.registerFactory(() => ModerationBloc());
 
 }

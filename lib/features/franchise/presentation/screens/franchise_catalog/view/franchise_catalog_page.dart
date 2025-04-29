@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/config/theme/theme.dart';
+import 'package:franch_hub/di/service_locator.dart';
+import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
+import 'package:franch_hub/features/franchise/presentation/blocs/franchise_bloc/franchise_bloc.dart';
 import 'package:franch_hub/features/franchise/presentation/screens/franchise_catalog/widgets/category_carousel.dart';
 import 'package:franch_hub/features/franchise/presentation/screens/franchise_catalog/widgets/franchise_card.dart';
 
@@ -9,98 +13,123 @@ class FranchiseCatalogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Center(
-            child: Text(
-          'Franch Hub',
-          style: FlutterTextTheme.headlineMedium(context),
-        )),
-        SizedBox(
-          height: 20,
-        ),
-        SearchBar(
-          leading: Icon(Icons.search),
-          padding: MaterialStateProperty.all(
-              EdgeInsets.symmetric(vertical: 2.0, horizontal: 15)),
-          hintText: 'Search',
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
-          child: Stack(children: [
-            Image.network(
-              'https://imgs.search.brave.com/3HiHUNx5IdAHvGMgsSf5y5ti1ukAbCuvBJdLO2az3CI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3ZpdGUvYXNz/ZXRzL3Bob3RvLUM4/cTBLUUhHLndlYnA',
-              height: 250,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
-                height: 250,
-                color: Colors.grey[200],
-                child: const Icon(Icons.broken_image),
+    return BlocProvider(
+      create: (_) => sl<FranchiseBloc>()..add(LoadAllFranchises()),
+      child: BlocBuilder<FranchiseBloc, FranchiseState>(
+        builder: (context, state) {
+          return ListView(
+            children: [
+              Center(
+                child: Text(
+                  'Franch Hub',
+                  style: FlutterTextTheme.headlineMedium(context),
+                ),
               ),
-            ),
-            Container(
-              color: Colors.black.withOpacity(0.3),
-              width: double.infinity,
-              height: 250,
-            ),
-            Positioned(
-              left: 20,
-              bottom: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Find Your Perfect Franchise',
-                    style: FlutterTextTheme.custom(context: context,color: Colors.white,fontSize: 24,fontWeight: FontWeight.w400),
+              const SizedBox(height: 20),
+              SearchBar(
+                leading: const Icon(Icons.search),
+                padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(vertical: 2.0, horizontal: 15),
+                ),
+                hintText: 'Search',
+              ),
+              const SizedBox(height: 20),
+              ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                child: Stack(
+                  children: [
+                    Image.network(
+                      'https://imgs.search.brave.com/3HiHUNx5IdAHvGMgsSf5y5ti1ukAbCuvBJdLO2az3CI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3ZpdGUvYXNz/ZXRzL3Bob3RvLUM4/cTBLUUhHLndlYnA',
+                      height: 250,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        height: 250,
+                        color: Colors.grey[200],
+                        child: const Icon(Icons.broken_image),
+                      ),
+                    ),
+                    Container(
+                      color: Colors.black.withOpacity(0.3),
+                      width: double.infinity,
+                      height: 250,
+                    ),
+                    const Positioned(
+                      left: 20,
+                      bottom: 10,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Find Your Perfect Franchise',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            'Explore top opportunities',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Explore Our Franchise',
+                style: FlutterTextTheme.titleLarge(context),
+              ),
+              const SizedBox(height: 20),
+              CategoryCarousel(),
+              const SizedBox(height: 20),
+              if (state is FranchiseLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (state is FranchiseLoaded)
+                GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisExtent: 355,
                   ),
-                  Text('Xnjndkfksadgfks',style: FlutterTextTheme.custom(context: context,color: Colors.white,fontSize: 14,fontWeight: FontWeight.w400),),
-                ],
-              ),
-            )
-          ]),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          'Explore Our Franchise',
-          style: FlutterTextTheme.titleLarge(context),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        CategoryCarousel(),
-        SizedBox(
-          height: 20,
-        ),
-        GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, mainAxisExtent: 355),
-            itemCount: 5,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return FranchiseCard(
-                title: "Coffee Master",
-                imageUrl:
-                    "https://imgs.search.brave.com/3HiHUNx5IdAHvGMgsSf5y5ti1ukAbCuvBJdLO2az3CI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3ZpdGUvYXNz/ZXRzL3Bob3RvLUM4/cTBLUUhHLndlYnA",
-                minInvestment: 50000,
-                paybackPeriod: "12-18 мес",
-                roi: 25,
-                description:
-                    "Сеть кофеен премиум-класса с уникальной системой обучения "
-                    "бариста и эксклюзивными сортами кофе.",
-              );
-            }),
-        SizedBox(
-          height: 20,
-        ),
-
-      ],
+                  itemCount: state.franchises.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final franchise = state.franchises[index];
+                    return FranchiseCard(
+                      title: franchise.name,
+                      imageUrl:
+                      'https://imgs.search.brave.com/3HiHUNx5IdAHvGMgsSf5y5ti1ukAbCuvBJdLO2az3CI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3ZpdGUvYXNz/ZXRzL3Bob3RvLUM4/cTBLUUhHLndlYnA',
+                      minInvestment: franchise.startupCost,
+                      paybackPeriod: '12-18 мес', // Можно добавить в модель
+                      roi: 25, // Можно рассчитывать через EconomicIndicators
+                      description: franchise.description,
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRouter.franchiseDetailPage,
+                          arguments: franchise,
+                        );
+                      },
+                    );
+                  },
+                )
+              else if (state is MyFranchisesError)
+                  Center(child: Text('Error: ${state.message}'))
+                else
+                  const Center(child: Text('No franchises available')),
+              const SizedBox(height: 20),
+            ],
+          );
+        },
+      ),
     );
   }
 }

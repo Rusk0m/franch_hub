@@ -17,6 +17,7 @@ class FranchiseModel {
   final double royaltyPercent;
   @TimestampConverter()
   final DateTime createdAt;
+  final String status; // Новое поле
 
   FranchiseModel({
     required this.id,
@@ -28,12 +29,13 @@ class FranchiseModel {
     required this.startupCost,
     required this.royaltyPercent,
     required this.createdAt,
+    this.status = 'pending', // По умолчанию pending
   });
 
-  factory FranchiseModel.fromJson(Map<String, dynamic> json) => _$FranchiseModelFromJson(json);
+  factory FranchiseModel.fromJson(Map<String, dynamic> json) =>
+      _$FranchiseModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$FranchiseModelToJson(this);
-
 
   Franchise toEntity() => Franchise(
     id: id,
@@ -45,6 +47,7 @@ class FranchiseModel {
     startupCost: startupCost,
     royaltyPercent: royaltyPercent,
     createdAt: createdAt,
+    status: status,
   );
 
   factory FranchiseModel.fromEntity(Franchise entity) => FranchiseModel(
@@ -57,5 +60,6 @@ class FranchiseModel {
     startupCost: entity.startupCost,
     royaltyPercent: entity.royaltyPercent,
     createdAt: entity.createdAt,
+    status: entity.status,
   );
 }

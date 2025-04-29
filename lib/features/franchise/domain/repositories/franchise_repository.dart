@@ -3,4 +3,6 @@ import '../entities/franchise.dart';
 
 abstract class FranchiseRepository {
   Future<List<Franchise>> getMyFranchises(String ownerId); // франчайзер
+  Future<void> createFranchise(Franchise franchise);
+  Future<List<Franchise>> getAllFranchises();
 }
