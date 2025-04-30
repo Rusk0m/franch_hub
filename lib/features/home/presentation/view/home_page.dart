@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:franch_hub/features/chat/presentation/screens/user_list_page.dart';
 import 'package:franch_hub/features/franchise/presentation/screens/franchise_catalog/view/franchise_catalog_page.dart';
 import 'package:franch_hub/features/home/presentation/cubit/home_cubit.dart';
 import 'package:franch_hub/features/profile/presentation/screens/profile/view/profile_page.dart';
@@ -34,7 +35,7 @@ class HomeView extends StatelessWidget {
               index: selectedTab.index,
               children: [
                 FranchiseCatalogPage(),
-                //ComparisonFranchisePage(),
+                UsersListPage(),
                 ProfilePage()
               ],
             ),
@@ -59,10 +60,10 @@ class HomeView extends StatelessWidget {
               icon: Icon(Icons.home),
               label: 'Catalog',
             ),
-            /*BottomNavigationBarItem(
-              icon: Icon(Icons.align_vertical_bottom_outlined),
-              label: 'Comparison',
-            ),*/
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'Chat',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profile',

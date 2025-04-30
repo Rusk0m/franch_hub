@@ -2,6 +2,10 @@ import 'package:franch_hub/features/branches/data/data_soureces/branch_remote_da
 import 'package:franch_hub/features/branches/data/repositories/branch_repository_implement.dart';
 import 'package:franch_hub/features/branches/domain/repositories/branch_repository.dart';
 import 'package:franch_hub/features/branches/presentation/bloc/branches_bloc/my_branches_bloc.dart';
+import 'package:franch_hub/features/chat/data/data_source/chat_remote_data_source.dart';
+import 'package:franch_hub/features/chat/data/repositories/chat_repository_impl.dart';
+import 'package:franch_hub/features/chat/domain/repositories/chat_repository.dart';
+import 'package:franch_hub/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:franch_hub/features/financial_reports/data/data_source/financial_report_remote_data_source.dart';
 import 'package:franch_hub/features/financial_reports/domain/use_case/watch_reports_for_branch_use_case.dart';
 import 'package:franch_hub/features/financial_reports/presentation/bloc/financial_report_bloc/financial_report_bloc.dart';
@@ -88,6 +92,9 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton<ModerationRemoteDataSource>(
         () => ModerationRemoteDataSourceImpl(firestore: sl()),
   );
+  sl.registerLazySingleton<ChatRemoteDataSource>(
+        () => ChatRemoteDataSourceImpl(firestore: sl()),
+  );
 
 
   // Repositories
@@ -114,6 +121,9 @@ Future<void> setupLocator() async {
           () => BranchRepositoryImpl());
   sl.registerLazySingleton<ModerationRepository>(
         () => ModerationRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<ChatRepository>(
+        () => ChatRepositoryImpl(),
   );
 
   // Services
@@ -159,5 +169,8 @@ Future<void> setupLocator() async {
   sl.registerFactory(() => BranchesBloc());
 
   sl.registerFactory(() => ModerationBloc());
+
+  sl.registerFactory(() => ChatBloc());
+
 
 }
