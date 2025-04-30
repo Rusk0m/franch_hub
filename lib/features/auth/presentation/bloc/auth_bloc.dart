@@ -6,6 +6,7 @@ import 'package:franch_hub/features/auth/domain/repository/authentication_reposi
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -21,26 +22,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<CheckAuthStatus>(_onCheckAuthStatus);
     on<ToggleAuthMode>(_onToggleAuthMode);
     on<UpdateUser>((event, emit) {
+      print('AuthBloc: UpdateUser with UID: ${event.user.uid}');
       emit(Authenticated(user: event.user));
     });
-
   }
 
   Future<void> _onSignUpRequested(
       SignUpRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
+      print('AuthBloc: SignUpRequested for ${event.email}');
       await _authRepository.signUp(
         name: event.name,
         email: event.email,
         password: event.password,
       );
-      emit(Authenticated(user: await _authRepository.user.first));
+      final user = await _authRepository.user.first;
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_id', user.uid);
+      print('AuthBloc: SignUp successful, UID: ${user.uid}');
+      emit(Authenticated(user: user));
     } on SignUpWithEmailAndPasswordFailure catch (e) {
-      emit(AuthError(message: e.toString()));
-    }
-    catch(e){
+      print('AuthBloc: SignUp error: ${e.message}');
+      emit(AuthError(message: e.message));
+      emit(Unauthenticated());
+    } catch (e) {
+      print('AuthBloc: SignUp unknown error: $e');
       emit(AuthError(message: 'Unknown error occurred'));
+      emit(Unauthenticated());
     }
   }
 
@@ -48,24 +57,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       LoginRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
+      print('AuthBloc: LoginRequested for ${event.email}');
       await _authRepository.logInWithEmailAndPassword(
         email: event.email,
         password: event.password,
       );
-      // Получаем первого пользователя, если он существует
       final user = await _authRepository.user.first;
-
-      print(user.name);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('user_id', user.uid);
-      // Если пользователь найден, эмитим Authenticated
+      print('AuthBloc: Login successful, UID: ${user.uid}');
       emit(Authenticated(user: user));
-
-    } on SignUpWithEmailAndPasswordFailure catch (e) {
-      emit(AuthError(message: e.toString()));
-      emit(Unauthenticated());
-    }
-    catch(e){
+    } catch (e) {
+      print('AuthBloc: Login error: $e');
       emit(AuthError(message: 'Unknown error occurred'));
       emit(Unauthenticated());
     }
@@ -75,51 +78,70 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       GoogleLoginRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
+      print('AuthBloc: GoogleLoginRequested');
       await _authRepository.logInWithGoogle();
-      emit(Authenticated(user: await _authRepository.user.first));
+      final user = await _authRepository.user.first;
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_id', user.uid);
+      print('AuthBloc: Google login successful, UID: ${user.uid}');
+      emit(Authenticated(user: user));
+    } on LogInWithGoogleFailure catch (e) {
+      print('AuthBloc: Google login error: ${e.message}');
+      emit(AuthError(message: e.message));
+      emit(Unauthenticated());
     } catch (e) {
-      emit(AuthError(message: e.toString()));
+      print('AuthBloc: Google login unknown error: $e');
+      emit(AuthError(message: 'Unknown error occurred'));
+      emit(Unauthenticated());
     }
   }
-
 
   Future<void> _onCheckAuthStatus(
       CheckAuthStatus event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
-
     try {
+      print('AuthBloc: CheckAuthStatus');
       final firebaseUser = _authRepository.currentUser;
-
       if (firebaseUser != null) {
         final user = await _authRepository.getUser(firebaseUser.uid);
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_id', user.uid);
+        print('AuthBloc: CheckAuthStatus - User found, UID: ${user.uid}');
         emit(Authenticated(user: user));
       } else {
+        print('AuthBloc: CheckAuthStatus - No user');
         emit(Unauthenticated());
       }
     } catch (e) {
-      emit(AuthError(message: 'Ошибка проверки авторизации'));
+      print('AuthBloc: CheckAuthStatus error: $e');
+      emit(AuthError(message: 'Ошибка проверки авторизации: $e'));
       emit(Unauthenticated());
     }
   }
 
   Future<void> _onToggleAuthMode(
-      ToggleAuthMode event, Emitter<AuthState>emit) async {
-    // Переключаем между Unauthenticated и AuthRegistering
+      ToggleAuthMode event, Emitter<AuthState> emit) async {
+    print('AuthBloc: ToggleAuthMode');
     if (state is AuthRegistering) {
       emit(Unauthenticated());
     } else {
-      emit(AuthRegistering()); // <--- Используем новое состояние
+      emit(AuthRegistering());
     }
-    print('Current state: ${state.runtimeType}');
   }
+
   Future<void> _onLogoutRequested(
       LogoutRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
+      print('AuthBloc: LogoutRequested');
       await _authRepository.logOut();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('user_id');
+      print('AuthBloc: Logout successful');
       emit(Unauthenticated());
     } catch (e) {
-      emit(AuthError(message: 'Ошибка выхода'));
+      print('AuthBloc: Logout error: $e');
+      emit(AuthError(message: 'Ошибка выхода: $e'));
       emit(Unauthenticated());
     }
   }

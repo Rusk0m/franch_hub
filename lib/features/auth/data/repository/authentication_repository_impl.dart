@@ -1,12 +1,11 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:franch_hub/features/auth/domain/repository/authentication_repository.dart';
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
+  final String message;
+
   const SignUpWithEmailAndPasswordFailure([
     this.message = 'An unknown exception occurred.',
   ]);
@@ -17,17 +16,13 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
         return const SignUpWithEmailAndPasswordFailure(
           'Email is not valid or badly formatted.',
         );
-      case 'user-disabled':
-        return const SignUpWithEmailAndPasswordFailure(
-          'This user has been disabled. Please contact support for help.',
-        );
       case 'email-already-in-use':
         return const SignUpWithEmailAndPasswordFailure(
           'An account already exists for that email.',
         );
       case 'operation-not-allowed':
         return const SignUpWithEmailAndPasswordFailure(
-          'Operation is not allowed.  Please contact support.',
+          'Operation is not allowed. Please contact support.',
         );
       case 'weak-password':
         return const SignUpWithEmailAndPasswordFailure(
@@ -37,11 +32,11 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
         return const SignUpWithEmailAndPasswordFailure();
     }
   }
-
-  final String message;
 }
 
 class LogInWithEmailAndPasswordFailure implements Exception {
+  final String message;
+
   const LogInWithEmailAndPasswordFailure([
     this.message = 'An unknown exception occurred.',
   ]);
@@ -68,11 +63,11 @@ class LogInWithEmailAndPasswordFailure implements Exception {
         return const LogInWithEmailAndPasswordFailure();
     }
   }
-
-  final String message;
 }
 
 class LogInWithGoogleFailure implements Exception {
+  final String message;
+
   const LogInWithGoogleFailure([
     this.message = 'An unknown exception occurred.',
   ]);
@@ -89,7 +84,7 @@ class LogInWithGoogleFailure implements Exception {
         );
       case 'operation-not-allowed':
         return const LogInWithGoogleFailure(
-          'Operation is not allowed.  Please contact support.',
+          'Operation is not allowed. Please contact support.',
         );
       case 'user-disabled':
         return const LogInWithGoogleFailure(
@@ -115,46 +110,73 @@ class LogInWithGoogleFailure implements Exception {
         return const LogInWithGoogleFailure();
     }
   }
-
-  final String message;
 }
 
 class LogOutFailure implements Exception {}
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final AuthRemoteDataSource remoteDataSource;
-  final FirebaseAuth _firebaseAuth; // Добавьте это поле
+  final firebase_auth.FirebaseAuth _firebaseAuth;
 
   AuthenticationRepositoryImpl({
     required this.remoteDataSource,
-    required FirebaseAuth firebaseAuth, // Добавьте параметр
+    required firebase_auth.FirebaseAuth firebaseAuth,
   }) : _firebaseAuth = firebaseAuth;
 
   @override
-  Future<void> signUp(
-      {required String name,
-      required String email,
-      required String password}) async {
-    final firebaseUser = await remoteDataSource.signUp(name, email, password);
-    if (firebaseUser == null) throw Exception("Ошибка при регистрации");
+  Future<void> signUp({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final firebaseUser = await remoteDataSource.signUp(name, email, password);
+      if (firebaseUser == null) {
+        throw const SignUpWithEmailAndPasswordFailure('Sign up failed');
+      }
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
+    } catch (e) {
+      throw const SignUpWithEmailAndPasswordFailure();
+    }
   }
 
   @override
-  Future<void> logInWithEmailAndPassword(
-      {required String email, required String password}) async {
-    final firebaseUser =
-        await remoteDataSource.logInWithEmailAndPassword(email, password);
-    if (firebaseUser == null) throw Exception("Ошибка входа");
+  Future<void> logInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final firebaseUser =
+      await remoteDataSource.logInWithEmailAndPassword(email, password);
+      if (firebaseUser == null) {
+        throw const LogInWithEmailAndPasswordFailure('Login failed');
+      }
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw LogInWithEmailAndPasswordFailure.fromCode(e.code);
+    } catch (e) {
+      throw const LogInWithEmailAndPasswordFailure();
+    }
   }
 
   @override
   Future<void> logInWithGoogle() async {
-    await remoteDataSource.logInWithGoogle();
+    try {
+      await remoteDataSource.logInWithGoogle();
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw LogInWithGoogleFailure.fromCode(e.code);
+    } catch (e) {
+      throw const LogInWithGoogleFailure();
+    }
   }
 
   @override
   Future<void> logOut() async {
-    await remoteDataSource.logOut();
+    try {
+      await remoteDataSource.logOut();
+    } catch (e) {
+      throw LogOutFailure();
+    }
   }
 
   @override
@@ -164,23 +186,26 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<UserEntity> getUser(String uid) async {
-    final userModel = await remoteDataSource.getUser(uid);
-    return userModel.toEntity();
+    try {
+      final userModel = await remoteDataSource.getUser(uid);
+      return userModel.toEntity();
+    } catch (e) {
+      throw Exception('Failed to fetch user: $e');
+    }
   }
 
   @override
   UserEntity? get currentUser => _firebaseAuth.currentUser?.toEntity();
-
 }
 
 extension FirebaseUserX on firebase_auth.User {
   UserEntity toEntity() => UserEntity(
-        uid: uid,
-        email: email ?? '',
-        name: displayName ?? '',
-        avatarUrl: photoURL,
-        role: 'user',
-        createdAt: DateTime.now(),
-        phone: null,
-      );
+    uid: uid,
+    email: email ?? '',
+    name: displayName,
+    avatarUrl: photoURL,
+    role: 'user',
+    createdAt: DateTime.now(),
+    phone: phoneNumber,
+  );
 }

@@ -28,19 +28,21 @@ class UserModel {
     required this.createdAt,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
+
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>?;
     return UserModel(
-      uid: data['uid'] ?? doc.id,
-      email: data['email'] ?? '',
-      role: data['role'] ?? 'user',
-      name: data['name'],
-      phone: data['phone'],
-      avatarUrl: data['avatarUrl'],
-      createdAt: _dateTimeFromTimestamp(data['createdAt']),
+      uid: data?['uid'] ?? doc.id,
+      email: data?['email'] ?? '',
+      role: data?['role'] ?? 'user',
+      name: data?['name'],
+      phone: data?['phone'],
+      avatarUrl: data?['avatarUrl'],
+      createdAt: _dateTimeFromTimestamp(data?['createdAt']),
     );
   }
 
@@ -76,9 +78,9 @@ class UserModel {
   static final empty = UserModel(
     uid: '',
     email: '',
-    name: '',
+    role: 'user',
+    name: null,
     avatarUrl: null,
-    role: 'guest',
     createdAt: DateTime(1970),
     phone: null,
   );

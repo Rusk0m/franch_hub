@@ -12,7 +12,7 @@ class ModerationInitial extends ModerationState {}
 class ModerationLoading extends ModerationState {}
 
 class ModerationLoaded extends ModerationState {
-  final List<Franchise> franchises;
+  final Map<Franchise, UserEntity> franchises;
 
   const ModerationLoaded({required this.franchises});
 
