@@ -1,4 +1,4 @@
-import 'package:franch_hub/core/usecase/usecase.dart';
+import 'package:franch_hub/core/usecases/usecase.dart';
 import 'package:franch_hub/features/financial_reports/domain/entities/economic_indicators.dart';
 import 'package:franch_hub/features/financial_reports/domain/repositories/financial_report_repository.dart';
 import 'package:franch_hub/features/franchise/domain/services/economic_indicators_service.dart';

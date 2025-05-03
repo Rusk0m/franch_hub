@@ -12,6 +12,7 @@ class MessageModel {
   final String content;
   @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
   final DateTime sentAt;
+  final bool isSystemMessage;
 
   MessageModel({
     required this.id,
@@ -19,6 +20,7 @@ class MessageModel {
     required this.receiverId,
     required this.content,
     required this.sentAt,
+    this.isSystemMessage = false,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) =>
@@ -34,6 +36,7 @@ class MessageModel {
       receiverId: data?['receiverId'] ?? '',
       content: data?['content'] ?? '',
       sentAt: _dateTimeFromTimestamp(data?['sentAt']),
+      isSystemMessage: data?['isSystemMessage'] ?? false,
     );
   }
 
@@ -52,6 +55,7 @@ class MessageModel {
     receiverId: receiverId,
     content: content,
     sentAt: sentAt,
+    isSystemMessage: isSystemMessage,
   );
 
   factory MessageModel.fromEntity(Message entity) => MessageModel(
@@ -60,5 +64,6 @@ class MessageModel {
     receiverId: entity.receiverId,
     content: entity.content,
     sentAt: entity.sentAt,
+    isSystemMessage: entity.isSystemMessage,
   );
 }

@@ -4,6 +4,7 @@ class Message {
   final String receiverId;
   final String content;
   final DateTime sentAt;
+  final bool isSystemMessage;
 
   Message({
     required this.id,
@@ -11,5 +12,6 @@ class Message {
     required this.receiverId,
     required this.content,
     required this.sentAt,
+    this.isSystemMessage = false,
   });
 }

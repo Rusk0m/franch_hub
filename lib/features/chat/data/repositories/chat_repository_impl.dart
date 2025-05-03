@@ -3,7 +3,6 @@ import 'package:franch_hub/features/chat/data/data_source/chat_remote_data_sourc
 import 'package:franch_hub/features/chat/data/models/message_model.dart';
 import 'package:franch_hub/features/chat/domain/entities/message.dart';
 import 'package:franch_hub/features/chat/domain/repositories/chat_repository.dart';
-
 class ChatRepositoryImpl implements ChatRepository {
   final ChatRemoteDataSource remoteDataSource = sl();
 

@@ -5,49 +5,61 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'franchise_branch_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class FranchiseBranchModel {
   final String id;
-  final String name;
   final String franchiseId;
   final String ownerId;
+  final String name;
   final String location;
   final double royaltyPercent;
+  final String workingHours;
+  final String phone;
   @TimestampConverter()
   final DateTime createdAt;
 
   FranchiseBranchModel({
     required this.id,
-    required this.name,
     required this.franchiseId,
     required this.ownerId,
+    required this.name,
     required this.location,
     required this.royaltyPercent,
+    required this.workingHours,
+    required this.phone,
     required this.createdAt,
   });
 
   factory FranchiseBranchModel.fromJson(Map<String, dynamic> json) =>
-      _$FranchiseBranchModelFromJson(json);
+      _$FranchiseBranchModelFromJson({
+        ...json,
+        'workingHours': json['workingHours'] ?? '',
+        'phone': json['phone'] ?? '',
+      });
 
   Map<String, dynamic> toJson() => _$FranchiseBranchModelToJson(this);
 
   FranchiseBranch toEntity() => FranchiseBranch(
     id: id,
-    name: name,
     franchiseId: franchiseId,
     ownerId: ownerId,
+    name: name,
     location: location,
     royaltyPercent: royaltyPercent,
+    workingHours: workingHours,
+    phone: phone,
     createdAt: createdAt,
   );
 
   factory FranchiseBranchModel.fromEntity(FranchiseBranch entity) => FranchiseBranchModel(
     id: entity.id,
-    name: entity.name,
     franchiseId: entity.franchiseId,
     ownerId: entity.ownerId,
+    name: entity.name,
     location: entity.location,
     royaltyPercent: entity.royaltyPercent,
+    workingHours: entity.workingHours,
+    phone: entity.phone,
     createdAt: entity.createdAt,
   );
 }

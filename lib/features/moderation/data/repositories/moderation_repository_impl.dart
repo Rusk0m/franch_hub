@@ -9,8 +9,7 @@ class ModerationRepositoryImpl implements ModerationRepository {
 
   @override
   Future<List<Franchise>> getPendingFranchises() async {
-    final models = await remoteDataSource.getPendingFranchises();
-    return models.map((model) => model.toEntity()).toList();
+    return await remoteDataSource.getPendingFranchises();
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:franch_hub/core/usecase/usecase.dart';
+import 'package:franch_hub/core/usecases/usecase.dart';
 import 'package:franch_hub/features/profile/domain/repositories/profile_repository.dart';
 
 class UpdatePasswordUseCase implements UseCase<void, UpdatePasswordParams> {

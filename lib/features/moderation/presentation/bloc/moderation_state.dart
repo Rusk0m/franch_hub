@@ -11,14 +11,25 @@ class ModerationInitial extends ModerationState {}
 
 class ModerationLoading extends ModerationState {}
 
-class ModerationLoaded extends ModerationState {
+class ModerationFranchiseLoaded extends ModerationState {
   final Map<Franchise, UserEntity> franchises;
 
-  const ModerationLoaded({required this.franchises});
+  const ModerationFranchiseLoaded({required this.franchises});
 
   @override
   List<Object?> get props => [franchises];
 }
+
+class ModerateBranchLoaded extends ModerationState {
+  final List<PendingFranchiseBranch> pendingBranches;
+
+  const ModerateBranchLoaded({required this.pendingBranches});
+
+  @override
+  List<Object?> get props => [pendingBranches];
+}
+
+class ModerateBranchSuccess extends ModerationState {}
 
 class ModerationError extends ModerationState {
   final String message;

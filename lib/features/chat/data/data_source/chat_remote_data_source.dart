@@ -7,15 +7,14 @@ abstract class ChatRemoteDataSource {
 }
 
 class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
-  final FirebaseFirestore _firestore;
+  final FirebaseFirestore firestore;
 
-  ChatRemoteDataSourceImpl({required FirebaseFirestore firestore})
-      : _firestore = firestore;
+  ChatRemoteDataSourceImpl({required this.firestore});
 
   @override
   Future<void> sendMessage(MessageModel message, String chatId) async {
     try {
-      await _firestore
+      await firestore
           .collection('chats')
           .doc(chatId)
           .collection('messages')
@@ -28,7 +27,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
 
   @override
   Stream<List<MessageModel>> getMessages(String chatId) {
-    return _firestore
+    return firestore
         .collection('chats')
         .doc(chatId)
         .collection('messages')

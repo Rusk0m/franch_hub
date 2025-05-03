@@ -1,10 +1,18 @@
 import 'package:franch_hub/features/branches/data/data_soureces/branch_remote_data_source.dart';
 import 'package:franch_hub/features/branches/data/repositories/branch_repository_implement.dart';
 import 'package:franch_hub/features/branches/domain/repositories/branch_repository.dart';
-import 'package:franch_hub/features/branches/presentation/bloc/branches_bloc/my_branches_bloc.dart';
+import 'package:franch_hub/features/branches/domain/use_case/add_branch_use_case.dart';
+import 'package:franch_hub/features/branches/domain/use_case/create_pending_branch_use_case.dart';
+import 'package:franch_hub/features/branches/domain/use_case/delete_branch_use_case.dart';
+import 'package:franch_hub/features/branches/domain/use_case/edit_branch_use_case.dart';
+import 'package:franch_hub/features/branches/domain/use_case/get_pending_branches_use_case.dart';
+import 'package:franch_hub/features/branches/domain/use_case/moderate_branch_use_case.dart';
+import 'package:franch_hub/features/branches/presentation/bloc/branches_bloc/branch_bloc.dart';
 import 'package:franch_hub/features/chat/data/data_source/chat_remote_data_source.dart';
 import 'package:franch_hub/features/chat/data/repositories/chat_repository_impl.dart';
 import 'package:franch_hub/features/chat/domain/repositories/chat_repository.dart';
+import 'package:franch_hub/features/chat/domain/use_case/get_message_use_case.dart';
+import 'package:franch_hub/features/chat/domain/use_case/send_message_use_case.dart';
 import 'package:franch_hub/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:franch_hub/features/financial_reports/data/data_source/financial_report_remote_data_source.dart';
 import 'package:franch_hub/features/financial_reports/domain/use_case/watch_reports_for_branch_use_case.dart';
@@ -150,7 +158,15 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton(() => CreateFranchiseUseCase());
   sl.registerLazySingleton(() => GetAllFranchisesUseCase());
   sl.registerLazySingleton(() => GetPendingFranchisesUseCase(sl()));
-  sl.registerLazySingleton(() => ModerateFranchiseUseCase(sl()));
+  sl.registerLazySingleton(() => ModerateFranchiseUseCase());
+  sl.registerLazySingleton(() => CreatePendingBranchUseCase(sl()));
+  sl.registerLazySingleton(() => GetPendingBranchesUseCase());
+  sl.registerLazySingleton(() => ModerateBranchUseCase(sl()));
+  sl.registerLazySingleton(() => SendMessageUseCase(sl()));
+  sl.registerLazySingleton(() => GetMessagesUseCase());
+  sl.registerLazySingleton(() => AddBranchUseCase());
+  sl.registerLazySingleton(() => EditBranchUseCase());
+  sl.registerLazySingleton(() => DeleteBranchUseCase());
 
   // Other
   sl.registerLazySingleton(() => SettingsRepository());
@@ -166,7 +182,7 @@ Future<void> setupLocator() async {
 
   sl.registerFactory(() => TransactionBloc());
 
-  sl.registerFactory(() => BranchesBloc());
+  sl.registerFactory(() => BranchBloc());
 
   sl.registerFactory(() => ModerationBloc());
 
