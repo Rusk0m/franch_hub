@@ -16,19 +16,6 @@ class LoadModerationData extends ModerationEvent {
   List<Object?> get props => [userId];
 }
 
-class ModerateFranchiseEvent extends ModerationEvent {
-  final String franchiseId;
-  final String status;
-
-  const ModerateFranchiseEvent({
-    required this.franchiseId,
-    required this.status,
-  });
-
-  @override
-  List<Object?> get props => [franchiseId, status];
-}
-
 class ModerateBranch extends ModerationEvent {
   final String pendingBranchId;
   final String status;
@@ -67,4 +54,17 @@ class ModerateBranch extends ModerationEvent {
     phone,
     requesterId,
   ];
+}
+
+class ModerateFranchiseEvent extends ModerationEvent {
+  final String franchiseId;
+  final String status;
+
+  const ModerateFranchiseEvent({
+    required this.franchiseId,
+    required this.status,
+  });
+
+  @override
+  List<Object?> get props => [franchiseId, status];
 }

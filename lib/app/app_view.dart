@@ -26,7 +26,7 @@ class AppView extends StatelessWidget {
               if (state is Authenticated) {
                 print('AppView: User authenticated, Role: ${state.user.role}');
                 if (state.user.role == 'admin') {
-                  return ModerationPage(currentUser: state.user);
+                  return ModerationPage();
                 }
                 return HomePage();
               } else if (state is Unauthenticated ||

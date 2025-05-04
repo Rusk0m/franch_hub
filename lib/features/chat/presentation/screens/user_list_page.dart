@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/features/auth/data/models/user_model.dart';
 import 'package:franch_hub/features/auth/presentation/bloc/auth_bloc.dart';
@@ -42,16 +43,12 @@ class UsersListPage extends StatelessWidget {
               return ListTile(
                 title: Text(user.name ?? user.email),
                 subtitle: Text(user.email),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ChatPage(
-                        currentUser: currentUser,
-                        otherUser: user,
-                      ),
-                    ),
-                  );
+                onTap: () {Navigator.pushNamed(
+                  context,
+                  AppRouter.chatPage,
+                  arguments: {'currentUser': currentUser,
+                    'otherUser': user,},
+                );
                 },
               );
             },

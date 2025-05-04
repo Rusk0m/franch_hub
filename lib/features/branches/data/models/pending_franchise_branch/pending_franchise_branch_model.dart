@@ -56,7 +56,9 @@ class PendingFranchiseBranchModel {
       phone: data?['phone'] ?? '',
       status: data?['status'] ?? 'pending',
       createdAt: TimestampConverter().fromJson(data?['createdAt']) ?? DateTime.now(),
-      moderatedAt: TimestampConverter().fromJson(data?['moderatedAt']),
+      moderatedAt: data?['moderatedAt'] != null
+          ? TimestampConverter().fromJson(data?['moderatedAt'])
+          : null,
     );
   }
 

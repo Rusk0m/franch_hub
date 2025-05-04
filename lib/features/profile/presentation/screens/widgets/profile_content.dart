@@ -24,7 +24,6 @@ class ProfileContent extends StatelessWidget {
         builder: (context, state) {
           if (state is Authenticated) {
             final UserEntity user = state.user;
-
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [
@@ -81,6 +80,12 @@ class ProfileContent extends StatelessWidget {
                   icon: Icons.location_city_rounded,
                   title: 'My Branches',
                   routeName: '/my_branches_page',
+                ),
+                const SizedBox(height: 10),
+                const NavigationButton(
+                  icon: Icons.location_city_rounded,
+                  title: 'Moderation',
+                  routeName: '/moderation',
                 ),
                 const SizedBox(height: 10),
                 const GeneralSettings(),

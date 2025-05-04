@@ -98,12 +98,20 @@ class BranchRemoteDataSourceImpl implements BranchRemoteDataSource {
   Future<void> moderateBranch(String pendingBranchId, String status, FranchiseBranchModel? branch) async {
     try {
       if (status == 'approved' && branch != null) {
+        // Создаем филиал в franchiseBranches
         await firestore.collection('franchiseBranches').doc(branch.id).set(branch.toJson());
+        // Удаляем заявку из pending_branches
+        await firestore.collection('pending_branches').doc(pendingBranchId).delete();
+      } else if (status == 'rejected') {
+        // Удаляем заявку из pending_branches при отклонении
+        await firestore.collection('pending_branches').doc(pendingBranchId).delete();
+      } else {
+        // Обновляем статус в pending_branches для других случаев
+        await firestore.collection('pending_branches').doc(pendingBranchId).update({
+          'status': status,
+          'moderatedAt': Timestamp.now(),
+        });
       }
-      await firestore.collection('pending_branches').doc(pendingBranchId).update({
-        'status': status,
-        'moderatedAt': Timestamp.now(),
-      });
     } catch (e) {
       print('BranchRemoteDataSource: Error moderating branch: $e');
       throw Exception('Failed to moderate branch: $e');

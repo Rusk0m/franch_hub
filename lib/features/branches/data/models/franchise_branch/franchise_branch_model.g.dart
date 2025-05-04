@@ -10,13 +10,13 @@ FranchiseBranchModel _$FranchiseBranchModelFromJson(
         Map<String, dynamic> json) =>
     FranchiseBranchModel(
       id: json['id'] as String,
-      name: json['name'] as String,
       franchiseId: json['franchiseId'] as String,
       ownerId: json['ownerId'] as String,
+      name: json['name'] as String,
       location: json['location'] as String,
-      phone: json['phone'] as String,
-      workingHours: json['workingHours'] as String,
       royaltyPercent: (json['royaltyPercent'] as num).toDouble(),
+      workingHours: json['workingHours'] as String,
+      phone: json['phone'] as String,
       createdAt:
           const TimestampConverter().fromJson(json['createdAt'] as Timestamp),
     );
@@ -25,12 +25,12 @@ Map<String, dynamic> _$FranchiseBranchModelToJson(
         FranchiseBranchModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
       'franchiseId': instance.franchiseId,
       'ownerId': instance.ownerId,
+      'name': instance.name,
       'location': instance.location,
-      'phone': instance.phone,
-      'workingHours': instance.workingHours,
       'royaltyPercent': instance.royaltyPercent,
+      'workingHours': instance.workingHours,
+      'phone': instance.phone,
       'createdAt': const TimestampConverter().toJson(instance.createdAt),
     };

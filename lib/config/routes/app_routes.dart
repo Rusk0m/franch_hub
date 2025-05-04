@@ -10,6 +10,7 @@ import 'package:franch_hub/features/branches/presentation/screens/franchise_bran
 import 'package:franch_hub/features/branches/presentation/screens/franchise_branches_pages/my_branches_page/add_branch_page.dart';
 import 'package:franch_hub/features/branches/presentation/screens/franchise_branches_pages/my_branches_page/edit_branch_page.dart';
 import 'package:franch_hub/features/branches/presentation/screens/franchise_branches_pages/my_branches_page/my_branches_page.dart';
+import 'package:franch_hub/features/chat/presentation/screens/chat_page.dart';
 import 'package:franch_hub/features/financial_reports/presentation/screens/branch_indicators_page/branch_indicators_page.dart';
 import 'package:franch_hub/features/financial_reports/presentation/screens/submit_report_page/submit_financial_report_page.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
@@ -37,6 +38,7 @@ class AppRouter {
   static const String moderationPage = '/moderation';
   static const String addBranchPage = '/add_branch_page';
   static const String editBranchPage = '/edit_branch_page';
+  static const String chatPage = '/chat_page';
 
   static Future<bool> _isAdmin() async {
     final user = sl<FirebaseAuth>().currentUser;
@@ -81,11 +83,14 @@ class AppRouter {
       case auth:
         return MaterialPageRoute(builder: (_) => const AuthPage());
       case moderationPage:
-        final user = settings.arguments as UserEntity;
-        return MaterialPageRoute(builder: (_) => ModerationPage(currentUser: user));
+        //final user = settings.arguments as UserEntity;
+        return MaterialPageRoute(builder: (_) => ModerationPage());
       case addBranchPage:
         final arguments = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(builder: (_) => AddBranchPage(arguments: arguments));
+      case chatPage:
+        final arguments = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(builder: (_) => ChatPage(arguments: arguments));
       case editBranchPage:
         final branch = settings.arguments as FranchiseBranch;
         return MaterialPageRoute(builder: (_) => EditBranchPage(branch: branch));

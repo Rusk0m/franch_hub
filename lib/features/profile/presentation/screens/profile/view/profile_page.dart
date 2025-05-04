@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:franch_hub/config/theme/theme.dart';
-import 'package:franch_hub/core/entities/user.dart';
-import 'package:franch_hub/core/global_widgets/global_widgets.dart';
 import 'package:franch_hub/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:franch_hub/features/profile/presentation/screens/widgets/profile_content.dart';
 import 'package:franch_hub/features/auth/presentation/screens/view/auth_page.dart';

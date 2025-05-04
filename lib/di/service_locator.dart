@@ -27,6 +27,7 @@ import 'package:franch_hub/features/moderation/domain/repositories/moderation_re
 import 'package:franch_hub/features/moderation/domain/use_cases/get_pending_franchises.dart';
 import 'package:franch_hub/features/moderation/domain/use_cases/moderate_franchise.dart';
 import 'package:franch_hub/features/moderation/presentation/bloc/moderation_bloc.dart';
+import 'package:franch_hub/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:franch_hub/features/transactions/data/data_source/transaction_remote_data_source.dart';
 import 'package:franch_hub/features/financial_reports/data/repositories/financial_report_repository_impl.dart';
 import 'package:franch_hub/features/franchise/data/repositories/franchise_repository_implement.dart';
@@ -172,21 +173,13 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton(() => SettingsRepository());
 
 
-  sl.registerFactory(
-        () => FinancialReportBloc(),
-  );
-  sl.registerFactory(
-        () => FranchiseBloc(),
-  );
-  sl.registerFactory(() => EconomicIndicatorsBloc());
 
-  sl.registerFactory(() => TransactionBloc());
-
-  sl.registerFactory(() => BranchBloc());
-
-  sl.registerFactory(() => ModerationBloc());
-
+  sl.registerFactory(() => FranchiseBloc());
+  sl.registerFactory(() => FinancialReportBloc());
   sl.registerFactory(() => ChatBloc());
-
-
+  sl.registerFactory(() => BranchBloc());
+  sl.registerFactory(() => TransactionBloc());
+  sl.registerFactory(() => ModerationBloc());
+  sl.registerFactory(() => EconomicIndicatorsBloc());
+  sl.registerFactory(() => ProfileBloc(authRepository:sl()));
 }

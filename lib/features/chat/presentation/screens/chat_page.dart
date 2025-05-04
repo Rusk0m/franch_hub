@@ -8,11 +8,11 @@ class ChatPage extends StatelessWidget {
   final UserEntity currentUser;
   final UserEntity otherUser;
 
-  const ChatPage({
+  ChatPage({
     super.key,
-    required this.currentUser,
-    required this.otherUser,
-  });
+    required Map<String, dynamic> arguments,
+  })  : currentUser = arguments['currentUser'] as UserEntity,
+        otherUser = arguments['otherUser'] as UserEntity;
 
   @override
   Widget build(BuildContext context) {

@@ -1,15 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/config/theme/theme.dart';
+import 'package:franch_hub/core/entities/user.dart';
+import 'package:franch_hub/di/service_locator.dart';
+import 'package:franch_hub/features/auth/domain/repository/authentication_repository.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
 
-class FranchiseDetailPage extends StatelessWidget {
+class FranchiseDetailPage extends StatefulWidget {
   final Franchise? franchise;
 
   const FranchiseDetailPage({super.key, this.franchise});
 
   @override
+  _FranchiseDetailPageState createState() => _FranchiseDetailPageState();
+}
+
+class _FranchiseDetailPageState extends State<FranchiseDetailPage> {
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  @override
   Widget build(BuildContext context) {
-    final franchise = this.franchise ??
+    final franchise = widget.franchise ??
         Franchise(
           id: '',
           ownerId: '',
@@ -21,6 +34,52 @@ class FranchiseDetailPage extends StatelessWidget {
           royaltyPercent: 0,
           createdAt: DateTime.now(),
         );
+
+    final authRepository = sl<AuthenticationRepository>();
+
+    void _navigateToChat() async {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+
+      try {
+        // Get current user
+        final currentUser = authRepository.currentUser;
+        if (currentUser == null || currentUser == UserEntity.empty) {
+          throw Exception('Current user not found');
+        }
+
+        // Get franchise owner (other user)
+        final otherUser = await authRepository.getUser(franchise.ownerId);
+        if (otherUser == UserEntity.empty) {
+          throw Exception('Franchise owner not found');
+        }
+        if (otherUser == currentUser) {
+          throw Exception('You Franchise owner ');
+        }
+        // Navigate to ChatPage
+        Navigator.pushNamed(
+          context,
+          AppRouter.chatPage,
+          arguments: {
+            'currentUser': currentUser,
+            'otherUser': otherUser,
+          },
+        );
+      } catch (e) {
+        setState(() {
+          _errorMessage = 'Failed to start chat: $e';
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_errorMessage!)),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -135,9 +194,21 @@ class FranchiseDetailPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
-                      radius: 30,
-                      child: Icon(Icons.message, size: 40),
+                    GestureDetector(
+                      onTap: _isLoading ? null : _navigateToChat,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          const CircleAvatar(
+                            radius: 30,
+                            child: Icon(Icons.message, size: 40),
+                          ),
+                          if (_isLoading)
+                            const CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                        ],
+                      ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
@@ -146,7 +217,14 @@ class FranchiseDetailPage extends StatelessWidget {
                           fixedSize: const Size(double.infinity, 60),
                         ),
                         onPressed: () {
-                          // Переход в чат
+                          Navigator.pushNamed(
+                            context,
+                            AppRouter.addBranchPage,
+                            arguments: {
+                              'isFranchisee': true,
+                              'franchise': franchise,
+                            },
+                          );
                         },
                         child: Text(
                           'Respond Now',

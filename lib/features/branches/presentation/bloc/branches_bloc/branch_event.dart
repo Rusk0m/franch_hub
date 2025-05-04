@@ -100,5 +100,17 @@ class ModeratePendingBranch extends BranchEvent {
   });
 
   @override
-  List<Object?> get props => [pendingBranchId, status, branch, franchiseOwnerId];
+  List<Object?> get props => [
+    pendingBranchId,
+    status,
+    branch,
+    franchiseOwnerId,
+  ];
+}
+
+class ResetBranchState extends BranchEvent {
+  const ResetBranchState();
+
+  @override
+  List<Object?> get props => [];
 }

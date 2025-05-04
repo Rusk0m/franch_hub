@@ -11,26 +11,6 @@ class ModerationInitial extends ModerationState {}
 
 class ModerationLoading extends ModerationState {}
 
-class ModerationFranchiseLoaded extends ModerationState {
-  final Map<Franchise, UserEntity> franchises;
-
-  const ModerationFranchiseLoaded({required this.franchises});
-
-  @override
-  List<Object?> get props => [franchises];
-}
-
-class ModerateBranchLoaded extends ModerationState {
-  final List<PendingFranchiseBranch> pendingBranches;
-
-  const ModerateBranchLoaded({required this.pendingBranches});
-
-  @override
-  List<Object?> get props => [pendingBranches];
-}
-
-class ModerateBranchSuccess extends ModerationState {}
-
 class ModerationError extends ModerationState {
   final String message;
 
@@ -39,3 +19,27 @@ class ModerationError extends ModerationState {
   @override
   List<Object?> get props => [message];
 }
+
+class ModerateBranchLoaded extends ModerationState {
+  final List<PendingFranchiseBranch> pendingBranches;
+  final Map<String, String> franchiseNames;
+
+  const ModerateBranchLoaded({
+    required this.pendingBranches,
+    required this.franchiseNames,
+  });
+
+  @override
+  List<Object?> get props => [pendingBranches, franchiseNames];
+}
+
+class ModerationFranchiseLoaded extends ModerationState {
+  final List<Franchise> franchises;
+
+  const ModerationFranchiseLoaded({required this.franchises});
+
+  @override
+  List<Object?> get props => [franchises];
+}
+
+class ModerationFranchiseSuccess extends ModerationState {}

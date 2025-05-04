@@ -27,6 +27,9 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
   final EditBranchUseCase editBranchUseCase = sl();
   final ModerateBranchUseCase moderateBranchUseCase = sl();
 
+  String? _currentFranchiseId; // Track the current franchiseId
+  String? _currentOwnerId; // Track the current ownerId for MyBranchesPage
+
   BranchBloc() : super(BranchInitial()) {
     on<CreatePendingBranch>(_onCreatePendingBranch);
     on<LoadMyBranches>(_onLoadMyBranches);
@@ -35,6 +38,7 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
     on<DeleteBranch>(_onDeleteBranch);
     on<EditBranch>(_onEditBranch);
     on<ModeratePendingBranch>(_onModeratePendingBranch);
+    on<ResetBranchState>(_onResetBranchState);
   }
 
   Future<void> _onCreatePendingBranch(
@@ -86,6 +90,8 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       print('BranchBloc: Loading franchiseBranches for ownerId: ${event.ownerId}');
       final branches = await getMyBranchesUseCase(params: event.ownerId);
       print('BranchBloc: Loaded ${branches.length} franchiseBranches for ownerId: ${event.ownerId}');
+      _currentFranchiseId = null;
+      _currentOwnerId = event.ownerId;
       emit(BranchLoaded(branches: branches));
     } catch (e) {
       print('BranchBloc: Error loading franchiseBranches: $e');
@@ -100,6 +106,8 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       print('BranchBloc: Loading franchiseBranches for franchiseId: ${event.franchiseId}');
       final branches = await getBranchesForFranchiseUseCase(params: event.franchiseId);
       print('BranchBloc: Loaded ${branches.length} franchiseBranches for franchiseId: ${event.franchiseId}');
+      _currentFranchiseId = event.franchiseId;
+      _currentOwnerId = null;
       emit(BranchLoaded(branches: branches));
     } catch (e) {
       print('BranchBloc: Error loading franchiseBranches: $e');
@@ -111,7 +119,34 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
     emit(BranchLoading());
     try {
       await addBranchUseCase(params: event.branch);
-      emit(BranchSuccess());
+      if (state is BranchLoaded) {
+        final currentBranches = (state as BranchLoaded).branches;
+        if (_currentFranchiseId == event.branch.franchiseId) {
+          // FranchiseBranchesPage: Add to current franchise's branches
+          final updatedBranches = [...currentBranches, event.branch];
+          print('BranchBloc: Added branch with id: ${event.branch.id}, name: ${event.branch.name}, branches count: ${updatedBranches.length}');
+          emit(BranchLoaded(branches: updatedBranches));
+        } else if (_currentOwnerId != null && _currentOwnerId == event.branch.ownerId) {
+          // MyBranchesPage: Add to user's branches
+          final updatedBranches = [...currentBranches, event.branch];
+          print('BranchBloc: Added branch with id: ${event.branch.id}, name: ${event.branch.name}, branches count: ${updatedBranches.length}');
+          emit(BranchLoaded(branches: updatedBranches));
+        } else {
+          // Reload branches if context doesn't match
+          final branches = _currentOwnerId != null
+              ? await getMyBranchesUseCase(params: _currentOwnerId!)
+              : await getBranchesForFranchiseUseCase(params: event.branch.franchiseId);
+          _currentFranchiseId = _currentOwnerId == null ? event.branch.franchiseId : null;
+          emit(BranchLoaded(branches: branches));
+        }
+      } else {
+        // Reload branches if state is not BranchLoaded
+        final branches = _currentOwnerId != null
+            ? await getMyBranchesUseCase(params: _currentOwnerId!)
+            : await getBranchesForFranchiseUseCase(params: event.branch.franchiseId);
+        _currentFranchiseId = _currentOwnerId == null ? event.branch.franchiseId : null;
+        emit(BranchLoaded(branches: branches));
+      }
     } catch (e) {
       print('BranchBloc: Error adding branch: $e');
       emit(BranchError(message: 'Failed to add branch: $e'));
@@ -122,11 +157,33 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
     emit(BranchLoading());
     try {
       await deleteBranchUseCase(params: event.branchId);
-      // Update current state if it's BranchLoaded
       if (state is BranchLoaded) {
         final currentBranches = (state as BranchLoaded).branches;
-        final updatedBranches = currentBranches.where((branch) => branch.id != event.branchId).toList();
-        emit(BranchLoaded(branches: updatedBranches));
+        final branchToDelete = currentBranches.firstWhere(
+              (branch) => branch.id == event.branchId,
+          orElse: () => FranchiseBranch(
+            id: '',
+            franchiseId: '',
+            ownerId: '',
+            name: '',
+            location: '',
+            royaltyPercent: 0,
+            workingHours: '',
+            phone: '',
+            createdAt: DateTime.now(),
+          ),
+        );
+        if (branchToDelete.id.isNotEmpty) {
+          final updatedBranches = currentBranches.where((branch) => branch.id != event.branchId).toList();
+          print('BranchBloc: Deleted branch with id: ${event.branchId}, new branches count: ${updatedBranches.length}');
+          emit(BranchLoaded(branches: updatedBranches));
+        } else {
+          // Reload branches if branch not found
+          final branches = _currentOwnerId != null
+              ? await getMyBranchesUseCase(params: _currentOwnerId!)
+              : await getBranchesForFranchiseUseCase(params: _currentFranchiseId!);
+          emit(BranchLoaded(branches: branches));
+        }
       } else {
         emit(BranchSuccess());
       }
@@ -140,15 +197,37 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
     emit(BranchLoading());
     try {
       await editBranchUseCase(params: event.branch);
-      // Update current state if it's BranchLoaded
       if (state is BranchLoaded) {
         final currentBranches = (state as BranchLoaded).branches;
-        final updatedBranches = currentBranches
-            .map((branch) => branch.id == event.branch.id ? event.branch : branch)
-            .toList();
-        emit(BranchLoaded(branches: updatedBranches));
+        if (_currentFranchiseId == event.branch.franchiseId) {
+          // FranchiseBranchesPage: Update within current franchise's branches
+          final updatedBranches = currentBranches
+              .map((branch) => branch.id == event.branch.id ? event.branch : branch)
+              .toList();
+          print('BranchBloc: Updated branch with id: ${event.branch.id}, phone: ${event.branch.phone}, branches count: ${updatedBranches.length}');
+          emit(BranchLoaded(branches: updatedBranches));
+        } else if (_currentOwnerId != null && _currentOwnerId == event.branch.ownerId) {
+          // MyBranchesPage: Update within user's branches
+          final updatedBranches = currentBranches
+              .map((branch) => branch.id == event.branch.id ? event.branch : branch)
+              .toList();
+          print('BranchBloc: Updated branch with id: ${event.branch.id}, phone: ${event.branch.phone}, branches count: ${updatedBranches.length}');
+          emit(BranchLoaded(branches: updatedBranches));
+        } else {
+          // Reload branches if context doesn't match
+          final branches = _currentOwnerId != null
+              ? await getMyBranchesUseCase(params: _currentOwnerId!)
+              : await getBranchesForFranchiseUseCase(params: event.branch.franchiseId);
+          _currentFranchiseId = _currentOwnerId == null ? event.branch.franchiseId : null;
+          emit(BranchLoaded(branches: branches));
+        }
       } else {
-        emit(BranchSuccess());
+        // Reload branches if state is not BranchLoaded
+        final branches = _currentOwnerId != null
+            ? await getMyBranchesUseCase(params: _currentOwnerId!)
+            : await getBranchesForFranchiseUseCase(params: event.branch.franchiseId);
+        _currentFranchiseId = _currentOwnerId == null ? event.branch.franchiseId : null;
+        emit(BranchLoaded(branches: branches));
       }
     } catch (e) {
       print('BranchBloc: Error editing branch: $e');
@@ -187,13 +266,33 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
             chatId: chatId,
           ),
         );
-        // Update current state if it's BranchLoaded
         if (state is BranchLoaded) {
           final currentBranches = (state as BranchLoaded).branches;
-          final updatedBranches = [...currentBranches, event.branch!];
-          emit(BranchLoaded(branches: updatedBranches));
+          if (_currentFranchiseId == event.branch!.franchiseId) {
+            // FranchiseBranchesPage: Add to current franchise's branches
+            final updatedBranches = [...currentBranches, event.branch!];
+            print('BranchBloc: Approved branch with id: ${event.branch!.id}, branches count: ${updatedBranches.length}');
+            emit(BranchLoaded(branches: updatedBranches));
+          } else if (_currentOwnerId != null && _currentOwnerId == event.branch!.ownerId) {
+            // MyBranchesPage: Add to user's branches
+            final updatedBranches = [...currentBranches, event.branch!];
+            print('BranchBloc: Approved branch with id: ${event.branch!.id}, branches count: ${updatedBranches.length}');
+            emit(BranchLoaded(branches: updatedBranches));
+          } else {
+            // Reload branches if context doesn't match
+            final branches = _currentOwnerId != null
+                ? await getMyBranchesUseCase(params: _currentOwnerId!)
+                : await getBranchesForFranchiseUseCase(params: event.branch!.franchiseId);
+            _currentFranchiseId = _currentOwnerId == null ? event.branch!.franchiseId : null;
+            emit(BranchLoaded(branches: branches));
+          }
         } else {
-          emit(BranchSuccess());
+          // Reload branches if state is not BranchLoaded
+          final branches = _currentOwnerId != null
+              ? await getMyBranchesUseCase(params: _currentOwnerId!)
+              : await getBranchesForFranchiseUseCase(params: event.branch!.franchiseId);
+          _currentFranchiseId = _currentOwnerId == null ? event.branch!.franchiseId : null;
+          emit(BranchLoaded(branches: branches));
         }
       } else {
         emit(BranchSuccess());
@@ -202,6 +301,13 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       print('BranchBloc: Error moderating branch: $e');
       emit(BranchError(message: 'Failed to moderate branch: $e'));
     }
+  }
+
+  Future<void> _onResetBranchState(
+      ResetBranchState event, Emitter<BranchState> emit) async {
+    _currentFranchiseId = null;
+    _currentOwnerId = null;
+    emit(BranchInitial());
   }
 
   String _generateChatId(String uid1, String uid2) {
