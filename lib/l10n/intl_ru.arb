@@ -1,0 +1,777 @@
+{
+  "@@locale": "ru",
+  "signUpError": "Ошибка регистрации: {error}",
+  "@signUpError": {
+    "description": "Сообщение об ошибке при неудачной регистрации",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "loginError": "Ошибка входа: {error}",
+  "@loginError": {
+    "description": "Сообщение об ошибке при неудачном входе",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "googleLoginError": "Ошибка входа через Google: {error}",
+  "@googleLoginError": {
+    "description": "Сообщение об ошибке при неудачном входе через Google",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "logoutError": "Ошибка выхода: {error}",
+  "@logoutError": {
+    "description": "Сообщение об ошибке при неудачном выходе",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "authCheckError": "Ошибка проверки авторизации: {error}",
+  "@authCheckError": {
+    "description": "Сообщение об ошибке при проверке статуса авторизации",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "userNotFound": "Пользователь не найден",
+  "@userNotFound": {
+    "description": "Сообщение об ошибке, если пользователь не найден"
+  },
+  "fetchUserError": "Не удалось получить данные пользователя: {error}",
+  "@fetchUserError": {
+    "description": "Сообщение об ошибке при получении данных пользователя",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "userCreationFailed": "Не удалось создать пользователя",
+  "@userCreationFailed": {
+    "description": "Сообщение об ошибке при неудачном создании пользователя"
+  },
+  "unknownError": "Произошла неизвестная ошибка.",
+  "@unknownError": {
+    "description": "Общее сообщение об ошибке для неизвестных исключений"
+  },
+  "invalidEmail": "Электронная почта недействительна или неправильно отформатирована.",
+  "@invalidEmail": {
+    "description": "Сообщение об ошибке при недействительной почте"
+  },
+  "emailAlreadyInUse": "Аккаунт с этой электронной почтой уже существует.",
+  "@emailAlreadyInUse": {
+    "description": "Сообщение об ошибке, если почта уже используется"
+  },
+  "operationNotAllowed": "Операция не разрешена. Обратитесь в поддержку.",
+  "@operationNotAllowed": {
+    "description": "Сообщение об ошибке, если операция не разрешена"
+  },
+  "weakPassword": "Введите более надежный пароль.",
+  "@weakPassword": {
+    "description": "Сообщение об ошибке, если пароль слишком слабый"
+  },
+  "userDisabled": "Этот пользователь заблокирован. Обратитесь в поддержку.",
+  "@userDisabled": {
+    "description": "Сообщение об ошибке, если аккаунт пользователя заблокирован"
+  },
+  "emailNotFound": "Электронная почта не найдена, создайте аккаунт.",
+  "@emailNotFound": {
+    "description": "Сообщение об ошибке, если почта не найдена"
+  },
+  "wrongPassword": "Неверный пароль, попробуйте снова.",
+  "@wrongPassword": {
+    "description": "Сообщение об ошибке при неверном пароле"
+  },
+  "accountExistsDifferentCredential": "Аккаунт существует с другими учетными данными.",
+  "@accountExistsDifferentCredential": {
+    "description": "Сообщение об ошибке, если аккаунт существует с другими учетными данными"
+  },
+  "invalidCredential": "Полученные учетные данные неверны или истекли.",
+  "@invalidCredential": {
+    "description": "Сообщение об ошибке при недействительных учетных данных"
+  },
+  "invalidVerificationCode": "Код верификации учетных данных недействителен.",
+  "@invalidVerificationCode": {
+    "description": "Сообщение об ошибке при недействительном коде верификации"
+  },
+  "invalidVerificationId": "ID верификации учетных данных недействителен.",
+  "@invalidVerificationId": {
+    "description": "Сообщение об ошибке при недействительном ID верификации"
+  },
+  "welcomeBack": "С возвращением!",
+  "@welcomeBack": {
+    "description": "Приветственный текст на странице авторизации"
+  },
+  "createNewAccount": "Создать новый аккаунт",
+  "@createNewAccount": {
+    "description": "Текст, отображаемый в режиме регистрации"
+  },
+  "signInAccount": "Войдите в свой аккаунт",
+  "@signInAccount": {
+    "description": "Текст, отображаемый в режиме входа"
+  },
+  "usernameLabel": "Имя пользователя",
+  "@usernameLabel": {
+    "description": "Метка для поля ввода имени пользователя"
+  },
+  "emailLabel": "Электронная почта",
+  "@emailLabel": {
+    "description": "Метка для поля ввода электронной почты"
+  },
+  "passwordLabel": "Пароль",
+  "@passwordLabel": {
+    "description": "Метка для поля ввода пароля"
+  },
+  "forgotPassword": "Забыли пароль? ",
+  "@forgotPassword": {
+    "description": "Текст для ссылки на восстановление пароля"
+  },
+  "registrationButton": "Регистрация",
+  "@registrationButton": {
+    "description": "Текст для кнопки регистрации"
+  },
+  "loginButton": "Вход",
+  "@loginButton": {
+    "description": "Текст для кнопки входа"
+  },
+  "orContinueWith": "Или продолжить с",
+  "@orContinueWith": {
+    "description": "Текст для разделителя перед альтернативными вариантами входа"
+  },
+  "alreadyHaveAccount": "Уже есть аккаунт? ",
+  "@alreadyHaveAccount": {
+    "description": "Текст, побуждающий перейти к входу"
+  },
+  "notRegisteredUser": "Не зарегистрированный пользователь? ",
+  "@notRegisteredUser": {
+    "description": "Текст, побуждающий перейти к регистрации"
+  },
+  "logInLink": "Войти!",
+  "@logInLink": {
+    "description": "Текст для ссылки на вход"
+  },
+  "registerNowLink": "Зарегистрироваться сейчас!",
+  "@registerNowLink": {
+    "description": "Текст для ссылки на регистрацию"
+  },
+  "errorMessage": "Ошибка: {message}",
+  "@errorMessage": {
+    "description": "Общее сообщение об ошибке с конкретным текстом",
+    "placeholders": {
+      "message": {}
+    }
+  },
+  "franchiseBranchesTitle": "Филиалы франшизы: {franchiseName}",
+  "@franchiseBranchesTitle": {
+    "description": "Заголовок страницы филиалов франшизы с названием франшизы",
+    "placeholders": {
+      "franchiseName": {}
+    }
+  },
+  "myBranchesTitle": "Мои филиалы",
+  "@myBranchesTitle": {
+    "description": "Заголовок страницы филиалов пользователя"
+  },
+  "addBranchTitle": "Добавить филиал",
+  "@addBranchTitle": {
+    "description": "Заголовок страницы добавления филиала при прямом добавлении"
+  },
+  "createBranchRequestTitle": "Создать запрос на филиал",
+  "@createBranchRequestTitle": {
+    "description": "Заголовок страницы добавления филиала при создании запроса"
+  },
+  "editBranchTitle": "Редактировать филиал",
+  "@editBranchTitle": {
+    "description": "Заголовок страницы редактирования филиала"
+  },
+  "branchNameLabel": "Название филиала",
+  "@branchNameLabel": {
+    "description": "Метка для поля ввода названия филиала"
+  },
+  "enterNameError": "Введите название",
+  "@enterNameError": {
+    "description": "Сообщение об ошибке, если название филиала пустое"
+  },
+  "enterLocationError": "Введите адрес",
+  "@enterLocationError": {
+    "description": "Сообщение об ошибке, если адрес пустой"
+  },
+  "enterRoyaltyError": "Введите роялти",
+  "@enterRoyaltyError": {
+    "description": "Сообщение об ошибке, если процент роялти пустой"
+  },
+  "invalidRoyaltyError": "Введите действительное число",
+  "@invalidRoyaltyError": {
+    "description": "Сообщение об ошибке, если процент роялти не является числом"
+  },
+  "enterWorkingHoursError": "Введите часы работы",
+  "@enterWorkingHoursError": {
+    "description": "Сообщение об ошибке, если часы работы пустые"
+  },
+  "enterPhoneError": "Введите номер телефона",
+  "@enterPhoneError": {
+    "description": "Сообщение об ошибке, если номер телефона пустой"
+  },
+  "sendRequestButton": "Отправить запрос",
+  "@sendRequestButton": {
+    "description": "Текст кнопки для отправки запроса на филиал"
+  },
+  "addBranchButton": "Добавить филиал",
+  "@addBranchButton": {
+    "description": "Текст кнопки для прямого добавления филиала"
+  },
+  "saveChangesButton": "Сохранить изменения",
+  "@saveChangesButton": {
+    "description": "Текст кнопки для сохранения изменений филиала"
+  },
+  "noBranchesMessage": "У этой франшизы пока нет филиалов.",
+  "@noBranchesMessage": {
+    "description": "Сообщение, если у франшизы нет филиалов"
+  },
+  "noUserBranchesMessage": "У вас пока нет филиалов.",
+  "@noUserBranchesMessage": {
+    "description": "Сообщение, если у пользователя нет филиалов"
+  },
+  "pendingRequestsTitle": "Ожидающие запросы",
+  "@pendingRequestsTitle": {
+    "description": "Заголовок раздела ожидающих запросов на филиалы"
+  },
+  "statusLabel": "Статус: {status}",
+  "@statusLabel": {
+    "description": "Метка для отображения статуса ожидающего филиала",
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "deleteBranchDialogTitle": "Удалить филиал?",
+  "@deleteBranchDialogTitle": {
+    "description": "Заголовок диалога подтверждения удаления филиала"
+  },
+  "deleteBranchDialogContent": "Вы уверены, что хотите удалить \"{branchName}\"?",
+  "@deleteBranchDialogContent": {
+    "description": "Содержимое диалога подтверждения удаления филиала",
+    "placeholders": {
+      "branchName": {}
+    }
+  },
+  "cancelButton": "Отмена",
+  "@cancelButton": {
+    "description": "Текст кнопки для отмены действия"
+  },
+  "deleteButton": "Удалить",
+  "@deleteButton": {
+    "description": "Текст кнопки для подтверждения удаления"
+  },
+  "backButton": "Назад",
+  "@backButton": {
+    "description": "Текст кнопки для возврата"
+  },
+  "operationSuccessMessage": "Операция успешно завершена",
+  "@operationSuccessMessage": {
+    "description": "Сообщение об успешном завершении операции"
+  },
+  "branchRequestSentMessage": "Запрос отправлен на модерацию",
+  "@branchRequestSentMessage": {
+    "description": "Сообщение об успехе при отправке запроса на филиал"
+  },
+  "branchAddedMessage": "Филиал успешно добавлен",
+  "@branchAddedMessage": {
+    "description": "Сообщение об успехе при добавлении филиала"
+  },
+  "branchUpdatedMessage": "Филиал успешно обновлен",
+  "@branchUpdatedMessage": {
+    "description": "Сообщение об успехе при обновлении филиала"
+  },
+  "newBranchRequest": "Новый запрос на филиал: {branchName} от {requesterId}",
+  "@newBranchRequest": {
+    "description": "Системное сообщение для уведомления владельца франшизы о новом запросе на филиал",
+    "placeholders": {
+      "branchName": {},
+      "requesterId": {}
+    }
+  },
+  "branchRequestApproved": "Запрос на филиал одобрен: {branchName}",
+  "@branchRequestApproved": {
+    "description": "Системное сообщение для уведомления франчайзи об одобрении запроса на филиал",
+    "placeholders": {
+      "branchName": {}
+    }
+  },
+  "franchiseDataError": "Ошибка: Данные франшизы не предоставлены",
+  "@franchiseDataError": {
+    "description": "Сообщение об ошибке, если данные франшизы отсутствуют"
+  },
+  "failedToCreatePendingBranch": "Не удалось создать ожидающий филиал: {error}",
+  "@failedToCreatePendingBranch": {
+    "description": "Сообщение об ошибке при неудачном создании ожидающего филиала",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToLoadBranches": "Не удалось загрузить филиалы: {error}",
+  "@failedToLoadBranches": {
+    "description": "Сообщение об ошибке при неудачной загрузке филиалов",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToAddBranch": "Не удалось добавить филиал: {error}",
+  "@failedToAddBranch": {
+    "description": "Сообщение об ошибке при неудачном добавлении филиала",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToDeleteBranch": "Не удалось удалить филиал: {error}",
+  "@failedToDeleteBranch": {
+    "description": "Сообщение об ошибке при неудачном удалении филиала",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToEditBranch": "Не удалось отредактировать филиал: {error}",
+  "@failedToEditBranch": {
+    "description": "Сообщение об ошибке при неудачном редактировании филиала",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToModerateBranch": "Не удалось модерировать филиал: {error}",
+  "@failedToModerateBranch": {
+    "description": "Сообщение об ошибке при неудачной модерации филиала",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "reportsTab": "Отчеты",
+  "@reportsTab": {
+    "description": "Текст вкладки для раздела отчетов"
+  },
+  "transactionsTab": "Транзакции",
+  "@transactionsTab": {
+    "description": "Текст вкладки для раздела транзакций"
+  },
+  "branchInfo": "Адрес: {location}\nЧасы работы: {workingHours}\nТелефон: {phone}",
+  "@branchInfo": {
+    "description": "Подзаголовок для информации о филиале в списке",
+    "placeholders": {
+      "location": {},
+      "workingHours": {},
+      "phone": {}
+    }
+  },
+  "waitingForData": "Ожидание данных...",
+  "@waitingForData": {
+    "description": "Сообщение, отображаемое во время ожидания данных"
+  },
+  "branchNotFoundError": "Филиал, который вы пытаетесь отредактировать, больше не существует.",
+  "@branchNotFoundError": {
+    "description": "Сообщение об ошибке, если филиал для редактирования не существует"
+  },
+  "chatPageTitle": "Чат с {userName}",
+  "@chatPageTitle": {
+    "description": "Заголовок страницы чата с именем другого пользователя",
+    "placeholders": {
+      "userName": {}
+    }
+  },
+  "typeMessageHint": "Введите сообщение...",
+  "@typeMessageHint": {
+    "description": "Подсказка для поля ввода сообщения"
+  },
+  "noMessagesYet": "Сообщений пока нет",
+  "@noMessagesYet": {
+    "description": "Сообщение, отображаемое, если в чате нет сообщений"
+  },
+  "chatError": "Ошибка: {message}",
+  "@chatError": {
+    "description": "Сообщение об ошибке при проблемах с чатом",
+    "placeholders": {
+      "message": {}
+    }
+  },
+  "selectUserToChatTitle": "Выберите пользователя для чата",
+  "@selectUserToChatTitle": {
+    "description": "Заголовок страницы списка пользователей"
+  },
+  "pleaseLogInToViewUsers": "Пожалуйста, войдите, чтобы просмотреть пользователей",
+  "@pleaseLogInToViewUsers": {
+    "description": "Сообщение, отображаемое, если пользователь не авторизован"
+  },
+  "noUsersFound": "Пользователи не найдены",
+  "@noUsersFound": {
+    "description": "Сообщение, отображаемое, если нет пользователей для чата"
+  },
+  "branchReportsTitle": "Отчеты филиала",
+  "@branchReportsTitle": {
+    "description": "Заголовок страницы отчетов филиала"
+  },
+  "noReportsAvailable": "Отчеты отсутствуют",
+  "@noReportsAvailable": {
+    "description": "Сообщение, отображаемое, если нет финансовых отчетов"
+  },
+  "reportDetailsTitle": "Детали отчета {month}/{year}",
+  "@reportDetailsTitle": {
+    "description": "Заголовок диалога с деталями отчета",
+    "placeholders": {
+      "month": {},
+      "year": {}
+    }
+  },
+  "revenueLabel": "Выручка",
+  "@revenueLabel": {
+    "description": "Метка для поля выручки"
+  },
+  "netProfitLabel": "Чистая прибыль",
+  "@netProfitLabel": {
+    "description": "Метка для поля чистой прибыли"
+  },
+  "totalAssetsLabel": "Общие активы",
+  "@totalAssetsLabel": {
+    "description": "Метка для поля общих активов"
+  },
+  "ownCapitalLabel": "Собственный капитал",
+  "@ownCapitalLabel": {
+    "description": "Метка для поля собственного капитала"
+  },
+  "liabilitiesLabel": "Обязательства",
+  "@liabilitiesLabel": {
+    "description": "Метка для поля обязательств"
+  },
+  "inventoryLabel": "Запасы",
+  "@inventoryLabel": {
+    "description": "Метка для поля запасов"
+  },
+  "initialInvestmentLabel": "Начальные инвестиции",
+  "@initialInvestmentLabel": {
+    "description": "Метка для поля начальных инвестиций"
+  },
+  "fixedCostsLabel": "Фиксированные затраты",
+  "@fixedCostsLabel": {
+    "description": "Метка для поля фиксированных затрат"
+  },
+  "unitPriceLabel": "Цена за единицу",
+  "@unitPriceLabel": {
+    "description": "Метка для поля цены за единицы"
+  },
+  "variableCostsLabel": "Переменные затраты",
+  "@variableCostsLabel": {
+    "description": "Метка для поля переменных затрат"
+  },
+  "cashInflowLabel": "Приток денежных средств",
+  "@cashInflowLabel": {
+    "description": "Метка для поля притока денежных средств"
+  },
+  "cashOutflowLabel": "Отток денежных средств",
+  "@cashOutflowLabel": {
+    "description": "Метка для поля оттока денежных средств"
+  },
+  "royaltyPercentLabelReport": "Роялти (%)",
+  "@royaltyPercentLabelReport": {
+    "description": "Метка для поля процента роялти в отчетах"
+  },
+  "closeButton": "Закрыть",
+  "@closeButton": {
+    "description": "Текст кнопки для закрытия диалога"
+  },
+  "branchIndicatorsTitle": "Показатели филиала",
+  "@branchIndicatorsTitle": {
+    "description": "Заголовок страницы показателей филиала"
+  },
+  "noIndicatorsData": "Данные по показателям отсутствуют",
+  "@noIndicatorsData": {
+    "description": "Сообщение, отображаемое, если нет экономических показателей"
+  },
+  "roiByMonths": "ROI по месяцам",
+  "@roiByMonths": {
+    "description": "Заголовок раздела графика ROI"
+  },
+  "indicatorsDetailsTitle": "Показатели {month}/{year}",
+  "@indicatorsDetailsTitle": {
+    "description": "Заголовок диалога с деталями показателей",
+    "placeholders": {
+      "month": {},
+      "year": {}
+    }
+  },
+  "roiLabel": "Возврат инвестиций (ROI)",
+  "@roiLabel": {
+    "description": "Метка для поля ROI"
+  },
+  "breakevenPointLabel": "Точка безубыточности",
+  "@breakevenPointLabel": {
+    "description": "Метка для поля точки безубыточности"
+  },
+  "quickRatioLabel": "Коэффициент быстрой ликвидности",
+  "@quickRatioLabel": {
+    "description": "Метка для поля коэффициента быстрой ликвидности"
+  },
+  "returnOnAssetsLabel": "Рентабельность активов",
+  "@returnOnAssetsLabel": {
+    "description": "Метка для поля рентабельности активов"
+  },
+  "debtLoadLabel": "Долговая нагрузка",
+  "@debtLoadLabel": {
+    "description": "Метка для поля долговой нагрузки"
+  },
+  "currentRatioLabel": "Текущий коэффициент ликвидности",
+  "@currentRatioLabel": {
+    "description": "Метка для поля текущего коэффициента ликвидности"
+  },
+  "returnOnSalesLabel": "Рентабельность продаж",
+  "@returnOnSalesLabel": {
+    "description": "Метка для поля рентабельности продаж"
+  },
+  "autonomyRatioLabel": "Коэффициент автономии",
+  "@autonomyRatioLabel": {
+    "description": "Метка для поля коэффициента автономии"
+  },
+  "royaltyPaymentLabel": "Платеж роялти",
+  "@royaltyPaymentLabel": {
+    "description": "Метка для поля платежа роялти"
+  },
+  "netCashFlowLabel": "Чистый денежный поток",
+  "@netCashFlowLabel": {
+    "description": "Метка для поля чистого денежного потока"
+  },
+  "newFinancialReportTitle": "Новый финансовый отчет",
+  "@newFinancialReportTitle": {
+    "description": "Заголовок страницы отправки финансового отчета"
+  },
+  "submitReportButton": "Отправить отчет",
+  "@submitReportButton": {
+    "description": "Текст кнопки для отправки финансового отчета"
+  },
+  "requiredFieldError": "Обязательное поле",
+  "@requiredFieldError": {
+    "description": "Сообщение об ошибке, если поле пустое"
+  },
+  "invalidNumberError": "Введите действительное число",
+  "@invalidNumberError": {
+    "description": "Сообщение об ошибке, если ввод не является числом"
+  },
+  "invalidNumberFormatError": "Недействительный формат числа",
+  "@invalidNumberFormatError": {
+    "description": "Сообщение об ошибке, если число является NaN или бесконечным"
+  },
+  "reportSubmittedSuccess": "Отчет успешно отправлен",
+  "@reportSubmittedSuccess": {
+    "description": "Сообщение об успехе при отправке отчета"
+  },
+  "dataError": "Ошибка данных: {error}",
+  "@dataError": {
+    "description": "Сообщение об ошибке при проблемах с входными данными",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "pleaseLogIn": "Пожалуйста, войдите",
+  "@pleaseLogIn": {
+    "description": "Сообщение, отображаемое, если пользователь не авторизован"
+  },
+  "createFranchiseTitle": "Создать франшизу",
+  "@createFranchiseTitle": {
+    "description": "Заголовок страницы создания франшизы"
+  },
+  "franchiseSentForModeration": "Франшиза отправлена на модерацию",
+  "@franchiseSentForModeration": {
+    "description": "Сообщение об успехе при отправке франшизы на модерацию"
+  },
+  "nameLabel": "Название",
+  "@nameLabel": {
+    "description": "Метка для поля ввода названия"
+  },
+  "descriptionLabel": "Описание",
+  "@descriptionLabel": {
+    "description": "Метка для поля ввода описания"
+  },
+  "industryLabel": "Отрасль",
+  "@industryLabel": {
+    "description": "Метка для поля ввода отрасли"
+  },
+  "cityLabel": "Город",
+  "@cityLabel": {
+    "description": "Метка для поля ввода города"
+  },
+
+  "startupCostLabelfirst": "Стартовые затраты (RUB)",
+  "@startupCostLabelfirst": {
+    "description": "Label for the startup cost input field"
+  },
+  "startupCostLabel": "Стартовые затраты: {currency}{amount}",
+  "@startupCostLabel": {
+    "description": "Метка для поля стартовых затрат с валютой и суммой",
+    "placeholders": {
+      "currency": {},
+      "amount": {}
+    }
+  },
+  "royaltyPercentLabel": "Роялти (%)",
+  "@royaltyPercentLabel": {
+    "description": "Метка для поля ввода процента роялти"
+  },
+  "royaltyPercentLabelFranchise": "Процент роялти (%)",
+  "@royaltyPercentLabelFranchise": {
+    "description": "Метка для поля процента роялти при создании франшизы"
+  },
+  "nameRequiredError": "Название обязательно",
+  "@nameRequiredError": {
+    "description": "Сообщение об ошибке, если название пустое"
+  },
+  "descriptionRequiredError": "Описание обязательно",
+  "@descriptionRequiredError": {
+    "description": "Сообщение об ошибке, если описание пустое"
+  },
+  "industryRequiredError": "Отрасль обязательна",
+  "@industryRequiredError": {
+    "description": "Сообщение об ошибке, если отрасль пустая"
+  },
+  "cityRequiredError": "Город обязателен",
+  "@cityRequiredError": {
+    "description": "Сообщение об ошибке, если город пустой"
+  },
+  "startupCostRequiredError": "Стартовые затраты обязательны",
+  "@startupCostRequiredError": {
+    "description": "Сообщение об ошибке, если стартовые затраты пустые"
+  },
+  "invalidStartupCostError": "Введите действительное число",
+  "@invalidStartupCostError": {
+    "description": "Сообщение об ошибке, если стартовые затраты не являются числом"
+  },
+  "royaltyPercentRequiredError": "Процент роялти обязателен",
+  "@royaltyPercentRequiredError": {
+    "description": "Сообщение об ошибке, если процент роялти пустой"
+  },
+  "invalidRoyaltyPercentError": "Введите действительный процент (0-100)",
+  "@invalidRoyaltyPercentError": {
+    "description": "Сообщение об ошибке, если процент роялти не в диапазоне 0-100"
+  },
+  "submitForModerationButton": "Отправить на модерацию",
+  "@submitForModerationButton": {
+    "description": "Текст кнопки для отправки франшизы на модерацию"
+  },
+  "franchHubTitle": "Franch Hub",
+  "@franchHubTitle": {
+    "description": "Заголовок приложения"
+  },
+  "searchHint": "Поиск",
+  "@searchHint": {
+    "description": "Подсказка для поля поиска"
+  },
+  "findPerfectFranchise": "Найдите свою идеальную франшизу",
+  "@findPerfectFranchise": {
+    "description": "Текст для привлечения пользователей к поиску франшиз"
+  },
+  "exploreOpportunities": "Исследуйте лучшие возможности",
+  "@exploreOpportunities": {
+    "description": "Текст для продвижения изучения франшиз"
+  },
+  "exploreFranchiseTitle": "Исследуйте нашу франшизу",
+  "@exploreFranchiseTitle": {
+    "description": "Заголовок страницы изучения франшизы"
+  },
+  "noFranchisesAvailable": "Франшизы отсутствуют",
+  "@noFranchisesAvailable": {
+    "description": "Сообщение, если нет доступных франшиз"
+  },
+  "franchiseOverviewTitle": "Обзор франшизы",
+  "@franchiseOverviewTitle": {
+    "description": "Заголовок страницы обзора франшизы"
+  },
+  "chatFailedError": "Не удалось начать чат: {error}",
+  "@chatFailedError": {
+    "description": "Сообщение об ошибке при неудачном начале чата",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "currentUserNotFoundError": "Текущий пользователь не найден",
+  "@currentUserNotFoundError": {
+    "description": "Сообщение об ошибке, если текущий пользователь не найден"
+  },
+  "franchiseOwnerNotFoundError": "Владелец франшизы не найден",
+  "@franchiseOwnerNotFoundError": {
+    "description": "Сообщение об ошибке, если владелец франшизы не найден"
+  },
+  "youAreFranchiseOwnerError": "Вы являетесь владельцем франшизы",
+  "@youAreFranchiseOwnerError": {
+    "description": "Сообщение об ошибке, если пользователь является владельцем франшизы"
+  },
+  "respondNowButton": "Ответить сейчас",
+  "@respondNowButton": {
+    "description": "Текст кнопки для немедленного ответа"
+  },
+  "myFranchisesTitle": "Мои франшизы",
+  "@myFranchisesTitle": {
+    "description": "Заголовок страницы франшиз пользователя"
+  },
+  "noFranchisesYet": "У вас пока нет франшиз.",
+  "@noFranchisesYet": {
+    "description": "Сообщение, если у пользователя нет франшиз"
+  },
+  "moderationTitle": "Модерация",
+  "@moderationTitle": {
+    "description": "Заголовок страницы модерации"
+  },
+  "noPendingFranchiseRequests": "Нет заявок на франшизы",
+  "@noPendingFranchiseRequests": {
+    "description": "Сообщение, если нет ожидающих заявок на франшизы"
+  },
+  "noPendingBranchRequests": "Нет заявок на филиалы",
+  "@noPendingBranchRequests": {
+    "description": "Сообщение, если нет ожидающих заявок на филиалы"
+  },
+  "branchModerationSuccess": "Модерация филиала успешна",
+  "@branchModerationSuccess": {
+    "description": "Сообщение об успехе при модерации филиала"
+  },
+  "franchiseModerationSuccess": "Модерация франшизы успешна",
+  "@franchiseModerationSuccess": {
+    "description": "Сообщение об успехе при модерации франшизы"
+  },
+  "createdAtLabel": "Создано: {createdAt}",
+  "@createdAtLabel": {
+    "description": "Метка для отображения даты создания",
+    "placeholders": {
+      "createdAt": {}
+    }
+  },
+  "franchiseStatusLabel": "Статус: {status}",
+  "@franchiseStatusLabel": {
+    "description": "Метка для отображения статуса франшизы",
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "franchiseOwnerIdLabel": "ID владельца: {ownerId}",
+  "@franchiseOwnerIdLabel": {
+    "description": "Метка для отображения ID владельца франшизы",
+    "placeholders": {
+      "ownerId": {}
+    }
+  },
+  "franchiseLabel": "Франшиза",
+  "@franchiseLabel": {
+    "description": "Метка для отображения названия франшизы"
+  },
+  "locationLabel": "Местоположение",
+  "@locationLabel": {
+    "description": "Метка для отображения местоположения"
+  },
+  "workingHoursLabel": "Часы работы",
+  "@workingHoursLabel": {
+    "description": "Метка для отображения часов работы"
+  },
+  "phoneLabel": "Телефон",
+  "@phoneLabel": {
+    "description": "Метка для отображения номера телефона"
+  },
+  "branchStatusLabel": "Статус",
+  "@branchStatusLabel": {
+    "description": "Метка для отображения статуса филиала"
+  },
+  "branchRequestedByLabel": "Запрошено: {requesterId}",
+  "@branchRequestedByLabel": {
+    "description": "Метка для отображения ID запрашивающего филиал"
+  }
+}

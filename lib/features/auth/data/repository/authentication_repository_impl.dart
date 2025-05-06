@@ -1,35 +1,48 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flutter/material.dart';
 import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:franch_hub/features/auth/domain/repository/authentication_repository.dart';
-
+import 'package:franch_hub/generated/l10n.dart';
 class SignUpWithEmailAndPasswordFailure implements Exception {
   final String message;
 
-  const SignUpWithEmailAndPasswordFailure([
-    this.message = 'An unknown exception occurred.',
-  ]);
+  SignUpWithEmailAndPasswordFailure(BuildContext context, [
+    String? messageKey,
+  ]) : message = messageKey == null
+      ? S.of(context)!.unknownError
+      : _getMessage(context, messageKey);
 
-  factory SignUpWithEmailAndPasswordFailure.fromCode(String code) {
+  factory SignUpWithEmailAndPasswordFailure.fromCode(BuildContext context, String code) {
     switch (code) {
       case 'invalid-email':
-        return const SignUpWithEmailAndPasswordFailure(
-          'Email is not valid or badly formatted.',
-        );
+        return SignUpWithEmailAndPasswordFailure(context, 'invalidEmail');
       case 'email-already-in-use':
-        return const SignUpWithEmailAndPasswordFailure(
-          'An account already exists for that email.',
-        );
+        return SignUpWithEmailAndPasswordFailure(context, 'emailAlreadyInUse');
       case 'operation-not-allowed':
-        return const SignUpWithEmailAndPasswordFailure(
-          'Operation is not allowed. Please contact support.',
-        );
+        return SignUpWithEmailAndPasswordFailure(context, 'operationNotAllowed');
       case 'weak-password':
-        return const SignUpWithEmailAndPasswordFailure(
-          'Please enter a stronger password.',
-        );
+        return SignUpWithEmailAndPasswordFailure(context, 'weakPassword');
       default:
-        return const SignUpWithEmailAndPasswordFailure();
+        return SignUpWithEmailAndPasswordFailure(context);
+    }
+  }
+
+  static String _getMessage(BuildContext context, String messageKey) {
+    final l10n = S.of(context)!;
+    switch (messageKey) {
+      case 'invalidEmail':
+        return l10n.invalidEmail;
+      case 'emailAlreadyInUse':
+        return l10n.emailAlreadyInUse;
+      case 'operationNotAllowed':
+        return l10n.operationNotAllowed;
+      case 'weakPassword':
+        return l10n.weakPassword;
+      case 'signUpError':
+        return l10n.signUpError('Unknown error');
+      default:
+        return l10n.unknownError;
     }
   }
 }
@@ -37,30 +50,42 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
 class LogInWithEmailAndPasswordFailure implements Exception {
   final String message;
 
-  const LogInWithEmailAndPasswordFailure([
-    this.message = 'An unknown exception occurred.',
-  ]);
+  LogInWithEmailAndPasswordFailure(BuildContext context, [
+    String? messageKey,
+  ]) : message = messageKey == null
+      ? S.of(context)!.unknownError
+      : _getMessage(context, messageKey);
 
-  factory LogInWithEmailAndPasswordFailure.fromCode(String code) {
+  factory LogInWithEmailAndPasswordFailure.fromCode(BuildContext context, String code) {
     switch (code) {
       case 'invalid-email':
-        return const LogInWithEmailAndPasswordFailure(
-          'Email is not valid or badly formatted.',
-        );
+        return LogInWithEmailAndPasswordFailure(context, 'invalidEmail');
       case 'user-disabled':
-        return const LogInWithEmailAndPasswordFailure(
-          'This user has been disabled. Please contact support for help.',
-        );
+        return LogInWithEmailAndPasswordFailure(context, 'userDisabled');
       case 'user-not-found':
-        return const LogInWithEmailAndPasswordFailure(
-          'Email is not found, please create an account.',
-        );
+        return LogInWithEmailAndPasswordFailure(context, 'emailNotFound');
       case 'wrong-password':
-        return const LogInWithEmailAndPasswordFailure(
-          'Incorrect password, please try again.',
-        );
+        return LogInWithEmailAndPasswordFailure(context, 'wrongPassword');
       default:
-        return const LogInWithEmailAndPasswordFailure();
+        return LogInWithEmailAndPasswordFailure(context);
+    }
+  }
+
+  static String _getMessage(BuildContext context, String messageKey) {
+    final l10n = S.of(context)!;
+    switch (messageKey) {
+      case 'invalidEmail':
+        return l10n.invalidEmail;
+      case 'userDisabled':
+        return l10n.userDisabled;
+      case 'emailNotFound':
+        return l10n.emailNotFound;
+      case 'wrongPassword':
+        return l10n.wrongPassword;
+      case 'loginError':
+        return l10n.loginError('Unknown error');
+      default:
+        return l10n.unknownError;
     }
   }
 }
@@ -68,51 +93,68 @@ class LogInWithEmailAndPasswordFailure implements Exception {
 class LogInWithGoogleFailure implements Exception {
   final String message;
 
-  const LogInWithGoogleFailure([
-    this.message = 'An unknown exception occurred.',
-  ]);
+  LogInWithGoogleFailure(BuildContext context, [
+    String? messageKey,
+  ]) : message = messageKey == null
+      ? S.of(context)!.unknownError
+      : _getMessage(context, messageKey);
 
-  factory LogInWithGoogleFailure.fromCode(String code) {
+  factory LogInWithGoogleFailure.fromCode(BuildContext context, String code) {
     switch (code) {
       case 'account-exists-with-different-credential':
-        return const LogInWithGoogleFailure(
-          'Account exists with different credentials.',
-        );
+        return LogInWithGoogleFailure(context, 'accountExistsDifferentCredential');
       case 'invalid-credential':
-        return const LogInWithGoogleFailure(
-          'The credential received is malformed or has expired.',
-        );
+        return LogInWithGoogleFailure(context, 'invalidCredential');
       case 'operation-not-allowed':
-        return const LogInWithGoogleFailure(
-          'Operation is not allowed. Please contact support.',
-        );
+        return LogInWithGoogleFailure(context, 'operationNotAllowed');
       case 'user-disabled':
-        return const LogInWithGoogleFailure(
-          'This user has been disabled. Please contact support for help.',
-        );
+        return LogInWithGoogleFailure(context, 'userDisabled');
       case 'user-not-found':
-        return const LogInWithGoogleFailure(
-          'Email is not found, please create an account.',
-        );
+        return LogInWithGoogleFailure(context, 'emailNotFound');
       case 'wrong-password':
-        return const LogInWithGoogleFailure(
-          'Incorrect password, please try again.',
-        );
+        return LogInWithGoogleFailure(context, 'wrongPassword');
       case 'invalid-verification-code':
-        return const LogInWithGoogleFailure(
-          'The credential verification code received is invalid.',
-        );
+        return LogInWithGoogleFailure(context, 'invalidVerificationCode');
       case 'invalid-verification-id':
-        return const LogInWithGoogleFailure(
-          'The credential verification ID received is invalid.',
-        );
+        return LogInWithGoogleFailure(context, 'invalidVerificationId');
       default:
-        return const LogInWithGoogleFailure();
+        return LogInWithGoogleFailure(context);
+    }
+  }
+
+  static String _getMessage(BuildContext context, String messageKey) {
+    final l10n = S.of(context)!;
+    switch (messageKey) {
+      case 'accountExistsDifferentCredential':
+        return l10n.accountExistsDifferentCredential;
+      case 'invalidCredential':
+        return l10n.invalidCredential;
+      case 'operationNotAllowed':
+        return l10n.operationNotAllowed;
+      case 'userDisabled':
+        return l10n.userDisabled;
+      case 'emailNotFound':
+        return l10n.emailNotFound;
+      case 'wrongPassword':
+        return l10n.wrongPassword;
+      case 'invalidVerificationCode':
+        return l10n.invalidVerificationCode;
+      case 'invalidVerificationId':
+        return l10n.invalidVerificationId;
+      case 'googleLoginError':
+        return l10n.googleLoginError('Unknown error');
+      default:
+        return l10n.unknownError;
     }
   }
 }
 
-class LogOutFailure implements Exception {}
+class LogOutFailure implements Exception {
+  final String message;
+
+  LogOutFailure(BuildContext context)
+      : message = S.of(context)!.logoutError('Logout failed');
+}
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -132,12 +174,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       final firebaseUser = await remoteDataSource.signUp(name, email, password);
       if (firebaseUser == null) {
-        throw const SignUpWithEmailAndPasswordFailure('Sign up failed');
+        throw Exception('Sign up failed: User is null');
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
+      throw Exception('Sign up failed: ${e.code}');
     } catch (e) {
-      throw const SignUpWithEmailAndPasswordFailure();
+      throw Exception('Sign up failed: $e');
     }
   }
 
@@ -147,15 +189,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     required String password,
   }) async {
     try {
-      final firebaseUser =
-      await remoteDataSource.logInWithEmailAndPassword(email, password);
+      final firebaseUser = await remoteDataSource.logInWithEmailAndPassword(email, password);
       if (firebaseUser == null) {
-        throw const LogInWithEmailAndPasswordFailure('Login failed');
+        throw Exception('Login failed: User is null');
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw LogInWithEmailAndPasswordFailure.fromCode(e.code);
+      throw Exception('Login failed: ${e.code}');
     } catch (e) {
-      throw const LogInWithEmailAndPasswordFailure();
+      throw Exception('Login failed: $e');
     }
   }
 
@@ -164,9 +205,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       await remoteDataSource.logInWithGoogle();
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw LogInWithGoogleFailure.fromCode(e.code);
+      throw Exception('Google login failed: ${e.code}');
     } catch (e) {
-      throw const LogInWithGoogleFailure();
+      throw Exception('Google login failed: $e');
     }
   }
 
@@ -175,7 +216,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       await remoteDataSource.logOut();
     } catch (e) {
-      throw LogOutFailure();
+      throw Exception('Logout failed: $e');
     }
   }
 

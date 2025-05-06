@@ -6,6 +6,7 @@ import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/auth/domain/repository/authentication_repository.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class FranchiseDetailPage extends StatefulWidget {
   final Franchise? franchise;
@@ -22,6 +23,7 @@ class _FranchiseDetailPageState extends State<FranchiseDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     final franchise = widget.franchise ??
         Franchise(
           id: '',
@@ -44,21 +46,18 @@ class _FranchiseDetailPageState extends State<FranchiseDetailPage> {
       });
 
       try {
-        // Get current user
         final currentUser = authRepository.currentUser;
         if (currentUser == null || currentUser == UserEntity.empty) {
-          throw Exception('Current user not found');
+          throw Exception(l10n.currentUserNotFoundError);
         }
 
-        // Get franchise owner (other user)
         final otherUser = await authRepository.getUser(franchise.ownerId);
         if (otherUser == UserEntity.empty) {
-          throw Exception('Franchise owner not found');
+          throw Exception(l10n.franchiseOwnerNotFoundError);
         }
         if (otherUser == currentUser) {
-          throw Exception('You Franchise owner ');
+          throw Exception(l10n.youAreFranchiseOwnerError);
         }
-        // Navigate to ChatPage
         Navigator.pushNamed(
           context,
           AppRouter.chatPage,
@@ -69,7 +68,7 @@ class _FranchiseDetailPageState extends State<FranchiseDetailPage> {
         );
       } catch (e) {
         setState(() {
-          _errorMessage = 'Failed to start chat: $e';
+          _errorMessage = l10n.chatFailedError(e.toString());
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(_errorMessage!)),
@@ -156,7 +155,7 @@ class _FranchiseDetailPageState extends State<FranchiseDetailPage> {
                           child: const Row(
                             children: [
                               Icon(Icons.star),
-                              Text('4.9'), // Можно добавить rating в модель
+                              Text('4.9'),
                             ],
                           ),
                         ),
@@ -173,14 +172,14 @@ class _FranchiseDetailPageState extends State<FranchiseDetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Franchise Overview',
+                            l10n.franchiseOverviewTitle,
                             style: FlutterTextTheme.headlineMedium(context),
                           ),
                           Text(
-                            'Industry: ${franchise.industry}\n'
-                                'City: ${franchise.city}\n'
-                                'Startup Cost: ${franchise.startupCost.toStringAsFixed(2)} RUB\n'
-                                'Royalty: ${franchise.royaltyPercent.toStringAsFixed(1)}%\n\n'
+                            '${l10n.industryLabel}: ${franchise.industry}\n'
+                                '${l10n.cityLabel}: ${franchise.city}\n'
+                                '${l10n.startupCostLabel}: ${franchise.startupCost.toStringAsFixed(2)} RUB\n'
+                                '${l10n.royaltyPercentLabelFranchise}: ${franchise.royaltyPercent.toStringAsFixed(1)}%\n\n'
                                 '${franchise.description}',
                           ),
                         ],
@@ -227,7 +226,7 @@ class _FranchiseDetailPageState extends State<FranchiseDetailPage> {
                           );
                         },
                         child: Text(
-                          'Respond Now',
+                          l10n.respondNowButton,
                           style: FlutterTextTheme.titleLarge(context),
                         ),
                       ),

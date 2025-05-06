@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:franch_hub/config/theme/theme.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/franchise_bloc/franchise_bloc.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class CreateFranchisePage extends StatefulWidget {
   const CreateFranchisePage({super.key});
@@ -20,7 +21,6 @@ class _CreateFranchisePageState extends State<CreateFranchisePage> {
   final _cityController = TextEditingController();
   final _startupCostController = TextEditingController();
   final _royaltyPercentController = TextEditingController();
-  final _industryenamesController = TextEditingController();
 
   @override
   void dispose() {
@@ -30,34 +30,33 @@ class _CreateFranchisePageState extends State<CreateFranchisePage> {
     _cityController.dispose();
     _startupCostController.dispose();
     _royaltyPercentController.dispose();
-    _industryenamesController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     final userId = sl<FirebaseAuth>().currentUser?.uid;
     if (userId == null) {
-      return const Scaffold(
-        body: Center(child: Text('Please log in')),
+      return Scaffold(
+        body: Center(child: Text(l10n.pleaseLogIn)),
       );
     }
 
     return BlocProvider(
       create: (_) => sl<FranchiseBloc>(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Create Franchise')),
+        appBar: AppBar(title: Text(l10n.createFranchiseTitle)),
         body: BlocConsumer<FranchiseBloc, FranchiseState>(
           listener: (context, state) {
             if (state is FranchiseCreated) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Text('Franchise sent for moderation')),
+                SnackBar(content: Text(l10n.franchiseSentForModeration)),
               );
               Navigator.pop(context);
             } else if (state is MyFranchisesError) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error: ${state.message}')),
+                SnackBar(content: Text(l10n.errorMessage(state.message))),
               );
             }
           },
@@ -73,52 +72,46 @@ class _CreateFranchisePageState extends State<CreateFranchisePage> {
                   children: [
                     TextFormField(
                       controller: _nameController,
-                      decoration: const InputDecoration(labelText: 'Name'),
-                      validator: (value) =>
-                      value!.isEmpty ? 'Name is required' : null,
+                      decoration: InputDecoration(labelText: l10n.nameLabel),
+                      validator: (value) => value!.isEmpty ? l10n.nameRequiredError : null,
                     ),
                     TextFormField(
                       controller: _descriptionController,
-                      decoration: const InputDecoration(labelText: 'Description'),
+                      decoration: InputDecoration(labelText: l10n.descriptionLabel),
                       maxLines: 3,
-                      validator: (value) =>
-                      value!.isEmpty ? 'Description is required' : null,
+                      validator: (value) => value!.isEmpty ? l10n.descriptionRequiredError : null,
                     ),
                     TextFormField(
                       controller: _industryController,
-                      decoration: const InputDecoration(labelText: 'Industry'),
-                      validator: (value) =>
-                      value!.isEmpty ? 'Industry is required' : null,
+                      decoration: InputDecoration(labelText: l10n.industryLabel),
+                      validator: (value) => value!.isEmpty ? l10n.industryRequiredError : null,
                     ),
                     TextFormField(
                       controller: _cityController,
-                      decoration: const InputDecoration(labelText: 'City'),
-                      validator: (value) =>
-                      value!.isEmpty ? 'City is required' : null,
+                      decoration: InputDecoration(labelText: l10n.cityLabel),
+                      validator: (value) => value!.isEmpty ? l10n.cityRequiredError : null,
                     ),
                     TextFormField(
                       controller: _startupCostController,
-                      decoration:
-                      const InputDecoration(labelText: 'Startup Cost (RUB)'),
+                      decoration: InputDecoration(labelText: l10n.startupCostLabelfirst),
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        if (value!.isEmpty) return 'Startup cost is required';
+                        if (value!.isEmpty) return l10n.startupCostRequiredError;
                         if (double.tryParse(value) == null) {
-                          return 'Enter a valid number';
+                          return l10n.invalidStartupCostError;
                         }
                         return null;
                       },
                     ),
                     TextFormField(
                       controller: _royaltyPercentController,
-                      decoration:
-                      const InputDecoration(labelText: 'Royalty Percent (%)'),
+                      decoration: InputDecoration(labelText: l10n.royaltyPercentLabelFranchise),
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        if (value!.isEmpty) return 'Royalty percent is required';
+                        if (value!.isEmpty) return l10n.royaltyPercentRequiredError;
                         final parsed = double.tryParse(value);
                         if (parsed == null || parsed < 0 || parsed > 100) {
-                          return 'Enter a valid percentage (0-100)';
+                          return l10n.invalidRoyaltyPercentError;
                         }
                         return null;
                       },
@@ -132,12 +125,10 @@ class _CreateFranchisePageState extends State<CreateFranchisePage> {
                               ownerId: userId,
                               name: _nameController.text,
                               description: _descriptionController.text,
-                              industry: _industryenamesController.text,
+                              industry: _industryController.text,
                               city: _cityController.text,
-                              startupCost:
-                              double.parse(_startupCostController.text),
-                              royaltyPercent:
-                              double.parse(_royaltyPercentController.text),
+                              startupCost: double.parse(_startupCostController.text),
+                              royaltyPercent: double.parse(_royaltyPercentController.text),
                             ),
                           );
                         }
@@ -146,7 +137,7 @@ class _CreateFranchisePageState extends State<CreateFranchisePage> {
                         fixedSize: const Size(double.infinity, 50),
                       ),
                       child: Text(
-                        'Submit for Moderation',
+                        l10n.submitForModerationButton,
                         style: FlutterTextTheme.titleLarge(context),
                       ),
                     ),

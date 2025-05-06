@@ -5,12 +5,12 @@ import 'package:franch_hub/features/branches/domain/entities/franchise_branch.da
 import 'package:franch_hub/features/financial_reports/presentation/screens/branch_indicators_page/branch_indicators_page.dart';
 import 'package:franch_hub/features/transactions/presentation/bloc/transactions_bloc/transactions_bloc.dart';
 import 'package:franch_hub/features/transactions/presentation/screen/transactions_page/transactions_page.dart';
-
+import 'package:franch_hub/generated/l10n.dart';
 
 class BranchDetailsPage extends StatelessWidget {
   final FranchiseBranch branch;
 
-  const BranchDetailsPage({super.key,required this.branch});
+  const BranchDetailsPage({super.key, required this.branch});
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +19,15 @@ class BranchDetailsPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(branch.name),
-          bottom: const TabBar(
+          bottom: TabBar(
             tabs: [
-              Tab(text: 'Отчёты'),
-              Tab(text: 'Транзакции'),
+              Tab(text: S.of(context)!.reportsTab),
+              Tab(text: S.of(context)!.transactionsTab),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            //BranchReportsPage(branchId: branch.id,),
             BranchIndicatorsPage(branch: branch),
             BlocProvider<TransactionBloc>(
               create: (_) => sl<TransactionBloc>()..add(LoadTransactions(branch.id)),

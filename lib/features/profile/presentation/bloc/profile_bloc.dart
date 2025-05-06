@@ -62,7 +62,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final updatedUser = await authRepository.getUser(event.uid);
 
       // Обновляем AuthBloc
-      sl<AuthBloc>().add(UpdateUser(updatedUser));
+      sl<AuthBloc>().add(UpdateUser(user: updatedUser));
 
       emit(ProfileUpdateSuccess());
       add(LoadProfile(event.uid));

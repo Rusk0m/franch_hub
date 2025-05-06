@@ -23,7 +23,7 @@ class ModerationRemoteDataSourceImpl implements ModerationRemoteDataSource {
           .map((doc) => FranchiseModel.fromJson(doc.data()).toEntity())
           .toList();
     } catch (e) {
-      throw Exception('Failed to get pending franchises: $e');
+      throw Exception('failedToGetPendingFranchises|$e');
     }
   }
 
@@ -42,7 +42,7 @@ class ModerationRemoteDataSourceImpl implements ModerationRemoteDataSource {
         }
       }
     } catch (e) {
-      throw Exception('Failed to moderate franchise: $e');
+      throw Exception('failedToModerateFranchise|$e');
     }
   }
 }

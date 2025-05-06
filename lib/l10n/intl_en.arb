@@ -1,1 +1,776 @@
-{}
+{
+  "@@locale": "en",
+  "signUpError": "Sign up error: {error}",
+  "@signUpError": {
+    "description": "Error message shown when sign up fails with a specific error",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "loginError": "Login error: {error}",
+  "@loginError": {
+    "description": "Error message shown when login fails with a specific error",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "googleLoginError": "Google login error: {error}",
+  "@googleLoginError": {
+    "description": "Error message shown when Google login fails with a specific error",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "logoutError": "Logout error: {error}",
+  "@logoutError": {
+    "description": "Error message shown when logout fails with a specific error",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "authCheckError": "Authentication check error: {error}",
+  "@authCheckError": {
+    "description": "Error message shown when checking authentication status fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "userNotFound": "User not found",
+  "@userNotFound": {
+    "description": "Error message when a user is not found"
+  },
+  "fetchUserError": "Failed to fetch user: {error}",
+  "@fetchUserError": {
+    "description": "Error message when fetching user data fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "userCreationFailed": "User creation failed",
+  "@userCreationFailed": {
+    "description": "Error message when user creation fails"
+  },
+  "unknownError": "An unknown exception occurred.",
+  "@unknownError": {
+    "description": "Generic error message for unknown exceptions"
+  },
+  "invalidEmail": "Email is not valid or badly formatted.",
+  "@invalidEmail": {
+    "description": "Error message when the email is invalid"
+  },
+  "emailAlreadyInUse": "An account already exists for that email.",
+  "@emailAlreadyInUse": {
+    "description": "Error message when the email is already in use"
+  },
+  "operationNotAllowed": "Operation is not allowed. Please contact support.",
+  "@operationNotAllowed": {
+    "description": "Error message when the operation is not allowed"
+  },
+  "weakPassword": "Please enter a stronger password.",
+  "@weakPassword": {
+    "description": "Error message when the password is too weak"
+  },
+  "userDisabled": "This user has been disabled. Please contact support for help.",
+  "@userDisabled": {
+    "description": "Error message when the user account is disabled"
+  },
+  "emailNotFound": "Email is not found, please create an account.",
+  "@emailNotFound": {
+    "description": "Error message when the email is not found"
+  },
+  "wrongPassword": "Incorrect password, please try again.",
+  "@wrongPassword": {
+    "description": "Error message when the password is incorrect"
+  },
+  "accountExistsDifferentCredential": "Account exists with different credentials.",
+  "@accountExistsDifferentCredential": {
+    "description": "Error message when the account exists with different credentials"
+  },
+  "invalidCredential": "The credential received is malformed or has expired.",
+  "@invalidCredential": {
+    "description": "Error message when the credential is invalid"
+  },
+  "invalidVerificationCode": "The credential verification code received is invalid.",
+  "@invalidVerificationCode": {
+    "description": "Error message when the verification code is invalid"
+  },
+  "invalidVerificationId": "The credential verification ID received is invalid.",
+  "@invalidVerificationId": {
+    "description": "Error message when the verification ID is invalid"
+  },
+  "welcomeBack": "Welcome Back!",
+  "@welcomeBack": {
+    "description": "Greeting text on the authentication page"
+  },
+  "createNewAccount": "Create a new account",
+  "@createNewAccount": {
+    "description": "Text shown when in registration mode"
+  },
+  "signInAccount": "Sign in your account",
+  "@signInAccount": {
+    "description": "Text shown when in login mode"
+  },
+  "usernameLabel": "Username",
+  "@usernameLabel": {
+    "description": "Label for the username input field"
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for the email input field"
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label for the password input field"
+  },
+  "forgotPassword": "Forgot password? ",
+  "@forgotPassword": {
+    "description": "Text for the forgot password link"
+  },
+  "registrationButton": "Registration",
+  "@registrationButton": {
+    "description": "Text for the registration button"
+  },
+  "loginButton": "Login",
+  "@loginButton": {
+    "description": "Text for the login button"
+  },
+  "orContinueWith": "Or Continue With",
+  "@orContinueWith": {
+    "description": "Text for the divider before alternative login options"
+  },
+  "alreadyHaveAccount": "Already have an account? ",
+  "@alreadyHaveAccount": {
+    "description": "Text prompting to switch to login"
+  },
+  "notRegisteredUser": "Not a registered user? ",
+  "@notRegisteredUser": {
+    "description": "Text prompting to switch to registration"
+  },
+  "logInLink": "LogIn!",
+  "@logInLink": {
+    "description": "Text for the login link"
+  },
+  "registerNowLink": "Register Now!",
+  "@registerNowLink": {
+    "description": "Text for the registration link"
+  },
+  "errorMessage": "Error: {message}",
+  "@errorMessage": {
+    "description": "Generic error message with a specific message",
+    "placeholders": {
+      "message": {}
+    }
+  },
+  "franchiseBranchesTitle": "Franchise branches: {franchiseName}",
+  "@franchiseBranchesTitle": {
+    "description": "Title for the franchise branches page, displaying the franchise name",
+    "placeholders": {
+      "franchiseName": {}
+    }
+  },
+  "myBranchesTitle": "My branches",
+  "@myBranchesTitle": {
+    "description": "Title for the user's branches page"
+  },
+  "addBranchTitle": "Add branch",
+  "@addBranchTitle": {
+    "description": "Title for the add branch page when adding directly"
+  },
+  "createBranchRequestTitle": "Create branch request",
+  "@createBranchRequestTitle": {
+    "description": "Title for the add branch page when creating a request"
+  },
+  "editBranchTitle": "Edit branch",
+  "@editBranchTitle": {
+    "description": "Title for the edit branch page"
+  },
+  "branchNameLabel": "Branch name",
+  "@branchNameLabel": {
+    "description": "Label for the branch name input field"
+  },
+  "enterNameError": "Please enter a name",
+  "@enterNameError": {
+    "description": "Error message when the branch name is empty"
+  },
+  "enterLocationError": "Please enter an address",
+  "@enterLocationError": {
+    "description": "Error message when the address is empty"
+  },
+  "enterRoyaltyError": "Please enter royalty",
+  "@enterRoyaltyError": {
+    "description": "Error message when the royalty percentage is empty"
+  },
+  "invalidRoyaltyError": "Please enter a valid number",
+  "@invalidRoyaltyError": {
+    "description": "Error message when the royalty percentage is not a number"
+  },
+  "enterWorkingHoursError": "Please enter working hours",
+  "@enterWorkingHoursError": {
+    "description": "Error message when the working hours are empty"
+  },
+  "enterPhoneError": "Please enter a phone number",
+  "@enterPhoneError": {
+    "description": "Error message when the phone number is empty"
+  },
+  "sendRequestButton": "Send request",
+  "@sendRequestButton": {
+    "description": "Button text for sending a branch request"
+  },
+  "addBranchButton": "Add branch",
+  "@addBranchButton": {
+    "description": "Button text for adding a branch directly"
+  },
+  "saveChangesButton": "Save changes",
+  "@saveChangesButton": {
+    "description": "Button text for saving branch changes"
+  },
+  "noBranchesMessage": "This franchise has no branches yet.",
+  "@noBranchesMessage": {
+    "description": "Message when there are no branches for a franchise"
+  },
+  "noUserBranchesMessage": "You don't have any branches yet.",
+  "@noUserBranchesMessage": {
+    "description": "Message when the user has no branches"
+  },
+  "pendingRequestsTitle": "Pending requests",
+  "@pendingRequestsTitle": {
+    "description": "Title for the pending branch requests section"
+  },
+  "statusLabel": "Status: {status}",
+  "@statusLabel": {
+    "description": "Label for displaying the status of a pending branch",
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "deleteBranchDialogTitle": "Delete branch?",
+  "@deleteBranchDialogTitle": {
+    "description": "Title for the delete branch confirmation dialog"
+  },
+  "deleteBranchDialogContent": "Are you sure you want to delete \"{branchName}\"?",
+  "@deleteBranchDialogContent": {
+    "description": "Content for the delete branch confirmation dialog",
+    "placeholders": {
+      "branchName": {}
+    }
+  },
+  "cancelButton": "Cancel",
+  "@cancelButton": {
+    "description": "Button text for canceling an action"
+  },
+  "deleteButton": "Delete",
+  "@deleteButton": {
+    "description": "Button text for confirming deletion"
+  },
+  "backButton": "Back",
+  "@backButton": {
+    "description": "Button text for going back"
+  },
+  "operationSuccessMessage": "Operation completed successfully",
+  "@operationSuccessMessage": {
+    "description": "Success message for a completed operation"
+  },
+  "branchRequestSentMessage": "Request sent for moderation",
+  "@branchRequestSentMessage": {
+    "description": "Success message when a branch request is sent"
+  },
+  "branchAddedMessage": "Branch added successfully",
+  "@branchAddedMessage": {
+    "description": "Success message when a branch is added"
+  },
+  "branchUpdatedMessage": "Branch updated successfully",
+  "@branchUpdatedMessage": {
+    "description": "Success message when a branch is updated"
+  },
+  "newBranchRequest": "New branch request: {branchName} by {requesterId}",
+  "@newBranchRequest": {
+    "description": "System message for notifying franchise owner of a new branch request",
+    "placeholders": {
+      "branchName": {},
+      "requesterId": {}
+    }
+  },
+  "branchRequestApproved": "Branch request approved: {branchName}",
+  "@branchRequestApproved": {
+    "description": "System message for notifying franchisee of branch request approval",
+    "placeholders": {
+      "branchName": {}
+    }
+  },
+  "franchiseDataError": "Error: Franchise data not provided",
+  "@franchiseDataError": {
+    "description": "Error message when franchise data is missing"
+  },
+  "failedToCreatePendingBranch": "Failed to create pending branch: {error}",
+  "@failedToCreatePendingBranch": {
+    "description": "Error message when creating a pending branch fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToLoadBranches": "Failed to load branches: {error}",
+  "@failedToLoadBranches": {
+    "description": "Error message when loading branches fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToAddBranch": "Failed to add branch: {error}",
+  "@failedToAddBranch": {
+    "description": "Error message when adding a branch fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToDeleteBranch": "Failed to delete branch: {error}",
+  "@failedToDeleteBranch": {
+    "description": "Error message when deleting a branch fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToEditBranch": "Failed to edit branch: {error}",
+  "@failedToEditBranch": {
+    "description": "Error message when editing a branch fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToModerateBranch": "Failed to moderate branch: {error}",
+  "@failedToModerateBranch": {
+    "description": "Error message when moderating a branch fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "reportsTab": "Reports",
+  "@reportsTab": {
+    "description": "Tab text for the reports section"
+  },
+  "transactionsTab": "Transactions",
+  "@transactionsTab": {
+    "description": "Tab text for the transactions section"
+  },
+  "branchInfo": "Address: {location}\nWorking hours: {workingHours}\nPhone: {phone}",
+  "@branchInfo": {
+    "description": "Subtitle for branch information in the list",
+    "placeholders": {
+      "location": {},
+      "workingHours": {},
+      "phone": {}
+    }
+  },
+  "waitingForData": "Waiting for data...",
+  "@waitingForData": {
+    "description": "Message shown while waiting for data"
+  },
+  "branchNotFoundError": "The branch you are trying to edit no longer exists.",
+  "@branchNotFoundError": {
+    "description": "Error message when the branch to edit does not exist"
+  },
+  "chatPageTitle": "Chat with {userName}",
+  "@chatPageTitle": {
+    "description": "Title for the chat page, displaying the other user's name",
+    "placeholders": {
+      "userName": {}
+    }
+  },
+  "typeMessageHint": "Type a message...",
+  "@typeMessageHint": {
+    "description": "Hint text for the message input field"
+  },
+  "noMessagesYet": "No messages yet",
+  "@noMessagesYet": {
+    "description": "Message shown when there are no messages in the chat"
+  },
+  "chatError": "Error: {message}",
+  "@chatError": {
+    "description": "Error message shown when there is an issue with the chat",
+    "placeholders": {
+      "message": {}
+    }
+  },
+  "selectUserToChatTitle": "Select User to Chat",
+  "@selectUserToChatTitle": {
+    "description": "Title for the users list page"
+  },
+  "pleaseLogInToViewUsers": "Please log in to view users",
+  "@pleaseLogInToViewUsers": {
+    "description": "Message shown when the user is not authenticated"
+  },
+  "noUsersFound": "No users found",
+  "@noUsersFound": {
+    "description": "Message shown when no users are available to chat with"
+  },
+  "branchReportsTitle": "Branch reports",
+  "@branchReportsTitle": {
+    "description": "Title for the branch reports page"
+  },
+  "noReportsAvailable": "No reports available",
+  "@noReportsAvailable": {
+    "description": "Message shown when there are no financial reports"
+  },
+  "reportDetailsTitle": "Report details {month}/{year}",
+  "@reportDetailsTitle": {
+    "description": "Title for the report details dialog",
+    "placeholders": {
+      "month": {},
+      "year": {}
+    }
+  },
+  "revenueLabel": "Revenue",
+  "@revenueLabel": {
+    "description": "Label for the revenue field"
+  },
+  "netProfitLabel": "Net profit",
+  "@netProfitLabel": {
+    "description": "Label for the net profit field"
+  },
+  "totalAssetsLabel": "Total assets",
+  "@totalAssetsLabel": {
+    "description": "Label for the total assets field"
+  },
+  "ownCapitalLabel": "Own capital",
+  "@ownCapitalLabel": {
+    "description": "Label for the own capital field"
+  },
+  "liabilitiesLabel": "Liabilities",
+  "@liabilitiesLabel": {
+    "description": "Label for the liabilities field"
+  },
+  "inventoryLabel": "Inventory",
+  "@inventoryLabel": {
+    "description": "Label for the inventory field"
+  },
+  "initialInvestmentLabel": "Initial investment",
+  "@initialInvestmentLabel": {
+    "description": "Label for the initial investment field"
+  },
+  "fixedCostsLabel": "Fixed costs",
+  "@fixedCostsLabel": {
+    "description": "Label for the fixed costs field"
+  },
+  "unitPriceLabel": "Unit price",
+  "@unitPriceLabel": {
+    "description": "Label for the unit price field"
+  },
+  "variableCostsLabel": "Variable costs",
+  "@variableCostsLabel": {
+    "description": "Label for the variable costs field"
+  },
+  "cashInflowLabel": "Cash inflow",
+  "@cashInflowLabel": {
+    "description": "Label for the cash inflow field"
+  },
+  "cashOutflowLabel": "Cash outflow",
+  "@cashOutflowLabel": {
+    "description": "Label for the cash outflow field"
+  },
+  "royaltyPercentLabelReport": "Royalty (%)",
+  "@royaltyPercentLabelReport": {
+    "description": "Label for the royalty percentage field in reports"
+  },
+  "closeButton": "Close",
+  "@closeButton": {
+    "description": "Button text for closing a dialog"
+  },
+  "branchIndicatorsTitle": "Branch indicators",
+  "@branchIndicatorsTitle": {
+    "description": "Title for the branch indicators page"
+  },
+  "noIndicatorsData": "No indicators data",
+  "@noIndicatorsData": {
+    "description": "Message shown when there are no economic indicators"
+  },
+  "roiByMonths": "ROI by months",
+  "@roiByMonths": {
+    "description": "Title for the ROI chart section"
+  },
+  "indicatorsDetailsTitle": "Indicators {month}/{year}",
+  "@indicatorsDetailsTitle": {
+    "description": "Title for the indicators details dialog",
+    "placeholders": {
+      "month": {},
+      "year": {}
+    }
+  },
+  "roiLabel": "Return on Investment (ROI)",
+  "@roiLabel": {
+    "description": "Label for the ROI field"
+  },
+  "breakevenPointLabel": "Breakeven point",
+  "@breakevenPointLabel": {
+    "description": "Label for the breakeven point field"
+  },
+  "quickRatioLabel": "Quick ratio",
+  "@quickRatioLabel": {
+    "description": "Label for the quick ratio field"
+  },
+  "returnOnAssetsLabel": "Return on assets",
+  "@returnOnAssetsLabel": {
+    "description": "Label for the return on assets field"
+  },
+  "debtLoadLabel": "Debt load",
+  "@debtLoadLabel": {
+    "description": "Label for the debt load field"
+  },
+  "currentRatioLabel": "Current ratio",
+  "@currentRatioLabel": {
+    "description": "Label for the current ratio field"
+  },
+  "returnOnSalesLabel": "Return on sales",
+  "@returnOnSalesLabel": {
+    "description": "Label for the return on sales field"
+  },
+  "autonomyRatioLabel": "Autonomy ratio",
+  "@autonomyRatioLabel": {
+    "description": "Label for the autonomy ratio field"
+  },
+  "royaltyPaymentLabel": "Royalty payment",
+  "@royaltyPaymentLabel": {
+    "description": "Label for the royalty payment field"
+  },
+  "netCashFlowLabel": "Net cash flow",
+  "@netCashFlowLabel": {
+    "description": "Label for the net cash flow field"
+  },
+  "newFinancialReportTitle": "New financial report",
+  "@newFinancialReportTitle": {
+    "description": "Title for the submit financial report page"
+  },
+  "submitReportButton": "Submit report",
+  "@submitReportButton": {
+    "description": "Button text for submitting a financial report"
+  },
+  "requiredFieldError": "Required field",
+  "@requiredFieldError": {
+    "description": "Error message when a field is empty"
+  },
+  "invalidNumberError": "Enter a valid number",
+  "@invalidNumberError": {
+    "description": "Error message when the input is not a valid number"
+  },
+  "invalidNumberFormatError": "Invalid number format",
+  "@invalidNumberFormatError": {
+    "description": "Error message when the number is NaN or infinite"
+  },
+  "reportSubmittedSuccess": "Report submitted successfully",
+  "@reportSubmittedSuccess": {
+    "description": "Success message when a report is submitted"
+  },
+  "dataError": "Data error: {error}",
+  "@dataError": {
+    "description": "Error message when there is an issue with the input data",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "pleaseLogIn": "Please log in",
+  "@pleaseLogIn": {
+    "description": "Message shown when the user is not authenticated"
+  },
+  "createFranchiseTitle": "Create Franchise",
+  "@createFranchiseTitle": {
+    "description": "Title for the create franchise page"
+  },
+  "franchiseSentForModeration": "Franchise sent for moderation",
+  "@franchiseSentForModeration": {
+    "description": "Success message when a franchise is sent for moderation"
+  },
+  "nameLabel": "Name",
+  "@nameLabel": {
+    "description": "Label for the name input field"
+  },
+  "descriptionLabel": "Description",
+  "@descriptionLabel": {
+    "description": "Label for the description input field"
+  },
+  "industryLabel": "Industry",
+  "@industryLabel": {
+    "description": "Label for the industry input field"
+  },
+  "cityLabel": "City",
+  "@cityLabel": {
+    "description": "Label for the city input field"
+  },
+  "startupCostLabelfirst": "Startup Cost (RUB)",
+  "@startupCostLabelfirst": {
+    "description": "Label for the startup cost input field"
+  },
+  "startupCostLabel": "Стартовые затраты: {currency}{amount}",
+  "@startupCostLabel": {
+    "description": "Метка для поля стартовых затрат с валютой и суммой",
+    "placeholders": {
+      "currency": {},
+      "amount": {}
+    }
+  },
+  "royaltyPercentLabel": "Royalty (%)",
+  "@royaltyPercentLabel": {
+    "description": "Label for the royalty percentage input field"
+  },
+  "royaltyPercentLabelFranchise": "Royalty Percent (%)",
+  "@royaltyPercentLabelFranchise": {
+    "description": "Label for the royalty percentage field in franchise creation"
+  },
+  "nameRequiredError": "Name is required",
+  "@nameRequiredError": {
+    "description": "Error message when the name is empty"
+  },
+  "descriptionRequiredError": "Description is required",
+  "@descriptionRequiredError": {
+    "description": "Error message when the description is empty"
+  },
+  "industryRequiredError": "Industry is required",
+  "@industryRequiredError": {
+    "description": "Error message when the industry is empty"
+  },
+  "cityRequiredError": "City is required",
+  "@cityRequiredError": {
+    "description": "Error message when the city is empty"
+  },
+  "startupCostRequiredError": "Startup cost is required",
+  "@startupCostRequiredError": {
+    "description": "Error message when the startup cost is empty"
+  },
+  "invalidStartupCostError": "Enter a valid number",
+  "@invalidStartupCostError": {
+    "description": "Error message when the startup cost is not a valid number"
+  },
+  "royaltyPercentRequiredError": "Royalty percent is required",
+  "@royaltyPercentRequiredError": {
+    "description": "Error message when the royalty percentage is empty"
+  },
+  "invalidRoyaltyPercentError": "Enter a valid percentage (0-100)",
+  "@invalidRoyaltyPercentError": {
+    "description": "Error message when the royalty percentage is not within 0-100"
+  },
+  "submitForModerationButton": "Submit for Moderation",
+  "@submitForModerationButton": {
+    "description": "Button text for submitting a franchise for moderation"
+  },
+  "franchHubTitle": "Franch Hub",
+  "@franchHubTitle": {
+    "description": "Title for the application"
+  },
+  "searchHint": "Search",
+  "@searchHint": {
+    "description": "Hint text for the search field"
+  },
+  "findPerfectFranchise": "Find Your Perfect Franchise",
+  "@findPerfectFranchise": {
+    "description": "Text to attract users to search for franchises"
+  },
+  "exploreOpportunities": "Explore top opportunities",
+  "@exploreOpportunities": {
+    "description": "Text to promote exploring franchises"
+  },
+  "exploreFranchiseTitle": "Explore Our Franchise",
+  "@exploreFranchiseTitle": {
+    "description": "Title for the explore franchise page"
+  },
+  "noFranchisesAvailable": "No franchises available",
+  "@noFranchisesAvailable": {
+    "description": "Message when there are no available franchises"
+  },
+  "franchiseOverviewTitle": "Franchise Overview",
+  "@franchiseOverviewTitle": {
+    "description": "Title for the franchise overview page"
+  },
+  "chatFailedError": "Failed to start chat: {error}",
+  "@chatFailedError": {
+    "description": "Error message when starting a chat fails",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "currentUserNotFoundError": "Current user not found",
+  "@currentUserNotFoundError": {
+    "description": "Error message when the current user is not found"
+  },
+  "franchiseOwnerNotFoundError": "Franchise owner not found",
+  "@franchiseOwnerNotFoundError": {
+    "description": "Error message when the franchise owner is not found"
+  },
+  "youAreFranchiseOwnerError": "You are the franchise owner",
+  "@youAreFranchiseOwnerError": {
+    "description": "Error message when the user is the franchise owner"
+  },
+  "respondNowButton": "Respond Now",
+  "@respondNowButton": {
+    "description": "Button text for responding immediately"
+  },
+  "myFranchisesTitle": "My Franchises",
+  "@myFranchisesTitle": {
+    "description": "Title for the user's franchises page"
+  },
+  "noFranchisesYet": "You don't have any franchises yet.",
+  "@noFranchisesYet": {
+    "description": "Message when the user has no franchises"
+  },
+  "moderationTitle": "Moderation",
+  "@moderationTitle": {
+    "description": "Title for the moderation page"
+  },
+  "noPendingFranchiseRequests": "No pending franchise requests",
+  "@noPendingFranchiseRequests": {
+    "description": "Message when there are no pending franchise requests"
+  },
+  "noPendingBranchRequests": "No pending branch requests",
+  "@noPendingBranchRequests": {
+    "description": "Message when there are no pending branch requests"
+  },
+  "branchModerationSuccess": "Branch moderation successful",
+  "@branchModerationSuccess": {
+    "description": "Success message when branch moderation is successful"
+  },
+  "franchiseModerationSuccess": "Franchise moderation successful",
+  "@franchiseModerationSuccess": {
+    "description": "Success message when franchise moderation is successful"
+  },
+  "createdAtLabel": "Created At: {createdAt}",
+  "@createdAtLabel": {
+    "description": "Label for displaying the creation date",
+    "placeholders": {
+      "createdAt": {}
+    }
+  },
+  "franchiseStatusLabel": "Status: {status}",
+  "@franchiseStatusLabel": {
+    "description": "Label for displaying the franchise status",
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "franchiseOwnerIdLabel": "Owner ID: {ownerId}",
+  "@franchiseOwnerIdLabel": {
+    "description": "Label for displaying the franchise owner ID",
+    "placeholders": {
+      "ownerId": {}
+    }
+  },
+  "franchiseLabel": "Franchise",
+  "@franchiseLabel": {
+    "description": "Label for displaying the franchise name"
+  },
+  "locationLabel": "Location",
+  "@locationLabel": {
+    "description": "Label for displaying the location"
+  },
+  "workingHoursLabel": "Working Hours",
+  "@workingHoursLabel": {
+    "description": "Label for displaying the working hours"
+  },
+  "phoneLabel": "Phone",
+  "@phoneLabel": {
+    "description": "Label for displaying the phone number"
+  },
+  "branchStatusLabel": "Status",
+  "@branchStatusLabel": {
+    "description": "Label for displaying the branch status"
+  },
+  "branchRequestedByLabel": "Requested by",
+  "@branchRequestedByLabel": {
+    "description": "Label for displaying the requester ID of the branch"
+  }
+}

@@ -4,25 +4,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:franch_hub/features/moderation/presentation/bloc/moderation_bloc.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class ModerationPage extends StatelessWidget {
-  final String currentUserId = sl<FirebaseAuth>().currentUser!.uid;
+  final currentUser = sl<FirebaseAuth>().currentUser;
 
   ModerationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     return BlocProvider(
       create: (_) => sl<ModerationBloc>()
-        ..add(LoadModerationData(userId: currentUserId)),
+        ..add(LoadModerationData(userId: currentUser!.uid)),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Moderation'),
+          title: Text(l10n.moderationTitle),
           actions: [
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
-                context.read<AuthBloc>().add(LogoutRequested());
+                context.read<AuthBloc>().add(LogoutRequested(context: context));
               },
             ),
           ],
@@ -31,17 +33,17 @@ class ModerationPage extends StatelessWidget {
           listener: (context, state) {
             if (state is ModerationError) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error: ${state.message}')),
+                SnackBar(content: Text(l10n.errorMessage(state.message))),
               );
             } else if (state is ModerateBranchLoaded) {
               if (state.pendingBranches.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Branch moderation successful')),
+                  SnackBar(content: Text(l10n.branchModerationSuccess)),
                 );
               }
             } else if (state is ModerationFranchiseSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Franchise moderation successful')),
+                SnackBar(content: Text(l10n.franchiseModerationSuccess)),
               );
             }
           },
@@ -51,7 +53,7 @@ class ModerationPage extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is ModerationFranchiseLoaded) {
                 if (state.franchises.isEmpty) {
-                  return const Center(child: Text('No pending franchise requests'));
+                  return Center(child: Text(l10n.noPendingFranchiseRequests));
                 }
                 return ListView.builder(
                   itemCount: state.franchises.length,
@@ -69,14 +71,14 @@ class ModerationPage extends StatelessWidget {
                               style: Theme.of(context).textTheme.headlineLarge,
                             ),
                             const SizedBox(height: 8),
-                            Text('Description: ${franchise.description}'),
-                            Text('Industry: ${franchise.industry}'),
-                            Text('City: ${franchise.city}'),
-                            Text('Startup Cost: \$${franchise.startupCost.toStringAsFixed(2)}'),
-                            Text('Royalty: ${franchise.royaltyPercent.toStringAsFixed(1)}%'),
-                            Text('Created At: ${franchise.createdAt.toString()}'),
-                            Text('Status: ${franchise.status}'),
-                            Text('Owner ID: ${franchise.ownerId}'),
+                            Text('${l10n.descriptionLabel}: ${franchise.description}'),
+                            Text('${l10n.industryLabel}: ${franchise.industry}'),
+                            Text('${l10n.cityLabel}: ${franchise.city}'),
+                            Text('${l10n.startupCostLabel}: ${franchise.startupCost.toStringAsFixed(2)} RUB\n'),
+                            Text('${l10n.royaltyPercentLabel}: ${franchise.royaltyPercent.toStringAsFixed(1)}%'),
+                            Text(l10n.createdAtLabel(franchise.createdAt.toString())),
+                            Text(l10n.franchiseStatusLabel(franchise.status)),
+                            Text(l10n.franchiseOwnerIdLabel(franchise.ownerId)),
                             const SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -113,7 +115,7 @@ class ModerationPage extends StatelessWidget {
                 );
               } else if (state is ModerateBranchLoaded) {
                 if (state.pendingBranches.isEmpty) {
-                  return const Center(child: Text('No pending branch requests'));
+                  return Center(child: Text(l10n.noPendingBranchRequests));
                 }
                 return ListView.builder(
                   itemCount: state.pendingBranches.length,
@@ -131,14 +133,14 @@ class ModerationPage extends StatelessWidget {
                               branch.name,
                               style: Theme.of(context).textTheme.headlineLarge,
                             ),
-                            Text('Franchise: $franchiseName'),
+                            Text('${l10n.franchiseLabel}: $franchiseName'),
                             const SizedBox(height: 8),
-                            Text('Location: ${branch.location}'),
-                            Text('Royalty: ${branch.royaltyPercent.toStringAsFixed(1)}%'),
-                            Text('Working Hours: ${branch.workingHours}'),
-                            Text('Phone: ${branch.phone}'),
-                            Text('Status: ${branch.status}'),
-                            Text('Requested by: ${branch.requesterId}'),
+                            //Text('${l10n.locationLabel}: ${branch.location}'),
+                            Text('${l10n.royaltyPercentLabel}: ${branch.royaltyPercent.toStringAsFixed(1)}%'),
+                            Text('${l10n.workingHoursLabel}: ${branch.workingHours}'),
+                            Text('${l10n.phoneLabel}: ${branch.phone}'),
+                            Text('${l10n.branchStatusLabel}: ${branch.status}'),
+                            Text('${l10n.branchRequestedByLabel}: ${branch.requesterId}'),
                             const SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -190,9 +192,9 @@ class ModerationPage extends StatelessWidget {
                   },
                 );
               } else if (state is ModerationError) {
-                return Center(child: Text('Error: ${state.message}'));
+                return Center(child: Text(l10n.errorMessage(state.message)));
               }
-              return const Center(child: Text('No pending requests'));
+              return Center(child: Text(l10n.noPendingFranchiseRequests));
             },
           ),
         ),

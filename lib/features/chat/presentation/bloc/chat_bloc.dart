@@ -3,14 +3,16 @@ import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/chat/domain/entities/message.dart';
 import 'package:franch_hub/features/chat/domain/use_case/get_message_use_case.dart';
 import 'package:franch_hub/features/chat/domain/use_case/send_message_use_case.dart';
+import 'package:franch_hub/generated/l10n.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter/material.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  final SendMessageUseCase sendMessageUseCase =sl();
-  final GetMessagesUseCase getMessagesUseCase =sl();
+  final SendMessageUseCase sendMessageUseCase = sl();
+  final GetMessagesUseCase getMessagesUseCase = sl();
 
   ChatBloc() : super(const ChatInitial()) {
     on<LoadMessages>(_onLoadMessages);
@@ -22,8 +24,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Future<void> _onLoadMessages(
       LoadMessages event, Emitter<ChatState> emit) async {
     if (event.chatId.isEmpty) {
-      emit(const ChatError(
-        message: 'Chat ID is required',
+      emit(ChatError(
+        message: S.of(event.context)!.chatError('Chat ID is required'),
         textInput: '',
       ));
       return;
@@ -39,7 +41,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       }
     } catch (e) {
       emit(ChatError(
-        message: 'Failed to load messages: $e',
+        message: S.of(event.context)!.chatError(e.toString()),
         textInput: state.textInput,
       ));
     }
@@ -67,7 +69,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ));
     } catch (e) {
       emit(ChatError(
-        message: 'Failed to send message: $e',
+        message: S.of(event.context)!.chatError(e.toString()),
         textInput: state.textInput,
       ));
     }

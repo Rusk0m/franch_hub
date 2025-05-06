@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
 import 'package:franch_hub/features/branches/presentation/bloc/branches_bloc/branch_bloc.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class EditBranchPage extends StatefulWidget {
   final FranchiseBranch branch;
@@ -44,21 +44,21 @@ class _EditBranchPageState extends State<EditBranchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Редактировать филиал')),
+      appBar: AppBar(title: Text(S.of(context)!.editBranchTitle)),
       body: BlocListener<BranchBloc, BranchState>(
         listener: (context, state) {
           if (state is BranchSuccess || state is BranchLoaded) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Филиал успешно обновлен')),
+              SnackBar(content: Text(S.of(context)!.branchUpdatedMessage)),
             );
             Navigator.pop(context);
           } else if (state is BranchError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                action: state.message.contains('no longer exists')
+                action: state.message.contains(S.of(context)!.branchNotFoundError)
                     ? SnackBarAction(
-                  label: 'Назад',
+                  label: S.of(context)!.backButton,
                   onPressed: () => Navigator.pop(context),
                 )
                     : null,
@@ -74,54 +74,58 @@ class _EditBranchPageState extends State<EditBranchPage> {
               children: [
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Название филиала'),
+                  decoration:
+                  InputDecoration(labelText: S.of(context)!.branchNameLabel),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите название';
+                      return S.of(context)!.enterNameError;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _locationController,
-                  decoration: const InputDecoration(labelText: 'Адрес'),
+                  //decoration: InputDecoration(labelText: S.of(context)!.locationLabel),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите адрес';
+                      return S.of(context)!.enterLocationError;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _royaltyPercentController,
-                  decoration: const InputDecoration(labelText: 'Роялти (%)'),
+                  decoration:
+                  InputDecoration(labelText: S.of(context)!.royaltyPercentLabel),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите роялти';
+                      return S.of(context)!.enterRoyaltyError;
                     }
                     if (double.tryParse(value) == null) {
-                      return 'Введите число';
+                      return S.of(context)!.invalidRoyaltyError;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _workingHoursController,
-                  decoration: const InputDecoration(labelText: 'Часы работы (например, 9:00-18:00)'),
+                  decoration:
+                  InputDecoration(labelText: S.of(context)!.workingHoursLabel),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите часы работы';
+                      return S.of(context)!.enterWorkingHoursError;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Телефон'),
+                  decoration:
+                  InputDecoration(labelText: S.of(context)!.phoneLabel),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите телефон';
+                      return S.of(context)!.enterPhoneError;
                     }
                     return null;
                   },
@@ -141,10 +145,12 @@ class _EditBranchPageState extends State<EditBranchPage> {
                         phone: _phoneController.text,
                         createdAt: widget.branch.createdAt,
                       );
-                      context.read<BranchBloc>().add(EditBranch(branch: updatedBranch));
+                      context
+                          .read<BranchBloc>()
+                          .add(EditBranch(branch: updatedBranch, context: context));
                     }
                   },
-                  child: const Text('Сохранить изменения'),
+                  child: Text(S.of(context)!.saveChangesButton),
                 ),
               ],
             ),

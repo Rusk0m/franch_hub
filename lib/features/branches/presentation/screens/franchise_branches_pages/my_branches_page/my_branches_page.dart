@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/branches/presentation/bloc/branches_bloc/branch_bloc.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class MyBranchesPage extends StatefulWidget {
   const MyBranchesPage({super.key});
@@ -20,7 +21,7 @@ class _MyBranchesPageState extends State<MyBranchesPage> {
     super.initState();
     // Reset BranchBloc state and load user's branches
     context.read<BranchBloc>().add(ResetBranchState());
-    context.read<BranchBloc>().add(LoadMyBranches(ownerId: userId));
+    context.read<BranchBloc>().add(LoadMyBranches(ownerId: userId, context: context));
   }
 
   @override
@@ -28,7 +29,7 @@ class _MyBranchesPageState extends State<MyBranchesPage> {
     print('MyBranchesPage: Loading franchiseBranches for userId: $userId');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Мои точки'),
+        title: Text(S.of(context)!.myBranchesTitle),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -44,15 +45,15 @@ class _MyBranchesPageState extends State<MyBranchesPage> {
         listener: (context, state) {
           if (state is BranchSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Операция выполнена успешно')),
+              SnackBar(content: Text(S.of(context)!.operationSuccessMessage)),
             );
           } else if (state is BranchError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                action: state.message.contains('no longer exists')
+                action: state.message.contains(S.of(context)!.branchNotFoundError)
                     ? SnackBarAction(
-                  label: 'Назад',
+                  label: S.of(context)!.backButton,
                   onPressed: () => Navigator.pop(context),
                 )
                     : null,
@@ -68,7 +69,7 @@ class _MyBranchesPageState extends State<MyBranchesPage> {
             } else if (state is BranchLoaded) {
               print('MyBranchesPage: Loaded ${state.branches.length} franchiseBranches');
               if (state.branches.isEmpty) {
-                return const Center(child: Text('У вас пока нет точек.'));
+                return Center(child: Text(S.of(context)!.noUserBranchesMessage));
               }
               return ListView.builder(
                 itemCount: state.branches.length,
@@ -77,9 +78,11 @@ class _MyBranchesPageState extends State<MyBranchesPage> {
                   return ListTile(
                     title: Text(branch.name),
                     subtitle: Text(
-                      'Адрес: ${branch.location}\n'
-                          'Часы работы: ${branch.workingHours}\n'
-                          'Телефон: ${branch.phone}',
+                      S.of(context)!.branchInfo(
+                        branch.location,
+                        branch.workingHours,
+                        branch.phone,
+                      ),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -100,19 +103,22 @@ class _MyBranchesPageState extends State<MyBranchesPage> {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: const Text('Удалить филиал?'),
-                                content: Text('Вы уверены, что хотите удалить "${branch.name}"?'),
+                                title: Text(S.of(context)!.deleteBranchDialogTitle),
+                                content: Text(
+                                    S.of(context)!.deleteBranchDialogContent(branch.name)),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: const Text('Отмена'),
+                                    child: Text(S.of(context)!.cancelButton),
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      context.read<BranchBloc>().add(DeleteBranch(branchId: branch.id));
+                                      context.read<BranchBloc>().add(
+                                          DeleteBranch(
+                                              branchId: branch.id, context: context));
                                       Navigator.pop(context);
                                     },
-                                    child: const Text('Удалить'),
+                                    child: Text(S.of(context)!.deleteButton),
                                   ),
                                 ],
                               ),
@@ -133,9 +139,9 @@ class _MyBranchesPageState extends State<MyBranchesPage> {
               );
             } else if (state is BranchError) {
               print('MyBranchesPage: Error: ${state.message}');
-              return Center(child: Text('Ошибка: ${state.message}'));
+              return Center(child: Text(state.message));
             }
-            return const Center(child: Text('Ожидание данных...'));
+            return Center(child: Text(S.of(context)!.waitingForData));
           },
         ),
       ),

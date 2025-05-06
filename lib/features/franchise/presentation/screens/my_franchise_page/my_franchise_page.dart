@@ -5,6 +5,7 @@ import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/franchise_bloc/franchise_bloc.dart';
 import 'package:franch_hub/features/franchise/presentation/screens/create_franchise_page/create_franchise_page.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class MyFranchisesPage extends StatelessWidget {
   final userId = sl<FirebaseAuth>().currentUser?.uid;
@@ -13,12 +14,13 @@ class MyFranchisesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Мои франшизы'),
+        title: Text(l10n.myFranchisesTitle),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(
             context,
@@ -30,20 +32,17 @@ class MyFranchisesPage extends StatelessWidget {
         listener: (context, state) {
           if (state is MyFranchisesError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Ошибка: ${state.message}')),
+              SnackBar(content: Text(l10n.errorMessage(state.message))),
             );
           }
         },
         child: BlocBuilder<FranchiseBloc, FranchiseState>(
           builder: (context, state) {
-            print('MyFranchisesPage: Current state: ${state.runtimeType}');
             if (state is FranchiseLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is FranchiseLoaded) {
-              print(
-                  'MyFranchisesPage: Loaded ${state.franchises.length} franchises');
               if (state.franchises.isEmpty) {
-                return const Center(child: Text('У вас пока нет франшиз.'));
+                return Center(child: Text(l10n.noFranchisesYet));
               }
               return ListView.builder(
                 itemCount: state.franchises.length,
@@ -53,7 +52,6 @@ class MyFranchisesPage extends StatelessWidget {
                     title: Text(franchise.name),
                     subtitle: Text(franchise.description),
                     onTap: () {
-                      print(franchise.name);
                       Navigator.pushNamed(
                         context,
                         AppRouter.franchiseBranchesPage,
@@ -64,14 +62,12 @@ class MyFranchisesPage extends StatelessWidget {
                 },
               );
             } else if (state is MyFranchisesError) {
-              print('MyFranchisesPage: Error: ${state.message}');
-              return Center(child: Text('Ошибка: ${state.message}'));
+              return Center(child: Text(l10n.errorMessage(state.message)));
             }
-            // Trigger initial load if state is FranchiseInitial
             if (userId != null) {
               context.read<FranchiseBloc>().add(LoadMyFranchises(userId!));
             }
-            return const Center(child: Text('Ожидание данных...'));
+            return Center(child: Text(l10n.waitingForData));
           },
         ),
       ),

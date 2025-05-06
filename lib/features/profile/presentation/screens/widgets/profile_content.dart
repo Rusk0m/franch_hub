@@ -36,7 +36,7 @@ class ProfileContent extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () {
-                        context.read<AuthBloc>().add(LogoutRequested());
+                        context.read<AuthBloc>().add(LogoutRequested(context: context));
                       },
                       icon: const Icon(Icons.logout, size: 35),
                     ),

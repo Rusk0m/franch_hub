@@ -5,8 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthRemoteDataSource {
   Future<firebase_auth.User?> signUp(String name, String email, String password);
-  Future<firebase_auth.User?> logInWithEmailAndPassword(
-      String email, String password);
+  Future<firebase_auth.User?> logInWithEmailAndPassword(String email, String password);
   Future<void> logInWithGoogle();
   Future<void> logOut();
   Future<UserModel> getUser(String uid);
@@ -47,9 +46,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       print('SignUp: User created with UID: ${user?.uid}');
       return user;
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      print('SignUp error: ${e.code}');
+      throw Exception(e.code);
     } catch (e) {
       print('SignUp error: $e');
-      throw Exception("Ошибка регистрации: $e");
+      throw Exception('Sign up failed: $e');
     }
   }
 
@@ -63,9 +65,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
       print('Login: User logged in with UID: ${userCredential.user?.uid}');
       return userCredential.user;
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      print('Login error: ${e.code}');
+      throw Exception(e.code);
     } catch (e) {
       print('Login error: $e');
-      throw Exception("Ошибка входа: $e");
+      throw Exception('Login failed: $e');
     }
   }
 
@@ -75,15 +80,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
         print('GoogleSignIn: User cancelled');
-        return;
+        throw Exception('user-cancelled');
       }
       final googleAuth = await googleUser.authentication;
       final credential = firebase_auth.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final userCredential =
-      await _firebaseAuth.signInWithCredential(credential);
+      final userCredential = await _firebaseAuth.signInWithCredential(credential);
       final user = userCredential.user;
       if (user != null) {
         final userDoc = await _firestore.collection('users').doc(user.uid).get();
@@ -92,9 +96,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
         print('GoogleSignIn: User logged in with UID: ${user.uid}');
       }
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      print('GoogleSignIn error: ${e.code}');
+      throw Exception(e.code);
     } catch (e) {
       print('GoogleSignIn error: $e');
-      throw Exception("Ошибка входа через Google: $e");
+      throw Exception('Google login failed: $e');
     }
   }
 
@@ -106,7 +113,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       print('Logout: User signed out');
     } catch (e) {
       print('Logout error: $e');
-      throw Exception("Ошибка выхода: $e");
+      throw Exception('Logout failed: $e');
     }
   }
 
@@ -114,7 +121,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel> getUser(String uid) async {
     try {
       final doc = await _firestore.collection('users').doc(uid).get();
-      if (!doc.exists) throw Exception('Пользователь не найден');
+      if (!doc.exists) throw Exception('user-not-found');
       final userModel = UserModel.fromFirestore(doc);
       print('GetUser: Fetched user with UID: $uid, Role: ${userModel.role}');
       return userModel;
@@ -163,9 +170,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           .set(userModel.toJson());
       print('CreateUser: Created user with UID: ${firebaseUser.uid}');
       return userModel;
-    } on FirebaseException catch (e) {
+    } catch (e) {
       print('CreateUser error: $e');
-      throw Exception(e.message ?? 'User creation failed');
+      throw Exception('User creation failed: $e');
     }
   }
 }

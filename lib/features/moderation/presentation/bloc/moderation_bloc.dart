@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/auth/data/models/user_model.dart';
 import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
@@ -36,20 +35,17 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
       LoadModerationData event, Emitter<ModerationState> emit) async {
     emit(ModerationLoading());
     try {
-      // Проверяем роль пользователя
       final userDoc = await firestore.collection('users').doc(event.userId).get();
       if (!userDoc.exists) {
-        emit(const ModerationError(message: 'User not found'));
+        emit(const ModerationError(message: 'userNotFoundError'));
         return;
       }
       final user = UserModel.fromFirestore(userDoc).toEntity();
 
       if (user.role == 'admin') {
-        // Загружаем заявки на франшизы для администратора
         final franchises = await getPendingFranchisesUseCase(params: null);
         emit(ModerationFranchiseLoaded(franchises: franchises));
       } else {
-        // Загружаем заявки на филиалы для пользователя
         final franchiseQuery = await firestore
             .collection('franchises')
             .where('ownerId', isEqualTo: event.userId)
@@ -64,11 +60,8 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
           return;
         }
 
-        // Загружаем заявки на филиалы для этих франшиз
         final branchesStream = getPendingBranchesUseCase(params: event.userId);
         await for (final branches in branchesStream) {
-          print('ModerationBloc: Stream emitted ${branches.length} branches');
-          // Фильтруем заявки, чтобы показывать только те, что связаны с франшизами пользователя
           final filteredBranches = branches
               .where((branch) => franchiseIds.contains(branch.franchiseId))
               .toList();
@@ -79,7 +72,7 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
         }
       }
     } catch (e) {
-      emit(ModerationError(message: 'Failed to load moderation data: $e'));
+      emit(ModerationError(message: 'failedToLoadModerationData|$e'));
     }
   }
 
@@ -87,11 +80,10 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
       ModerateBranch event, Emitter<ModerationState> emit) async {
     emit(ModerationLoading());
     try {
-      // Проверяем, что пользователь является владельцем франшизы
       final franchiseDoc =
       await firestore.collection('franchises').doc(event.franchiseId).get();
       if (!franchiseDoc.exists || franchiseDoc.data()?['ownerId'] != event.ownerId) {
-        emit(const ModerationError(message: 'You are not authorized to moderate this branch'));
+        emit(const ModerationError(message: 'notAuthorizedToModerateBranch'));
         return;
       }
 
@@ -100,7 +92,7 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
         branch = FranchiseBranch(
           id: const Uuid().v4(),
           franchiseId: event.franchiseId,
-          ownerId: event.requesterId, // requesterId становится ownerId филиала
+          ownerId: event.requesterId,
           name: event.name,
           location: event.location,
           royaltyPercent: event.royaltyPercent,
@@ -118,18 +110,16 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
         ),
       );
 
-      // Отправка уведомления пользователю через чат
       final chatId = _generateChatId(event.ownerId, event.requesterId);
-      final messageContent = event.status == 'approved'
-          ? 'Ваша заявка на филиал "${event.name}" одобрена.'
-          : 'Ваша заявка на филиал "${event.name}" отклонена.';
+      final messageKey =
+      event.status == 'approved' ? 'branchApprovedMessage' : 'branchRejectedMessage';
       await sendMessageUseCase(
         params: SendMessageParams(
           message: Message(
             id: const Uuid().v4(),
             senderId: 'system',
             receiverId: event.requesterId,
-            content: messageContent,
+            content: '$messageKey|${event.name}',
             sentAt: DateTime.now(),
             isSystemMessage: true,
           ),
@@ -137,7 +127,6 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
         ),
       );
 
-      // Перезагружаем список заявок
       final franchiseQuery = await firestore
           .collection('franchises')
           .where('ownerId', isEqualTo: event.ownerId)
@@ -152,10 +141,8 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
         return;
       }
 
-      // Получаем актуальный список заявок
       final branchesStream = getPendingBranchesUseCase(params: event.ownerId);
       await for (final branches in branchesStream) {
-        print('ModerationBloc: Post-moderation stream emitted ${branches.length} branches');
         final filteredBranches = branches
             .where((branch) => franchiseIds.contains(branch.franchiseId))
             .toList();
@@ -163,10 +150,10 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
           pendingBranches: filteredBranches,
           franchiseNames: franchiseNames,
         ));
-        break; // Прерываем после первого эмит, чтобы избежать дублирования
+        break;
       }
     } catch (e) {
-      emit(ModerationError(message: 'Failed to moderate branch: $e'));
+      emit(ModerationError(message: 'failedToModerateBranch|$e'));
     }
   }
 
@@ -174,19 +161,18 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
       ModerateFranchiseEvent event, Emitter<ModerationState> emit) async {
     emit(ModerationLoading());
     try {
-      // Проверяем существование документа
-      final franchiseDoc = await firestore.collection('pending_franchises').doc(event.franchiseId).get();
+      final franchiseDoc =
+      await firestore.collection('pending_franchises').doc(event.franchiseId).get();
       if (!franchiseDoc.exists) {
-        emit(const ModerationError(message: 'Franchise request not found'));
+        emit(const ModerationError(message: 'franchiseRequestNotFound'));
         return;
       }
       final franchiseData = franchiseDoc.data();
       if (franchiseData == null) {
-        emit(const ModerationError(message: 'Franchise request data is empty'));
+        emit(const ModerationError(message: 'franchiseRequestDataEmpty'));
         return;
       }
 
-      // Выполняем модерацию
       await moderateFranchiseUseCase(
         params: ModerateFranchiseParams(
           franchiseId: event.franchiseId,
@@ -194,20 +180,19 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
         ),
       );
 
-      // Отправка уведомления владельцу франшизы через чат
       final ownerId = franchiseData['ownerId'] as String;
       final franchiseName = franchiseData['name'] as String;
       final chatId = _generateChatId('system', ownerId);
-      final messageContent = event.status == 'approved'
-          ? 'Ваша заявка на франшизу "$franchiseName" одобрена.'
-          : 'Ваша заявка на франшизу "$franchiseName" отклонена.';
+      final messageKey = event.status == 'approved'
+          ? 'franchiseApprovedMessage'
+          : 'franchiseRejectedMessage';
       await sendMessageUseCase(
         params: SendMessageParams(
           message: Message(
             id: const Uuid().v4(),
             senderId: 'system',
             receiverId: ownerId,
-            content: messageContent,
+            content: '$messageKey|$franchiseName',
             sentAt: DateTime.now(),
             isSystemMessage: true,
           ),
@@ -215,11 +200,10 @@ class ModerationBloc extends Bloc<ModerationEvent, ModerationState> {
         ),
       );
 
-      // Обновляем список заявок
       final franchises = await getPendingFranchisesUseCase(params: null);
       emit(ModerationFranchiseLoaded(franchises: franchises));
     } catch (e) {
-      emit(ModerationError(message: 'Failed to moderate franchise: $e'));
+      emit(ModerationError(message: 'failedToModerateFranchise|$e'));
     }
   }
 

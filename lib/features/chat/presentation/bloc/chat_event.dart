@@ -6,8 +6,9 @@ abstract class ChatEvent {
 
 class LoadMessages extends ChatEvent {
   final String chatId;
+  final BuildContext context;
 
-  const LoadMessages({required this.chatId});
+  const LoadMessages({required this.chatId, required this.context});
 }
 
 class SendMessage extends ChatEvent {
@@ -16,6 +17,7 @@ class SendMessage extends ChatEvent {
   final String receiverId;
   final String chatId;
   final bool isSystemMessage;
+  final BuildContext context;
 
   const SendMessage({
     required this.content,
@@ -23,6 +25,7 @@ class SendMessage extends ChatEvent {
     required this.receiverId,
     required this.chatId,
     this.isSystemMessage = false,
+    required this.context,
   });
 }
 
@@ -32,4 +35,6 @@ class UpdateTextInput extends ChatEvent {
   const UpdateTextInput({required this.text});
 }
 
-class ClearTextInput extends ChatEvent {}
+class ClearTextInput extends ChatEvent {
+  const ClearTextInput();
+}

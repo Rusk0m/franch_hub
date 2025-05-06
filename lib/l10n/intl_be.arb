@@ -1,0 +1,780 @@
+{
+  "@@locale": "be",
+  "signUpError": "Памылка рэгістрацыі: {error}",
+  "@signUpError": {
+    "description": "Паведамленне пра памылку пры няўдалай рэгістрацыі",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "loginError": "Памылка ўваходу: {error}",
+  "@loginError": {
+    "description": "Паведамленне пра памылку пры няўдалым уваходзе",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "googleLoginError": "Памылка ўваходу праз Google: {error}",
+  "@googleLoginError": {
+    "description": "Паведамленне пра памылку пры няўдалым уваходзе праз Google",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "logoutError": "Памылка выхаду: {error}",
+  "@logoutError": {
+    "description": "Паведамленне пра памылку пры няўдалым выхадзе",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "authCheckError": "Памылка праверкі аўтарызацыі: {error}",
+  "@authCheckError": {
+    "description": "Паведамленне пра памылку пры праверцы статуса аўтарызацыі",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "userNotFound": "Карыстальнік не знойдзены",
+  "@userNotFound": {
+    "description": "Паведамленне пра памылку, калі карыстальнік не знойдзены"
+  },
+  "fetchUserError": "Не ўдалося атрымаць дадзеныя карыстальніка: {error}",
+  "@fetchUserError": {
+    "description": "Паведамленне пра памылку пры атрыманні дадзеных карыстальніка",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "userCreationFailed": "Не ўдалося стварыць карыстальніка",
+  "@userCreationFailed": {
+    "description": "Паведамленне пра памылку пры няўдалым стварэнні карыстальніка"
+  },
+  "unknownError": "Адбылася невядомая памылка.",
+  "@unknownError": {
+    "description": "Агульнае паведамленне пра памылку для невядомых выключэнняў"
+  },
+  "invalidEmail": "Электронная пошта несапраўдная або няправільна адфарматаваная.",
+  "@invalidEmail": {
+    "description": "Паведамленне пра памылку пры несапраўднай пошце"
+  },
+  "emailAlreadyInUse": "Акаўнт з гэтай электроннай поштай ужо існуе.",
+  "@emailAlreadyInUse": {
+    "description": "Паведамленне пра памылку, калі пошта ўжо выкарыстоўваецца"
+  },
+  "operationNotAllowed": "Аперацыя не дазволена. Звярніцеся ў падтрымку.",
+  "@operationNotAllowed": {
+    "description": "Паведамленне пра памылку, калі аперацыя не дазволена"
+  },
+  "weakPassword": "Увядзіце больш надзейны пароль.",
+  "@weakPassword": {
+    "description": "Паведамленне пра памылку, калі пароль занадта слабы"
+  },
+  "userDisabled": "Гэты карыстальнік заблакаваны. Звярніцеся ў падтрымку.",
+  "@userDisabled": {
+    "description": "Паведамленне пра памылку, калі акаўнт карыстальніка заблакаваны"
+  },
+  "emailNotFound": "Электронная пошта не знойдзена, стварыце акаўнт.",
+  "@emailNotFound": {
+    "description": "Паведамленне пра памылку, калі пошта не знойдзена"
+  },
+  "wrongPassword": "Няправільны пароль, паспрабуйце зноў.",
+  "@wrongPassword": {
+    "description": "Паведамленне пра памылку пры няправільным паролі"
+  },
+  "accountExistsDifferentCredential": "Акаўнт існуе з іншымі ўліковымі дадзенымі.",
+  "@accountExistsDifferentCredential": {
+    "description": "Паведамленне пра памылку, калі акаўнт існуе з іншымі ўліковымі дадзенымі"
+  },
+  "invalidCredential": "Атрыманыя ўліковыя дадзеныя няправільныя або скончыліся.",
+  "@invalidCredential": {
+    "description": "Паведамленне пра памылку пры несапраўдных уліковых дадзеных"
+  },
+  "invalidVerificationCode": "Код вэрыфікацыі ўліковых дадзеных несапраўдны.",
+  "@invalidVerificationCode": {
+    "description": "Паведамленне пра памылку пры несапраўдным кодзе вэрыфікацыі"
+  },
+  "invalidVerificationId": "ID вэрыфікацыі ўліковых дадзеных несапраўдны.",
+  "@invalidVerificationId": {
+    "description": "Паведамленне пра памылку пры несапраўдным ID вэрыфікацыі"
+  },
+  "welcomeBack": "З вяртаннем!",
+  "@welcomeBack": {
+    "description": "Прывітальны тэкст на старонцы аўтарызацыі"
+  },
+  "createNewAccount": "Стварыць новы акаўнт",
+  "@createNewAccount": {
+    "description": "Тэкст, які адлюстроўваецца ў рэжыме рэгістрацыі"
+  },
+  "signInAccount": "Увайдзіце ў свой акаўнт",
+  "@signInAccount": {
+    "description": "Тэкст, які адлюстроўваецца ў рэжыме ўваходу"
+  },
+  "usernameLabel": "Імя карыстальніка",
+  "@usernameLabel": {
+    "description": "Метка для поля ўводу імя карыстальніка"
+  },
+  "emailLabel": "Электронная пошта",
+  "@emailLabel": {
+    "description": "Метка для поля ўводу электроннай пошты"
+  },
+  "passwordLabel": "Пароль",
+  "@passwordLabel": {
+    "description": "Метка для поля ўводу пароля"
+  },
+  "forgotPassword": "Забылі пароль? ",
+  "@forgotPassword": {
+    "description": "Тэкст для спасылкі на аднаўленне пароля"
+  },
+  "registrationButton": "Рэгістрацыя",
+  "@registrationButton": {
+    "description": "Тэкст для кнопкі рэгістрацыі"
+  },
+  "loginButton": "Уваход",
+  "@loginButton": {
+    "description": "Тэкст для кнопкі ўваходу"
+  },
+  "orContinueWith": "Або працягнуць з",
+  "@orContinueWith": {
+    "description": "Тэкст для раздзяляльніка перад альтэрнатыўнымі варыянтамі ўваходу"
+  },
+  "alreadyHaveAccount": "Ужо ёсць акаўнт? ",
+  "@alreadyHaveAccount": {
+    "description": "Тэкст, які падахвочвае перайсці да ўваходу"
+  },
+  "notRegisteredUser": "Не зарэгістраваны карыстальнік? ",
+  "@notRegisteredUser": {
+    "description": "Тэкст, які падахвочвае перайсці да рэгістрацыі"
+  },
+  "logInLink": "Увайсці!",
+  "@logInLink": {
+    "description": "Тэкст для спасылкі на ўваход"
+  },
+  "registerNowLink": "Зарэгістравацца зараз!",
+  "@registerNowLink": {
+    "description": "Тэкст для спасылкі на рэгістрацыю"
+  },
+  "errorMessage": "Памылка: {message}",
+  "@errorMessage": {
+    "description": "Агульнае паведамленне пра памылку з канкрэтным тэкстам",
+    "placeholders": {
+      "message": {}
+    }
+  },
+  "franchiseBranchesTitle": "Філіялы франшызы: {franchiseName}",
+  "@franchiseBranchesTitle": {
+    "description": "Загаловак старонкі філіялаў франшызы з назвай франшызы",
+    "placeholders": {
+      "franchiseName": {}
+    }
+  },
+  "myBranchesTitle": "Мае філіялы",
+  "@myBranchesTitle": {
+    "description": "Загаловак старонкі філіялаў карыстальніка"
+  },
+  "addBranchTitle": "Дадаць філіял",
+  "@addBranchTitle": {
+    "description": "Загаловак старонкі дадання філіяла пры прамым даданні"
+  },
+  "createBranchRequestTitle": "Стварыць запыт на філіял",
+  "@createBranchRequestTitle": {
+    "description": "Загаловак старонкі дадання філіяла пры стварэнні запыту"
+  },
+  "editBranchTitle": "Рэдагаваць філіял",
+  "@editBranchTitle": {
+    "description": "Загаловак старонкі рэдагавання філіяла"
+  },
+  "branchNameLabel": "Назва філіяла",
+  "@branchNameLabel": {
+    "description": "Метка для поля ўводу назвы філіяла"
+  },
+  "enterNameError": "Увядзіце назву",
+  "@enterNameError": {
+    "description": "Паведамленне пра памылку, калі назва філіяла пустая"
+  },
+  "enterLocationError": "Увядзіце адрас",
+  "@enterLocationError": {
+    "description": "Паведамленне пра памылку, калі адрас пусты"
+  },
+  "enterRoyaltyError": "Увядзіце раялці",
+  "@enterRoyaltyError": {
+    "description": "Паведамленне пра памылку, калі працэнт раялці пусты"
+  },
+  "invalidRoyaltyError": "Увядзіце сапраўднае лік",
+  "@invalidRoyaltyError": {
+    "description": "Паведамленне пра памылку, калі працэнт раялці не з'яўляецца лікам"
+  },
+  "enterWorkingHoursError": "Увядзіце гадзіны працы",
+  "@enterWorkingHoursError": {
+    "description": "Паведамленне пра памылку, калі гадзіны працы пустыя"
+  },
+  "enterPhoneError": "Увядзіце нумар тэлефона",
+  "@enterPhoneError": {
+    "description": "Паведамленне пра памылку, калі нумар тэлефона пусты"
+  },
+  "sendRequestButton": "Адправіць запыт",
+  "@sendRequestButton": {
+    "description": "Тэкст кнопкі для адпраўкі запыту на філіял"
+  },
+  "addBranchButton": "Дадаць філіял",
+  "@addBranchButton": {
+    "description": "Тэкст кнопкі для прамога дадання філіяла"
+  },
+  "saveChangesButton": "Захаваць змены",
+  "@saveChangesButton": {
+    "description": "Тэкст кнопкі для захавання змен філіяла"
+  },
+  "noBranchesMessage": "Гэтая франшыза пакуль не мае філіялаў.",
+  "@noBranchesMessage": {
+    "description": "Паведамленне, калі ў франшызы няма філіялаў"
+  },
+  "noUserBranchesMessage": "У вас пакуль няма філіялаў.",
+  "@noUserBranchesMessage": {
+    "description": "Паведамленне, калі ў карыстальніка няма філіялаў"
+  },
+  "pendingRequestsTitle": "Чакаючыя запыты",
+  "@pendingRequestsTitle": {
+    "description": "Загаловак раздзела чакаючых запытаў на філіялы"
+  },
+  "statusLabel": "Статус: {status}",
+  "@statusLabel": {
+    "description": "Метка для адлюстравання статусу чакаючага філіяла",
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "deleteBranchDialogTitle": "Выдаліць філіял?",
+  "@deleteBranchDialogTitle": {
+    "description": "Загаловак дыялога пацверджання выдалення філіяла"
+  },
+  "deleteBranchDialogContent": "Вы ўпэўнены, што хочаце выдаліць \"{branchName}\"?",
+  "@deleteBranchDialogContent": {
+    "description": "Змест дыялога пацверджання выдалення філіяла",
+    "placeholders": {
+      "branchName": {}
+    }
+  },
+  "cancelButton": "Адмяніць",
+  "@cancelButton": {
+    "description": "Тэкст кнопкі для адмены дзеяння"
+  },
+  "deleteButton": "Выдаліць",
+  "@deleteButton": {
+    "description": "Тэкст кнопкі для пацверджання выдалення"
+  },
+  "backButton": "Назад",
+  "@backButton": {
+    "description": "Тэкст кнопкі для вяртання"
+  },
+  "operationSuccessMessage": "Аперацыя паспяхова завершана",
+  "@operationSuccessMessage": {
+    "description": "Паведамленне пра паспяховае завяршэнне аперацыі"
+  },
+  "branchRequestSentMessage": "Запыт адпраўлены на мадэрацыю",
+  "@branchRequestSentMessage": {
+    "description": "Паведамленне пра поспех пры адпраўцы запыту на філіял"
+  },
+  "branchAddedMessage": "Філіял паспяхова дададзены",
+  "@branchAddedMessage": {
+    "description": "Паведамленне пра поспех пры даданні філіяла"
+  },
+  "branchUpdatedMessage": "Філіял паспяхова абноўлены",
+  "@branchUpdatedMessage": {
+    "description": "Паведамленне пра поспех пры абнаўленні філіяла"
+  },
+  "newBranchRequest": "Новы запыт на філіял: {branchName} ад {requesterId}",
+  "@newBranchRequest": {
+    "description": "Сістэмнае паведамленне для апавяшчэння ўладальніка франшызы пра новы запыт на філіял",
+    "placeholders": {
+      "branchName": {},
+      "requesterId": {}
+    }
+  },
+  "branchRequestApproved": "Запыт на філіял зацверджаны: {branchName}",
+  "@branchRequestApproved": {
+    "description": "Сістэмнае паведамленне для апавяшчэння франчайзі пра зацвярджэнне запыту на філіял",
+    "placeholders": {
+      "branchName": {}
+    }
+  },
+  "franchiseDataError": "Памылка: Дадзеныя франшызы не прадастаўлены",
+  "@franchiseDataError": {
+    "description": "Паведамленне пра памылку, калі дадзеныя франшызы адсутнічаюць"
+  },
+  "failedToCreatePendingBranch": "Не ўдалося стварыць чакаючы філіял: {error}",
+  "@failedToCreatePendingBranch": {
+    "description": "Паведамленне пра памылку пры няўдалым стварэнні чакаючага філіяла",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToLoadBranches": "Не ўдалося загрузіць філіялы: {error}",
+  "@failedToLoadBranches": {
+    "description": "Паведамленне пра памылку пры няўдалай загрузцы філіялаў",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToAddBranch": "Не ўдалося дадаць філіял: {error}",
+  "@failedToAddBranch": {
+    "description": "Паведамленне пра памылку пры няўдалым даданні філіяла",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToDeleteBranch": "Не ўдалося выдаліць філіял: {error}",
+  "@failedToDeleteBranch": {
+    "description": "Паведамленне пра памылку пры няўдалым выдаленні філіяла",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToEditBranch": "Не ўдалося адрэдагаваць філіял: {error}",
+  "@failedToEditBranch": {
+    "description": "Паведамленне пра памылку пры няўдалым рэдагаванні філіяла",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToModerateBranch": "Не ўдалося мадэраваць філіял: {error}",
+  "@failedToModerateBranch": {
+    "description": "Паведамленне пра памылку пры няўдалай мадэрацыі філіяла",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "reportsTab": "Справаздачы",
+  "@reportsTab": {
+    "description": "Тэкст укладкі для раздзела справаздач"
+  },
+  "transactionsTab": "Транзакцыі",
+  "@transactionsTab": {
+    "description": "Тэкст укладкі для раздзела транзакцый"
+  },
+  "branchInfo": "Адрас: {location}\nГадзіны працы: {workingHours}\nТэлефон: {phone}",
+  "@branchInfo": {
+    "description": "Падзагаловак для інфармацыі пра філіял у спісе",
+    "placeholders": {
+      "location": {},
+      "workingHours": {},
+      "phone": {}
+    }
+  },
+  "waitingForData": "Чаканне дадзеных...",
+  "@waitingForData": {
+    "description": "Паведамленне, якое адлюстроўваецца падчас чакання дадзеных"
+  },
+  "branchNotFoundError": "Філіял, які вы спрабуеце адрэдагаваць, больш не існуе.",
+  "@branchNotFoundError": {
+    "description": "Паведамленне пра памылку, калі філіял для рэдагавання не існуе"
+  },
+  "chatPageTitle": "Чат з {userName}",
+  "@chatPageTitle": {
+    "description": "Загаловак старонкі чата з імем іншага карыстальніка",
+    "placeholders": {
+      "userName": {}
+    }
+  },
+  "typeMessageHint": "Увядзіце паведамленне...",
+  "@typeMessageHint": {
+    "description": "Падказка для поля ўводу паведамлення"
+  },
+  "noMessagesYet": "Паведамленняў пакуль няма",
+  "@noMessagesYet": {
+    "description": "Паведамленне, якое адлюстроўваецца, калі ў чаце няма паведамленняў"
+  },
+  "chatError": "Памылка: {message}",
+  "@chatError": {
+    "description": "Паведамленне пра памылку пры праблемах з чатам",
+    "placeholders": {
+      "message": {}
+    }
+  },
+  "selectUserToChatTitle": "Выберыце карыстальніка для чата",
+  "@selectUserToChatTitle": {
+    "description": "Загаловак старонкі спіса карыстальнікаў"
+  },
+  "pleaseLogInToViewUsers": "Калі ласка, увайдзіце, каб праглядзець карыстальнікаў",
+  "@pleaseLogInToViewUsers": {
+    "description": "Паведамленне, якое адлюстроўваецца, калі карыстальнік не аўтарызаваны"
+  },
+  "noUsersFound": "Карыстальнікі не знойдзены",
+  "@noUsersFound": {
+    "description": "Паведамленне, якое адлюстроўваецца, калі няма карыстальнікаў для чата"
+  },
+  "branchReportsTitle": "Справаздачы філіяла",
+  "@branchReportsTitle": {
+    "description": "Загаловак старонкі справаздач філіяла"
+  },
+  "noReportsAvailable": "Справаздачы адсутнічаюць",
+  "@noReportsAvailable": {
+    "description": "Паведамленне, якое адлюстроўваецца, калі няма фінансавых справаздач"
+  },
+  "reportDetailsTitle": "Дэталі справаздачы {month}/{year}",
+  "@reportDetailsTitle": {
+    "description": "Загаловак дыялога з дэталямі справаздачы",
+    "placeholders": {
+      "month": {},
+      "year": {}
+    }
+  },
+  "revenueLabel": "Выручка",
+  "@revenueLabel": {
+    "description": "Метка для поля выручки"
+  },
+  "netProfitLabel": "Чысты прыбытак",
+  "@netProfitLabel": {
+    "description": "Метка для поля чыстага прыбытку"
+  },
+  "totalAssetsLabel": "Агульныя актывы",
+  "@totalAssetsLabel": {
+    "description": "Метка для поля агульных актываў"
+  },
+  "ownCapitalLabel": "Уласны капітал",
+  "@ownCapitalLabel": {
+    "description": "Метка для поля ўласнага капіталу"
+  },
+  "liabilitiesLabel": "Абавязкі",
+  "@liabilitiesLabel": {
+    "description": "Метка для поля абавязкаў"
+  },
+  "inventoryLabel": "Запасы",
+  "@inventoryLabel": {
+    "description": "Метка для поля запасаў"
+  },
+  "initialInvestmentLabel": "Пачатковыя інвестыцыі",
+  "@initialInvestmentLabel": {
+    "description": "Метка для поля пачатковых інвестыцый"
+  },
+  "fixedCostsLabel": "Фіксаваныя выдаткі",
+  "@fixedCostsLabel": {
+    "description": "Метка для поля фіксаваных выдаткаў"
+  },
+  "unitPriceLabel": "Цана за адзінку",
+  "@unitPriceLabel": {
+    "description": "Метка для поля цаны за адзінку"
+  },
+  "variableCostsLabel": "Пераменныя выдаткі",
+  "@variableCostsLabel": {
+    "description": "Метка для поля пераменных выдаткаў"
+  },
+  "cashInflowLabel": "Прыток грашовых сродкаў",
+  "@cashInflowLabel": {
+    "description": "Метка для поля прытоку грашовых сродкаў"
+  },
+  "cashOutflowLabel": "Адток грашовых сродкаў",
+  "@cashOutflowLabel": {
+    "description": "Метка для поля адтоку грашовых сродкаў"
+  },
+  "royaltyPercentLabelReport": "Раялці (%)",
+  "@royaltyPercentLabelReport": {
+    "description": "Метка для поля працэнта раялці ў справаздачах"
+  },
+  "closeButton": "Зачыніць",
+  "@closeButton": {
+    "description": "Тэкст кнопкі для зачынення дыялога"
+  },
+  "branchIndicatorsTitle": "Паказчыкі філіяла",
+  "@branchIndicatorsTitle": {
+    "description": "Загаловак старонкі паказчыкаў філіяла"
+  },
+  "noIndicatorsData": "Дадзеныя па паказчыках адсутнічаюць",
+  "@noIndicatorsData": {
+    "description": "Паведамленне, якое адлюстроўваецца, калі няма эканамічных паказчыкаў"
+  },
+  "roiByMonths": "ROI па месяцах",
+  "@roiByMonths": {
+    "description": "Загаловак раздзела графіка ROI"
+  },
+  "indicatorsDetailsTitle": "Паказчыкі {month}/{year}",
+  "@indicatorsDetailsTitle": {
+    "description": "Загаловак дыялога з дэталямі паказчыкаў",
+    "placeholders": {
+      "month": {},
+      "year": {}
+    }
+  },
+  "roiLabel": "Вяртанне інвестыцый (ROI)",
+  "@roiLabel": {
+    "description": "Метка для поля ROI"
+  },
+  "breakevenPointLabel": "Пункт бясстратнасці",
+  "@breakevenPointLabel": {
+    "description": "Метка для поля пункта бясстратнасці"
+  },
+  "quickRatioLabel": "Каэфіцыент хуткай ліквіднасці",
+  "@quickRatioLabel": {
+    "description": "Метка для поля каэфіцыента хуткай ліквіднасці"
+  },
+  "returnOnAssetsLabel": "Рэнтабельнасць актываў",
+  "@returnOnAssetsLabel": {
+    "description": "Метка для поля рэнтабельнасці актываў"
+  },
+  "debtLoadLabel": "Даўгавая нагрузка",
+  "@debtLoadLabel": {
+    "description": "Метка для поля даўгавой нагрузкі"
+  },
+  "currentRatioLabel": "Бягучы каэфіцыент ліквіднасці",
+  "@currentRatioLabel": {
+    "description": "Метка для поля бягучага каэфіцыента ліквіднасці"
+  },
+  "returnOnSalesLabel": "Рэнтабельнасць продажаў",
+  "@returnOnSalesLabel": {
+    "description": "Метка для поля рэнтабельнасці продажаў"
+  },
+  "autonomyRatioLabel": "Каэфіцыент аўтаноміі",
+  "@autonomyRatioLabel": {
+    "description": "Метка для поля каэфіцыента аўтаноміі"
+  },
+  "royaltyPaymentLabel": "Плацёж раялці",
+  "@royaltyPaymentLabel": {
+    "description": "Метка для поля плацяжу раялці"
+  },
+  "netCashFlowLabel": "Чысты грашовы паток",
+  "@netCashFlowLabel": {
+    "description": "Метка для поля чыстага грашовага патоку"
+  },
+  "newFinancialReportTitle": "Новая фінансавая справаздача",
+  "@newFinancialReportTitle": {
+    "description": "Загаловак старонкі адпраўкі фінансавай справаздачы"
+  },
+  "submitReportButton": "Адправіць справаздачу",
+  "@submitReportButton": {
+    "description": "Тэкст кнопкі для адпраўкі фінансавай справаздачы"
+  },
+  "requiredFieldError": "Абавязковае поле",
+  "@requiredFieldError": {
+    "description": "Паведамленне пра памылку, калі поле пустое"
+  },
+  "invalidNumberError": "Увядзіце сапраўднае лік",
+  "@invalidNumberError": {
+    "description": "Паведамленне пра памылку, калі ўвод не з'яўляецца лікам"
+  },
+  "invalidNumberFormatError": "Несапраўдны фармат ліку",
+  "@invalidNumberFormatError": {
+    "description": "Паведамленне пра памылку, калі лік з'яўляецца NaN або бясконцым"
+  },
+  "reportSubmittedSuccess": "Справаздача паспяхова адпраўлена",
+  "@reportSubmittedSuccess": {
+    "description": "Паведамленне пра поспех пры адпраўцы справаздачы"
+  },
+  "dataError": "Памылка дадзеных: {error}",
+  "@dataError": {
+    "description": "Паведамленне пра памылку пры праблемах з уводнымі дадзенымі",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "pleaseLogIn": "Калі ласка, увайдзіце",
+  "@pleaseLogIn": {
+    "description": "Паведамленне, якое адлюстроўваецца, калі карыстальнік не аўтарызаваны"
+  },
+  "createFranchiseTitle": "Стварыць франшызу",
+  "@createFranchiseTitle": {
+    "description": "Загаловак старонкі стварэння франшызы"
+  },
+  "franchiseSentForModeration": "Франшыза адпраўлена на мадэрацыю",
+  "@franchiseSentForModeration": {
+    "description": "Паведамленне пра поспех пры адпраўцы франшызы на мадэрацыю"
+  },
+  "nameLabel": "Назва",
+  "@nameLabel": {
+    "description": "Метка для поля ўводу назвы"
+  },
+  "descriptionLabel": "Апісанне",
+  "@descriptionLabel": {
+    "description": "Метка для поля ўводу апісання"
+  },
+  "industryLabel": "Галіна",
+  "@industryLabel": {
+    "description": "Метка для поля ўводу галіны"
+  },
+  "cityLabel": "Горад",
+  "@cityLabel": {
+    "description": "Метка для поля ўводу горада"
+  },
+
+  "startupCostLabelfirst": "Стартовые затарты (RUB)",
+  "@startupCostLabelfirst": {
+    "description": "Label for the startup cost input field"
+  },
+  "startupCostLabel": "Стартовые затраты: {currency}{amount}",
+  "@startupCostLabel": {
+    "description": "Метка для поля стартовых затрат с валютой и суммой",
+    "placeholders": {
+      "currency": {},
+      "amount": {}
+    }
+  },
+  "royaltyPercentLabel": "Раялці (%)",
+  "@royaltyPercentLabel": {
+    "description": "Метка для поля ўводу працэнта раялці"
+  },
+  "royaltyPercentLabelFranchise": "Працэнт раялці (%)",
+  "@royaltyPercentLabelFranchise": {
+    "description": "Метка для поля працэнта раялці пры стварэнні франшызы"
+  },
+  "nameRequiredError": "Назва абавязковая",
+  "@nameRequiredError": {
+    "description": "Паведамленне пра памылку, калі назва пустая"
+  },
+  "descriptionRequiredError": "Апісанне абавязковае",
+  "@descriptionRequiredError": {
+    "description": "Паведамленне пра памылку, калі апісанне пустое"
+  },
+  "industryRequiredError": "Галіна абавязковая",
+  "@industryRequiredError": {
+    "description": "Паведамленне пра памылку, калі галіна пустая"
+  },
+  "cityRequiredError": "Горад абавязковы",
+  "@cityRequiredError": {
+    "description": "Паведамленне пра памылку, калі горад пусты"
+  },
+  "startupCostRequiredError": "Пачатковыя выдаткі абавязковыя",
+  "@startupCostRequiredError": {
+    "description": "Паведамленне пра памылку, калі пачатковыя выдаткі пустыя"
+  },
+  "invalidStartupCostError": "Увядзіце сапраўднае лік",
+  "@invalidStartupCostError": {
+    "description": "Паведамленне пра памылку, калі пачатковыя выдаткі не з'яўляюцца лікам"
+  },
+  "royaltyPercentRequiredError": "Працэнт раялці абавязковы",
+  "@royaltyPercentRequiredError": {
+    "description": "Паведамленне пра памылку, калі працэнт раялці пусты"
+  },
+  "invalidRoyaltyPercentError": "Увядзіце сапраўдны працэнт (0-100)",
+  "@invalidRoyaltyPercentError": {
+    "description": "Паведамленне пра памылку, калі працэнт раялці не ў дыяпазоне 0-100"
+  },
+  "submitForModerationButton": "Адправіць на мадэрацыю",
+  "@submitForModerationButton": {
+    "description": "Тэкст кнопкі для адпраўкі франшызы на мадэрацыю"
+  },
+  "franchHubTitle": "Franch Hub",
+  "@franchHubTitle": {
+    "description": "Загаловак прыкладання"
+  },
+  "searchHint": "Пошук",
+  "@searchHint": {
+    "description": "Падказка для поля пошуку"
+  },
+  "findPerfectFranchise": "Знайдзіце сваю ідэальную франшызу",
+  "@findPerfectFranchise": {
+    "description": "Тэкст для прыцягнення карыстальнікаў да пошуку франшыз"
+  },
+  "exploreOpportunities": "Даследуйце лепшыя магчымасці",
+  "@exploreOpportunities": {
+    "description": "Тэкст для прасоўвання вывучэння франшыз"
+  },
+  "exploreFranchiseTitle": "Даследуйце нашу франшызу",
+  "@exploreFranchiseTitle": {
+    "description": "Загаловак старонкі вывучэння франшызы"
+  },
+  "noFranchisesAvailable": "Франшызы адсутнічаюць",
+  "@noFranchisesAvailable": {
+    "description": "Паведамленне, калі няма даступных франшыз"
+  },
+  "franchiseOverviewTitle": "Агляд франшызы",
+  "@franchiseOverviewTitle": {
+    "description": "Загаловак старонкі агляду франшызы"
+  },
+  "chatFailedError": "Не ўдалося пачаць чат: {error}",
+  "@chatFailedError": {
+    "description": "Паведамленне пра памылку пры няўдалым пачатку чата",
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "currentUserNotFoundError": "Бягучы карыстальнік не знойдзены",
+  "@currentUserNotFoundError": {
+    "description": "Паведамленне пра памылку, калі бягучы карыстальнік не знойдзены"
+  },
+  "franchiseOwnerNotFoundError": "Уладальнік франшызы не знойдзены",
+  "@franchiseOwnerNotFoundError": {
+    "description": "Паведамленне пра памылку, калі ўладальнік франшызы не знойдзены"
+  },
+  "youAreFranchiseOwnerError": "Вы з'яўляецеся ўладальнікам франшызы",
+  "@youAreFranchiseOwnerError": {
+    "description": "Паведамленне пра памылку, калі карыстальнік з'яўляецца ўладальнікам франшызы"
+  },
+  "respondNowButton": "Адказаць зараз",
+  "@respondNowButton": {
+    "description": "Тэкст кнопкі для неадкладнага адказу"
+  },
+  "myFranchisesTitle": "Мае франшызы",
+  "@myFranchisesTitle": {
+    "description": "Загаловак старонкі франшыз карыстальніка"
+  },
+  "noFranchisesYet": "У вас пакуль няма франшыз.",
+  "@noFranchisesYet": {
+    "description": "Паведамленне, калі ў карыстальніка няма франшыз"
+  },
+  "moderationTitle": "Мадэрацыя",
+  "@moderationTitle": {
+    "description": "Загаловак старонкі мадэрацыі"
+  },
+  "noPendingFranchiseRequests": "Няма запытаў на франшызы",
+  "@noPendingFranchiseRequests": {
+    "description": "Паведамленне, калі няма чакаючых запытаў на франшызы"
+  },
+  "noPendingBranchRequests": "Няма запытаў на філіялы",
+  "@noPendingBranchRequests": {
+    "description": "Паведамленне, калі няма чакаючых запытаў на філіялы"
+  },
+  "branchModerationSuccess": "Мадэрацыя філіяла паспяховая",
+  "@branchModerationSuccess": {
+    "description": "Паведамленне пра поспех пры мадэрацыі філіяла"
+  },
+  "franchiseModerationSuccess": "Мадэрацыя франшызы паспяховая",
+  "@franchiseModerationSuccess": {
+    "description": "Паведамленне пра поспех пры мадэрацыі франшызы"
+  },
+  "createdAtLabel": "Створана: {createdAt}",
+  "@createdAtLabel": {
+    "description": "Метка для адлюстравання даты стварэння",
+    "placeholders": {
+      "createdAt": {}
+    }
+  },
+  "franchiseStatusLabel": "Статус: {status}",
+  "@franchiseStatusLabel": {
+    "description": "Метка для адлюстравання статусу франшызы",
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "franchiseOwnerIdLabel": "ID уладальніка: {ownerId}",
+  "@franchiseOwnerIdLabel": {
+    "description": "Метка для адлюстравання ID уладальніка франшызы",
+    "placeholders": {
+      "ownerId": {}
+    }
+  },
+  "franchiseLabel": "Франшыза",
+  "@franchiseLabel": {
+    "description": "Метка для адлюстравання назвы франшызы"
+  },
+  "locationLabel": "Месцазнаходжанне",
+  "@locationLabel": {
+    "description": "Метка для адлюстравання месцазнаходжання"
+  },
+  "workingHoursLabel": "Гадзіны працы",
+  "@workingHoursLabel": {
+    "description": "Метка для адлюстравання гадзін працы"
+  },
+  "phoneLabel": "Тэлефон",
+  "@phoneLabel": {
+    "description": "Метка для адлюстравання нумара тэлефона"
+  },
+  "branchStatusLabel": "Статус",
+  "@branchStatusLabel": {
+    "description": "Метка для адлюстравання статусу філіяла"
+  },
+  "branchRequestedByLabel": "Запрошана: {requesterId}",
+  "@branchRequestedByLabel": {
+    "description": "Метка для адлюстравання ID запытваючага філіял",
+    "placeholders": {
+      "requesterId": {}
+    }
+  }
+}

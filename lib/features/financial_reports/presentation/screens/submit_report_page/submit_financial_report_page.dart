@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
 import 'package:franch_hub/features/financial_reports/domain/entities/financial_report.dart';
 import 'package:franch_hub/features/financial_reports/presentation/bloc/financial_report_bloc/financial_report_bloc.dart';
+import 'package:franch_hub/generated/l10n.dart';
 import 'package:uuid/uuid.dart';
 
 class SubmitFinancialReportPage extends StatefulWidget {
@@ -56,6 +57,7 @@ class _SubmitFinancialReportPageState extends State<SubmitFinancialReportPage> {
   }
 
   void _submit() {
+    final l10n = S.of(context)!;
     if (_formKey.currentState?.validate() ?? false) {
       try {
         final report = FinancialReport(
@@ -83,7 +85,7 @@ class _SubmitFinancialReportPageState extends State<SubmitFinancialReportPage> {
         context.read<FinancialReportBloc>().add(SubmitReportEvent(report));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Ошибка в данных: $e')),
+          SnackBar(content: Text(l10n.dataError(e.toString()))),
         );
       }
     }
@@ -91,18 +93,19 @@ class _SubmitFinancialReportPageState extends State<SubmitFinancialReportPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Новый финансовый отчет')),
+      appBar: AppBar(title: Text(l10n.newFinancialReportTitle)),
       body: BlocConsumer<FinancialReportBloc, FinancialReportState>(
         listener: (context, state) {
           if (state is FinancialReportSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Отчет успешно отправлен')),
+              SnackBar(content: Text(l10n.reportSubmittedSuccess)),
             );
             Navigator.pop(context);
           } else if (state is FinancialReportError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Ошибка: ${state.message}')),
+              SnackBar(content: Text(l10n.errorMessage(state.message))),
             );
           }
         },
@@ -113,23 +116,23 @@ class _SubmitFinancialReportPageState extends State<SubmitFinancialReportPage> {
               key: _formKey,
               child: ListView(
                 children: [
-                  _buildNumberField(_revenueController, 'Выручка'),
-                  _buildNumberField(_netProfitController, 'Чистая прибыль'),
-                  _buildNumberField(_totalAssetsController, 'Общие активы'),
-                  _buildNumberField(_ownCapitalController, 'Собственный капитал'),
-                  _buildNumberField(_liabilitiesController, 'Обязательства'),
-                  _buildNumberField(_inventoryController, 'Запасы'),
-                  _buildNumberField(_initialInvestmentController, 'Начальные инвестиции'),
-                  _buildNumberField(_fixedCostsController, 'Постоянные издержки'),
-                  _buildNumberField(_unitPriceController, 'Цена за единицу товара'),
-                  _buildNumberField(_variableCostsController, 'Переменные издержки'),
-                  _buildNumberField(_cashInflowController, 'Приток денежных средств'),
-                  _buildNumberField(_cashOutflowController, 'Отток денежных средств'),
-                  _buildNumberField(_royaltyController, 'Процент роялти'),
+                  _buildNumberField(_revenueController, l10n.revenueLabel),
+                  _buildNumberField(_netProfitController, l10n.netProfitLabel),
+                  _buildNumberField(_totalAssetsController, l10n.totalAssetsLabel),
+                  _buildNumberField(_ownCapitalController, l10n.ownCapitalLabel),
+                  _buildNumberField(_liabilitiesController, l10n.liabilitiesLabel),
+                  _buildNumberField(_inventoryController, l10n.inventoryLabel),
+                  _buildNumberField(_initialInvestmentController, l10n.initialInvestmentLabel),
+                  _buildNumberField(_fixedCostsController, l10n.fixedCostsLabel),
+                  _buildNumberField(_unitPriceController, l10n.unitPriceLabel),
+                  _buildNumberField(_variableCostsController, l10n.variableCostsLabel),
+                  _buildNumberField(_cashInflowController, l10n.cashInflowLabel),
+                  _buildNumberField(_cashOutflowController, l10n.cashOutflowLabel),
+                  _buildNumberField(_royaltyController, l10n.royaltyPercentLabelReport),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: state is FinancialReportLoading ? null : _submit,
-                    child: const Text('Отправить отчет'),
+                    child: Text(l10n.submitReportButton),
                   )
                 ],
               ),
@@ -141,6 +144,7 @@ class _SubmitFinancialReportPageState extends State<SubmitFinancialReportPage> {
   }
 
   Widget _buildNumberField(TextEditingController controller, String label) {
+    final l10n = S.of(context)!;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
@@ -148,13 +152,12 @@ class _SubmitFinancialReportPageState extends State<SubmitFinancialReportPage> {
         keyboardType: TextInputType.number,
         decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
         validator: (value) {
-          if (value == null || value.isEmpty) return 'Обязательное поле';
+          if (value == null || value.isEmpty) return l10n.requiredFieldError;
           final number = double.tryParse(value);
-          if (number == null) return 'Введите корректное число';
-          if (number.isNaN || number.isInfinite) return 'Некорректное число';
+          if (number == null) return l10n.invalidNumberError;
+          if (number.isNaN || number.isInfinite) return l10n.invalidNumberFormatError;
           return null;
         },
-
       ),
     );
   }

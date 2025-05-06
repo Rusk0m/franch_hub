@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
 import 'package:franch_hub/features/branches/domain/entities/panding_franchise_branch.dart';
@@ -12,6 +13,7 @@ import 'package:franch_hub/features/branches/domain/use_case/get_my_branches_use
 import 'package:franch_hub/features/branches/domain/use_case/moderate_branch_use_case.dart';
 import 'package:franch_hub/features/chat/domain/entities/message.dart';
 import 'package:franch_hub/features/chat/domain/use_case/send_message_use_case.dart';
+import 'package:franch_hub/generated/l10n.dart';
 import 'package:uuid/uuid.dart';
 
 part 'branch_event.dart';
@@ -68,7 +70,7 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
             id: const Uuid().v4(),
             senderId: 'system',
             receiverId: event.ownerId,
-            content: 'New branch request for "${event.name}" from ${event.requesterId}.',
+            content: S.of(event.context)!.newBranchRequest(event.name, event.requesterId),
             sentAt: DateTime.now(),
             isSystemMessage: true,
           ),
@@ -79,7 +81,8 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       emit(BranchSuccess());
     } catch (e) {
       print('BranchBloc: Error creating pending branch: $e');
-      emit(BranchError(message: 'Failed to create pending branch: $e'));
+      emit(BranchError(
+          message: S.of(event.context)!.failedToCreatePendingBranch(e.toString())));
     }
   }
 
@@ -95,7 +98,8 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       emit(BranchLoaded(branches: branches));
     } catch (e) {
       print('BranchBloc: Error loading franchiseBranches: $e');
-      emit(BranchError(message: 'Failed to load franchiseBranches: $e'));
+      emit(BranchError(
+          message: S.of(event.context)!.failedToLoadBranches(e.toString())));
     }
   }
 
@@ -111,7 +115,8 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       emit(BranchLoaded(branches: branches));
     } catch (e) {
       print('BranchBloc: Error loading franchiseBranches: $e');
-      emit(BranchError(message: 'Failed to load franchiseBranches: $e'));
+      emit(BranchError(
+          message: S.of(event.context)!.failedToLoadBranches(e.toString())));
     }
   }
 
@@ -149,7 +154,8 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       }
     } catch (e) {
       print('BranchBloc: Error adding branch: $e');
-      emit(BranchError(message: 'Failed to add branch: $e'));
+      emit(BranchError(
+          message: S.of(event.context)!.failedToAddBranch(e.toString())));
     }
   }
 
@@ -189,7 +195,8 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       }
     } catch (e) {
       print('BranchBloc: Error deleting branch: $e');
-      emit(BranchError(message: 'Failed to delete branch: $e'));
+      emit(BranchError(
+          message: S.of(event.context)!.failedToDeleteBranch(e.toString())));
     }
   }
 
@@ -231,9 +238,9 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       }
     } catch (e) {
       print('BranchBloc: Error editing branch: $e');
-      String errorMessage = 'Failed to edit branch: $e';
+      String errorMessage = S.of(event.context)!.failedToEditBranch(e.toString());
       if (e.toString().contains('Branch with ID')) {
-        errorMessage = 'The branch you are trying to edit no longer exists.';
+        errorMessage = S.of(event.context)!.branchNotFoundError;
       }
       emit(BranchError(message: errorMessage));
     }
@@ -259,7 +266,7 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
               id: const Uuid().v4(),
               senderId: 'system',
               receiverId: event.branch!.ownerId,
-              content: 'Your branch request for "${event.branch!.name}" has been approved.',
+              content: S.of(event.context)!.branchRequestApproved(event.branch!.name),
               sentAt: DateTime.now(),
               isSystemMessage: true,
             ),
@@ -299,7 +306,8 @@ class BranchBloc extends Bloc<BranchEvent, BranchState> {
       }
     } catch (e) {
       print('BranchBloc: Error moderating branch: $e');
-      emit(BranchError(message: 'Failed to moderate branch: $e'));
+      emit(BranchError(
+          message: S.of(event.context)!.failedToModerateBranch(e.toString())));
     }
   }
 

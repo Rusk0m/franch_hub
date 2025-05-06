@@ -5,7 +5,7 @@ import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/features/auth/data/models/user_model.dart';
 import 'package:franch_hub/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:franch_hub/features/chat/presentation/screens/chat_page.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class UsersListPage extends StatelessWidget {
   const UsersListPage({super.key});
@@ -14,14 +14,15 @@ class UsersListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final authState = context.read<AuthBloc>().state;
     if (authState is! Authenticated) {
-      return const Scaffold(
-        body: Center(child: Text('Please log in to view users')),
+      return Scaffold(
+        body: Center(
+            child: Text(S.of(context)!.pleaseLogInToViewUsers)),
       );
     }
     final currentUser = authState.user;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select User to Chat'),
+        title: Text(S.of(context)!.selectUserToChatTitle),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users').snapshots(),
@@ -30,7 +31,8 @@ class UsersListPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No users found'));
+            return Center(
+                child: Text(S.of(context)!.noUsersFound));
           }
           final users = snapshot.data!.docs
               .map((doc) => UserModel.fromFirestore(doc).toEntity())
@@ -43,12 +45,15 @@ class UsersListPage extends StatelessWidget {
               return ListTile(
                 title: Text(user.name ?? user.email),
                 subtitle: Text(user.email),
-                onTap: () {Navigator.pushNamed(
-                  context,
-                  AppRouter.chatPage,
-                  arguments: {'currentUser': currentUser,
-                    'otherUser': user,},
-                );
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRouter.chatPage,
+                    arguments: {
+                      'currentUser': currentUser,
+                      'otherUser': user,
+                    },
+                  );
                 },
               );
             },

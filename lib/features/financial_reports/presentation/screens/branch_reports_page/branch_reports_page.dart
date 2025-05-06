@@ -4,7 +4,7 @@ import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
 import 'package:franch_hub/features/financial_reports/domain/entities/financial_report.dart';
 import 'package:franch_hub/features/financial_reports/presentation/bloc/financial_report_bloc/financial_report_bloc.dart';
-
+import 'package:franch_hub/generated/l10n.dart';
 class BranchReportsPage extends StatelessWidget {
   final FranchiseBranch branch;
 
@@ -12,60 +12,57 @@ class BranchReportsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     return Scaffold(
-        appBar: AppBar(title: const Text('Отчёты филиала')),
-        body: BlocBuilder<FinancialReportBloc, FinancialReportState>(
-          builder: (context, state) {
-            if (state is FinancialReportInitial) {
-              // Загрузка данных сразу после создания виджета
-              context.read<FinancialReportBloc>().add(
-                  LoadReportsForBranchEvent(branch.id));
-              return const Center(child: CircularProgressIndicator());
+      appBar: AppBar(title: Text(l10n.branchReportsTitle)),
+      body: BlocBuilder<FinancialReportBloc, FinancialReportState>(
+        builder: (context, state) {
+          if (state is FinancialReportInitial) {
+            context.read<FinancialReportBloc>().add(LoadReportsForBranchEvent(branch.id));
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state is FinancialReportLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state is FinancialReportLoaded) {
+            final reports = state.reports;
+            if (reports.isEmpty) {
+              return Center(child: Text(l10n.noReportsAvailable));
             }
-            if (state is FinancialReportLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state is FinancialReportLoaded) {
-              final reports = state.reports;
-              if (reports.isEmpty) {
-                return const Center(child: Text('Нет доступных отчётов'));
-              }
-              return ListView.builder(
-                itemCount: reports.length,
-                itemBuilder: (context, index) {
-                  final report = reports[index];
-                  return Card(
-                    margin: const EdgeInsets.all(8),
-                    child: ListTile(
-                      title: Text('${report.month}/${report.year}'),
-                      subtitle: Text(
-                          'Выручка: ${report.revenue.toStringAsFixed(2)}₽'),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) => _ReportDetailsDialog(report: report),
-                        );
-                      },
-                    ),
-                  );
-                },
-              );
-            }
-            if (state is FinancialReportError) {
-              return Center(child: Text('Ошибка: ${state.message}'));
-            }
-            return const SizedBox.shrink();
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, AppRouter.submitFinancialReportPage,
-                arguments: branch);
-          },
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ),
+            return ListView.builder(
+              itemCount: reports.length,
+              itemBuilder: (context, index) {
+                final report = reports[index];
+                return Card(
+                  margin: const EdgeInsets.all(8),
+                  child: ListTile(
+                    title: Text('${report.month}/${report.year}'),
+                    subtitle: Text('${l10n.revenueLabel}: ${report.revenue.toStringAsFixed(2)}₽'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => _ReportDetailsDialog(report: report),
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          }
+          if (state is FinancialReportError) {
+            return Center(child: Text(l10n.errorMessage(state.message)));
+          }
+          return const SizedBox.shrink();
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, AppRouter.submitFinancialReportPage, arguments: branch);
+        },
+        tooltip: l10n.submitReportButton,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
@@ -77,31 +74,34 @@ class _ReportDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     return AlertDialog(
-      title: Text('Детали отчета ${report.month}/${report.year}'),
+      title: Text(l10n.reportDetailsTitle(
+          report.month.toString(),
+          report.year.toString())),
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _info('Выручка', report.revenue),
-            _info('Чистая прибыль', report.netProfit),
-            _info('Общие активы', report.totalAssets),
-            _info('Собственный капитал', report.ownCapital),
-            _info('Обязательства', report.liabilities),
-            _info('Запасы', report.inventory),
-            _info('Начальные инвестиции', report.initialInvestment),
-            _info('Постоянные издержки', report.fixedCosts),
-            _info('Цена за единицу', report.unitPrice),
-            _info('Переменные издержки', report.variableCostsPerUnit),
-            _info('Приток средств', report.cashInflow),
-            _info('Отток средств', report.cashOutflow),
-            _info('Роялти (%)', report.royaltyPercent),
+            _info(l10n.revenueLabel, report.revenue),
+            _info(l10n.netProfitLabel, report.netProfit),
+            _info(l10n.totalAssetsLabel, report.totalAssets),
+            _info(l10n.ownCapitalLabel, report.ownCapital),
+            _info(l10n.liabilitiesLabel, report.liabilities),
+            _info(l10n.inventoryLabel, report.inventory),
+            _info(l10n.initialInvestmentLabel, report.initialInvestment),
+            _info(l10n.fixedCostsLabel, report.fixedCosts),
+            _info(l10n.unitPriceLabel, report.unitPrice),
+            _info(l10n.variableCostsLabel, report.variableCostsPerUnit),
+            _info(l10n.cashInflowLabel, report.cashInflow),
+            _info(l10n.cashOutflowLabel, report.cashOutflow),
+            _info(l10n.royaltyPercentLabelReport, report.royaltyPercent),
           ],
         ),
       ),
       actions: [
         TextButton(
-          child: const Text('Закрыть'),
+          child: Text(l10n.closeButton),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],

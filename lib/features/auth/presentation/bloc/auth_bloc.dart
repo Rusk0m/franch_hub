@@ -1,12 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/features/auth/data/repository/authentication_repository_impl.dart';
 import 'package:franch_hub/features/auth/domain/repository/authentication_repository.dart';
+import 'package:franch_hub/generated/l10n.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_event.dart';
-
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -42,13 +43,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await prefs.setString('user_id', user.uid);
       print('AuthBloc: SignUp successful, UID: ${user.uid}');
       emit(Authenticated(user: user));
-    } on SignUpWithEmailAndPasswordFailure catch (e) {
-      print('AuthBloc: SignUp error: ${e.message}');
-      emit(AuthError(message: e.message));
-      emit(Unauthenticated());
     } catch (e) {
-      print('AuthBloc: SignUp unknown error: $e');
-      emit(AuthError(message: 'Unknown error occurred'));
+      print('AuthBloc: SignUp error: $e');
+      final message = S.of(event.context)!.signUpError(e.toString());
+      emit(AuthError(message: message));
       emit(Unauthenticated());
     }
   }
@@ -69,7 +67,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(Authenticated(user: user));
     } catch (e) {
       print('AuthBloc: Login error: $e');
-      emit(AuthError(message: 'Unknown error occurred'));
+      final message = S.of(event.context)!.loginError(e.toString());
+      emit(AuthError(message: message));
       emit(Unauthenticated());
     }
   }
@@ -85,13 +84,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await prefs.setString('user_id', user.uid);
       print('AuthBloc: Google login successful, UID: ${user.uid}');
       emit(Authenticated(user: user));
-    } on LogInWithGoogleFailure catch (e) {
-      print('AuthBloc: Google login error: ${e.message}');
-      emit(AuthError(message: e.message));
-      emit(Unauthenticated());
     } catch (e) {
-      print('AuthBloc: Google login unknown error: $e');
-      emit(AuthError(message: 'Unknown error occurred'));
+      print('AuthBloc: Google login error: $e');
+      final message = S.of(event.context)!.googleLoginError(e.toString());
+      emit(AuthError(message: message));
       emit(Unauthenticated());
     }
   }
@@ -114,7 +110,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       print('AuthBloc: CheckAuthStatus error: $e');
-      emit(AuthError(message: 'Ошибка проверки авторизации: $e'));
+      final message = S.of(event.context)!.authCheckError(e.toString());
+      emit(AuthError(message: message));
       emit(Unauthenticated());
     }
   }
@@ -141,7 +138,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(Unauthenticated());
     } catch (e) {
       print('AuthBloc: Logout error: $e');
-      emit(AuthError(message: 'Ошибка выхода: $e'));
+      final message = S.of(event.context)!.logoutError(e.toString());
+      emit(AuthError(message: message));
       emit(Unauthenticated());
     }
   }

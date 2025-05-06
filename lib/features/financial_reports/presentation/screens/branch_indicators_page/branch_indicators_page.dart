@@ -5,6 +5,10 @@ import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
 import 'package:franch_hub/features/financial_reports/domain/entities/economic_indicators.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/%20economic_indicators/economic_indicators_bloc.dart';
+import 'package:franch_hub/generated/l10n.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class BranchIndicatorsPage extends StatelessWidget {
   final FranchiseBranch branch;
@@ -13,6 +17,7 @@ class BranchIndicatorsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     return BlocProvider(
       create: (_) => EconomicIndicatorsBloc()..add(LoadEconomicIndicatorsEvent(branch.id)),
       child: Scaffold(
@@ -26,7 +31,7 @@ class BranchIndicatorsPage extends StatelessWidget {
               final indicatorsList = state.indicators;
 
               if (indicatorsList.isEmpty) {
-                return const Center(child: Text('Нет данных по показателям'));
+                return Center(child: Text(l10n.noIndicatorsData));
               }
 
               final months = indicatorsList.map((e) => '${e.month}/${e.year}').toList();
@@ -39,8 +44,8 @@ class BranchIndicatorsPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('ROI по месяцам',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(l10n.roiByMonths,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 8),
                         _buildRoiChart(months, roiValues),
                       ],
@@ -53,7 +58,7 @@ class BranchIndicatorsPage extends StatelessWidget {
                       margin: const EdgeInsets.all(8),
                       child: ListTile(
                         title: Text('${ind.month}/${ind.year}'),
-                        subtitle: Text('ROI: ${ind.roi.toStringAsFixed(2)}%'),
+                        subtitle: Text('${l10n.roiLabel}: ${ind.roi.toStringAsFixed(2)}%'),
                         trailing: const Icon(Icons.bar_chart),
                         onTap: () => showDialog(
                           context: context,
@@ -67,7 +72,7 @@ class BranchIndicatorsPage extends StatelessWidget {
             }
 
             if (state is EconomicIndicatorsError) {
-              return Center(child: Text('Ошибка: ${state.message}'));
+              return Center(child: Text(l10n.errorMessage(state.message)));
             }
 
             return const SizedBox.shrink();
@@ -78,7 +83,7 @@ class BranchIndicatorsPage extends StatelessWidget {
             Navigator.pushNamed(context, AppRouter.submitFinancialReportPage,
                 arguments: branch);
           },
-          tooltip: 'Increment',
+          tooltip: l10n.submitReportButton,
           child: const Icon(Icons.add),
         ),
       ),
@@ -128,24 +133,102 @@ class _IndicatorsDetails extends StatelessWidget {
 
   const _IndicatorsDetails(this.indicators);
 
+  Future<void> _generateAndSavePdf(BuildContext context) async {
+    final l10n = S.of(context)!;
+    final pdfDoc = pw.Document();
+
+    pdfDoc.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+              pw.Text(l10n.indicatorsDetailsTitle( indicators.month.toString(),
+          indicators.year.toString())),
+          pw.SizedBox(height: 10),
+          pw.Text(l10n.indicatorsDetailsTitle(
+          indicators.month.toString(),
+          indicators.year.toString()),
+          style: pw.TextStyle(fontSize: 18)),
+          pw.Divider(),
+          _buildPdfRow(l10n.roiLabel, '${indicators.roi.toStringAsFixed(2)}%'),
+          _buildPdfRow(l10n.breakevenPointLabel, indicators.breakevenPoint.toStringAsFixed(2)),
+          _buildPdfRow(l10n.quickRatioLabel, indicators.quickRatio.toStringAsFixed(2)),
+          _buildPdfRow(l10n.returnOnAssetsLabel, indicators.returnOnAssets.toStringAsFixed(2)),
+          _buildPdfRow(l10n.debtLoadLabel, indicators.debtLoad.toStringAsFixed(2)),
+          _buildPdfRow(l10n.currentRatioLabel, indicators.currentRatio.toStringAsFixed(2)),
+          _buildPdfRow(l10n.returnOnSalesLabel, indicators.returnOnSales.toStringAsFixed(2)),
+          _buildPdfRow(l10n.autonomyRatioLabel, indicators.autonomyRatio.toStringAsFixed(2)),
+          _buildPdfRow(l10n.royaltyPaymentLabel, indicators.royaltyPayment.toStringAsFixed(2)),
+          _buildPdfRow(l10n.netCashFlowLabel, indicators.netCashFlow.toStringAsFixed(2)),
+          pw.SizedBox(height: 20),
+          //pw.Text(l10n.generatedOn(DateTime.now().toString()),
+          ],
+          );
+          },
+      ),
+    );
+
+    try {
+      await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdfDoc.save(),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("l10n.pdfGenerationError")),
+      );
+    }
+  }
+
+  pw.Widget _buildPdfRow(String title, String value) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.symmetric(vertical: 4),
+      child: pw.Row(
+        children: [
+          pw.Expanded(
+            flex: 2,
+            child: pw.Text(title/*, style: const pw.TextStyle(fontWeight: pw.FontWeight.bold)*/),
+          ),
+          pw.Expanded(
+            flex: 1,
+            child: pw.Text(value, textAlign: pw.TextAlign.right),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     return AlertDialog(
-      title: Text('Показатели ${indicators.month}/${indicators.year}'),
+      title: Text(l10n.indicatorsDetailsTitle(
+          indicators.month.toString(),
+          indicators.year.toString())),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _info('Рентабельность инвестиций (ROI)', indicators.roi),
-          _info('Точка безубыточности', indicators.breakevenPoint),
-          _info('Коэффициент ликвидности', indicators.quickRatio),
-          _info('Рентабельность активов', indicators.returnOnAssets),
-          _info('Долговая нагрузка', indicators.debtLoad),
+          _info(l10n.roiLabel, indicators.roi),
+          _info(l10n.breakevenPointLabel, indicators.breakevenPoint),
+          _info(l10n.quickRatioLabel, indicators.quickRatio),
+          _info(l10n.returnOnAssetsLabel, indicators.returnOnAssets),
+          _info(l10n.debtLoadLabel, indicators.debtLoad),
+          _info(l10n.currentRatioLabel, indicators.currentRatio),
+          _info(l10n.returnOnSalesLabel, indicators.returnOnSales),
+          _info(l10n.autonomyRatioLabel, indicators.autonomyRatio),
+          _info(l10n.royaltyPaymentLabel, indicators.royaltyPayment),
+          _info(l10n.netCashFlowLabel, indicators.netCashFlow),
         ],
       ),
       actions: [
         TextButton(
-          child: const Text('Закрыть'),
+          onPressed: () => _generateAndSavePdf(context),
+          child: Text(/*l10n.saveAsPdfButton*/''),
+        ),
+        TextButton(
+          child: Text(l10n.closeButton),
           onPressed: () => Navigator.pop(context),
         ),
       ],

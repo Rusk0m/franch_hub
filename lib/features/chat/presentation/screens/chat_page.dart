@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:franch_hub/core/entities/user.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class ChatPage extends StatelessWidget {
   final UserEntity currentUser;
@@ -18,10 +19,12 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final chatId = _generateChatId(currentUser.uid, otherUser.uid);
     return BlocProvider(
-      create: (_) => sl<ChatBloc>()..add(LoadMessages(chatId: chatId)),
+      create: (_) => sl<ChatBloc>()
+        ..add(LoadMessages(chatId: chatId, context: context)),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(otherUser.name ?? otherUser.email),
+          title: Text(S.of(context)!.chatPageTitle(
+              otherUser.name ?? otherUser.email)),
         ),
         body: _ChatBody(
           currentUser: currentUser,
@@ -71,6 +74,7 @@ class _ChatBodyState extends State<_ChatBody> {
           senderId: widget.currentUser.uid,
           receiverId: widget.otherUser.uid,
           chatId: widget.chatId,
+          context: context,
         ),
       );
       _controller.clear();
@@ -126,9 +130,11 @@ class _ChatBodyState extends State<_ChatBody> {
                   },
                 );
               } else if (state is ChatError) {
-                return Center(child: Text('Error: ${state.message}'));
+                return Center(
+                    child: Text(S.of(context)!.chatError(state.message)));
               }
-              return const Center(child: Text('No messages yet'));
+              return Center(
+                  child: Text(S.of(context)!.noMessagesYet));
             },
           ),
         ),
@@ -139,9 +145,9 @@ class _ChatBodyState extends State<_ChatBody> {
               Expanded(
                 child: TextField(
                   controller: _controller,
-                  decoration: const InputDecoration(
-                    hintText: 'Type a message...',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    hintText: S.of(context)!.typeMessageHint,
+                    border: const OutlineInputBorder(),
                   ),
                   onSubmitted: (_) => _sendMessage(),
                 ),

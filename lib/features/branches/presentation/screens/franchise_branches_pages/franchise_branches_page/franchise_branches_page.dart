@@ -8,6 +8,7 @@ import 'package:franch_hub/features/branches/domain/entities/panding_franchise_b
 import 'package:franch_hub/features/branches/domain/use_case/get_pending_branches_use_case.dart';
 import 'package:franch_hub/features/branches/presentation/bloc/branches_bloc/branch_bloc.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class FranchiseBranchesPage extends StatefulWidget {
   final Franchise franchise;
@@ -28,7 +29,7 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
     context.read<BranchBloc>().add(ResetBranchState());
     context
         .read<BranchBloc>()
-        .add(LoadBranchesForFranchise(franchiseId: widget.franchise.id));
+        .add(LoadBranchesForFranchise(franchiseId: widget.franchise.id, context: context));
   }
 
   @override
@@ -40,7 +41,7 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
         'FranchiseBranchesPage: Loading franchiseBranches for franchiseId: ${widget.franchise.id}');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Точки франшизы: ${widget.franchise.name}'),
+        title: Text(S.of(context)!.franchiseBranchesTitle(widget.franchise.name)),
       ),
       floatingActionButton: isFranchisor
           ? FloatingActionButton(
@@ -64,9 +65,9 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                action: state.message.contains('no longer exists')
+                action: state.message.contains(S.of(context)!.branchNotFoundError)
                     ? SnackBarAction(
-                  label: 'Назад',
+                  label: S.of(context)!.backButton,
                   onPressed: () => Navigator.pop(context),
                 )
                     : null,
@@ -87,8 +88,7 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
                   // Branch list
                   Expanded(
                     child: state.branches.isEmpty
-                        ? const Center(
-                        child: Text('У этой франшизы пока нет точек.'))
+                        ? Center(child: Text(S.of(context)!.noBranchesMessage))
                         : ListView.builder(
                       itemCount: state.branches.length,
                       itemBuilder: (context, index) {
@@ -98,53 +98,58 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
                         return ListTile(
                           title: Text(branch.name),
                           subtitle: Text(
-                            'Адрес: ${branch.location}\n'
-                                'Часы работы: ${branch.workingHours}\n'
-                                'Телефон: ${branch.phone}',
+                            S.of(context)!.branchInfo(
+                              branch.location,
+                              branch.workingHours,
+                              branch.phone,
+                            ),
                           ),
                           trailing: canEditDelete
                               ? Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: [if(currentUserId == branch.ownerId)
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRouter.editBranchPage,
-                                    arguments: {
-                                      'branch': branch,
-                                    },
-                                  );
-                                },
-                              ),
+                            children: [
+                              if (currentUserId == branch.ownerId)
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRouter.editBranchPage,
+                                      arguments: {'branch': branch},
+                                    );
+                                  },
+                                ),
                               IconButton(
                                 icon: const Icon(Icons.delete),
                                 onPressed: () {
                                   showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                      title:
-                                      const Text('Удалить филиал?'),
+                                      title: Text(
+                                          S.of(context)!
+                                              .deleteBranchDialogTitle),
                                       content: Text(
-                                          'Вы уверены, что хотите удалить "${branch.name}"?'),
+                                          S.of(context)!
+                                              .deleteBranchDialogContent(
+                                              branch.name)),
                                       actions: [
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: const Text('Отмена'),
+                                          child: Text(S.of(context)!
+                                              .cancelButton),
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            context
-                                                .read<BranchBloc>()
-                                                .add(DeleteBranch(
-                                              branchId: branch.id,
-                                            ));
+                                            context.read<BranchBloc>().add(
+                                                DeleteBranch(
+                                                    branchId: branch.id,
+                                                    context: context));
                                             Navigator.pop(context);
                                           },
-                                          child:
-                                          const Text('Удалить'),
+                                          child: Text(
+                                              S.of(context)!
+                                                  .deleteButton),
                                         ),
                                       ],
                                     ),
@@ -178,12 +183,12 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
                           return const SizedBox.shrink();
                         }
                         return ExpansionTile(
-                          title: const Text('Заявки на модерацию'),
+                          title: Text(S.of(context)!.pendingRequestsTitle),
                           children: pendingBranches.map((pendingBranch) {
                             return ListTile(
                               title: Text(pendingBranch.name),
-                              subtitle:
-                              Text('Статус: ${pendingBranch.status}'),
+                              subtitle: Text(S.of(context)!
+                                  .statusLabel(pendingBranch.status)),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -196,8 +201,7 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
                                         ownerId: pendingBranch.requesterId,
                                         name: pendingBranch.name,
                                         location: pendingBranch.location,
-                                        royaltyPercent:
-                                        pendingBranch.royaltyPercent,
+                                        royaltyPercent: pendingBranch.royaltyPercent,
                                         workingHours: pendingBranch.workingHours,
                                         phone: pendingBranch.phone,
                                         createdAt: pendingBranch.createdAt,
@@ -207,8 +211,8 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
                                           pendingBranchId: pendingBranch.id,
                                           status: 'approved',
                                           branch: branch,
-                                          franchiseOwnerId:
-                                          widget.franchise.ownerId,
+                                          franchiseOwnerId: widget.franchise.ownerId,
+                                          context: context,
                                         ),
                                       );
                                     },
@@ -221,8 +225,8 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
                                           pendingBranchId: pendingBranch.id,
                                           status: 'rejected',
                                           branch: null,
-                                          franchiseOwnerId:
-                                          widget.franchise.ownerId,
+                                          franchiseOwnerId: widget.franchise.ownerId,
+                                          context: context,
                                         ),
                                       );
                                     },
@@ -238,9 +242,9 @@ class _FranchiseBranchesPageState extends State<FranchiseBranchesPage> {
               );
             } else if (state is BranchError) {
               print('FranchiseBranchesPage: Error: ${state.message}');
-              return Center(child: Text('Ошибка: ${state.message}'));
+              return Center(child: Text(state.message));
             }
-            return const Center(child: Text('Ожидание данных...'));
+            return Center(child: Text(S.of(context)!.waitingForData));
           },
         ),
       ),

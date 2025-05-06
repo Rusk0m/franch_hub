@@ -3,25 +3,25 @@ part of 'chat_bloc.dart';
 abstract class ChatState {
   final String textInput;
 
-  const ChatState({required this.textInput});
+  const ChatState({this.textInput = ''});
 }
 
 class ChatInitial extends ChatState {
-  const ChatInitial({super.textInput = ''});
+  const ChatInitial({super.textInput});
 }
 
 class ChatLoading extends ChatState {
-  const ChatLoading({required super.textInput});
+  const ChatLoading({super.textInput});
 }
 
 class ChatLoaded extends ChatState {
   final List<Message> messages;
 
-  const ChatLoaded({required this.messages, required super.textInput});
+  const ChatLoaded({required this.messages, super.textInput});
 }
 
 class ChatError extends ChatState {
   final String message;
 
-  const ChatError({required this.message, required super.textInput});
+  const ChatError({required this.message, super.textInput});
 }

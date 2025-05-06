@@ -16,6 +16,7 @@ class CreatePendingBranch extends BranchEvent {
   final double royaltyPercent;
   final String workingHours;
   final String phone;
+  final BuildContext context;
 
   const CreatePendingBranch({
     required this.franchiseId,
@@ -26,6 +27,7 @@ class CreatePendingBranch extends BranchEvent {
     required this.royaltyPercent,
     required this.workingHours,
     required this.phone,
+    required this.context,
   });
 
   @override
@@ -38,52 +40,58 @@ class CreatePendingBranch extends BranchEvent {
     royaltyPercent,
     workingHours,
     phone,
+    context,
   ];
 }
 
 class LoadMyBranches extends BranchEvent {
   final String ownerId;
+  final BuildContext context;
 
-  const LoadMyBranches({required this.ownerId});
+  const LoadMyBranches({required this.ownerId, required this.context});
 
   @override
-  List<Object?> get props => [ownerId];
+  List<Object?> get props => [ownerId, context];
 }
 
 class LoadBranchesForFranchise extends BranchEvent {
   final String franchiseId;
+  final BuildContext context;
 
-  const LoadBranchesForFranchise({required this.franchiseId});
+  const LoadBranchesForFranchise({required this.franchiseId, required this.context});
 
   @override
-  List<Object?> get props => [franchiseId];
+  List<Object?> get props => [franchiseId, context];
 }
 
 class AddBranch extends BranchEvent {
   final FranchiseBranch branch;
+  final BuildContext context;
 
-  const AddBranch({required this.branch});
+  const AddBranch({required this.branch, required this.context});
 
   @override
-  List<Object?> get props => [branch];
+  List<Object?> get props => [branch, context];
 }
 
 class DeleteBranch extends BranchEvent {
   final String branchId;
+  final BuildContext context;
 
-  const DeleteBranch({required this.branchId});
+  const DeleteBranch({required this.branchId, required this.context});
 
   @override
-  List<Object?> get props => [branchId];
+  List<Object?> get props => [branchId, context];
 }
 
 class EditBranch extends BranchEvent {
   final FranchiseBranch branch;
+  final BuildContext context;
 
-  const EditBranch({required this.branch});
+  const EditBranch({required this.branch, required this.context});
 
   @override
-  List<Object?> get props => [branch];
+  List<Object?> get props => [branch, context];
 }
 
 class ModeratePendingBranch extends BranchEvent {
@@ -91,26 +99,18 @@ class ModeratePendingBranch extends BranchEvent {
   final String status;
   final FranchiseBranch? branch;
   final String franchiseOwnerId;
+  final BuildContext context;
 
   const ModeratePendingBranch({
     required this.pendingBranchId,
     required this.status,
-    this.branch,
+    required this.branch,
     required this.franchiseOwnerId,
+    required this.context,
   });
 
   @override
-  List<Object?> get props => [
-    pendingBranchId,
-    status,
-    branch,
-    franchiseOwnerId,
-  ];
+  List<Object?> get props => [pendingBranchId, status, branch, franchiseOwnerId, context];
 }
 
-class ResetBranchState extends BranchEvent {
-  const ResetBranchState();
-
-  @override
-  List<Object?> get props => [];
-}
+class ResetBranchState extends BranchEvent {}

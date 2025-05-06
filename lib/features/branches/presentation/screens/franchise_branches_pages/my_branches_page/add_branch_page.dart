@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:franch_hub/config/routes/app_routes.dart';
 import 'package:franch_hub/di/service_locator.dart';
 import 'package:franch_hub/features/branches/domain/entities/franchise_branch.dart';
 import 'package:franch_hub/features/branches/presentation/bloc/branches_bloc/branch_bloc.dart';
 import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
+import 'package:franch_hub/generated/l10n.dart';
 import 'package:uuid/uuid.dart';
 
 class AddBranchPage extends StatefulWidget {
@@ -42,20 +44,24 @@ class _AddBranchPageState extends State<AddBranchPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isFranchisee ? 'Создать заявку на филиал' : 'Добавить филиал'),
+        title: Text(isFranchisee
+            ? S.of(context)!.createBranchRequestTitle
+            : S.of(context)!.addBranchTitle),
       ),
       body: BlocListener<BranchBloc, BranchState>(
         listener: (context, state) {
           if (state is BranchSuccess || state is BranchLoaded) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(isFranchisee ? 'Заявка отправлена на модерацию' : 'Филиал успешно добавлен'),
+                content: Text(isFranchisee
+                    ? S.of(context)!.branchRequestSentMessage
+                    : S.of(context)!.branchAddedMessage),
               ),
             );
             Navigator.pop(context);
           } else if (state is BranchError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Ошибка: ${state.message}')),
+              SnackBar(content: Text(state.message)),
             );
           }
         },
@@ -67,54 +73,58 @@ class _AddBranchPageState extends State<AddBranchPage> {
               children: [
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Название филиала'),
+                  decoration:
+                  InputDecoration(labelText: S.of(context)!.branchNameLabel),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите название';
+                      return S.of(context)!.enterNameError;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _locationController,
-                  decoration: const InputDecoration(labelText: 'Адрес'),
+                  //decoration: InputDecoration(labelText: S.of(context)!.locationLabel),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите адрес';
+                      return S.of(context)!.enterLocationError;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _royaltyPercentController,
-                  decoration: const InputDecoration(labelText: 'Роялти (%)'),
+                  decoration:
+                  InputDecoration(labelText: S.of(context)!.royaltyPercentLabel),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите роялти';
+                      return S.of(context)!.enterRoyaltyError;
                     }
                     if (double.tryParse(value) == null) {
-                      return 'Введите число';
+                      return S.of(context)!.invalidRoyaltyError;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _workingHoursController,
-                  decoration: const InputDecoration(labelText: 'Часы работы (например, 9:00-18:00)'),
+                  decoration:
+                  InputDecoration(labelText: S.of(context)!.workingHoursLabel),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите часы работы';
+                      return S.of(context)!.enterWorkingHoursError;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Телефон'),
+                  decoration:
+                  InputDecoration(labelText: S.of(context)!.phoneLabel),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите телефон';
+                      return S.of(context)!.enterPhoneError;
                     }
                     return null;
                   },
@@ -126,7 +136,9 @@ class _AddBranchPageState extends State<AddBranchPage> {
                       if (isFranchisee) {
                         if (franchise == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Ошибка: данные франшизы не переданы')),
+                            SnackBar(
+                                content: Text(
+                                    S.of(context)!.franchiseDataError)),
                           );
                           return;
                         }
@@ -139,6 +151,7 @@ class _AddBranchPageState extends State<AddBranchPage> {
                           royaltyPercent: double.parse(_royaltyPercentController.text),
                           workingHours: _workingHoursController.text,
                           phone: _phoneController.text,
+                          context: context,
                         ));
                       } else {
                         final branch = FranchiseBranch(
@@ -152,11 +165,15 @@ class _AddBranchPageState extends State<AddBranchPage> {
                           phone: _phoneController.text,
                           createdAt: DateTime.now(),
                         );
-                        context.read<BranchBloc>().add(AddBranch(branch: branch));
+                        context
+                            .read<BranchBloc>()
+                            .add(AddBranch(branch: branch, context: context));
                       }
                     }
                   },
-                  child: Text(isFranchisee ? 'Отправить заявку' : 'Добавить филиал'),
+                  child: Text(isFranchisee
+                      ? S.of(context)!.sendRequestButton
+                      : S.of(context)!.addBranchButton),
                 ),
               ],
             ),

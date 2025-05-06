@@ -7,12 +7,14 @@ import 'package:franch_hub/features/franchise/domain/entities/franchise.dart';
 import 'package:franch_hub/features/franchise/presentation/blocs/franchise_bloc/franchise_bloc.dart';
 import 'package:franch_hub/features/franchise/presentation/screens/franchise_catalog/widgets/category_carousel.dart';
 import 'package:franch_hub/features/franchise/presentation/screens/franchise_catalog/widgets/franchise_card.dart';
+import 'package:franch_hub/generated/l10n.dart';
 
 class FranchiseCatalogPage extends StatelessWidget {
   const FranchiseCatalogPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context)!;
     return BlocProvider(
       create: (_) => sl<FranchiseBloc>()..add(LoadAllFranchises()),
       child: BlocBuilder<FranchiseBloc, FranchiseState>(
@@ -21,7 +23,7 @@ class FranchiseCatalogPage extends StatelessWidget {
             children: [
               Center(
                 child: Text(
-                  'Franch Hub',
+                  l10n.franchHubTitle,
                   style: FlutterTextTheme.headlineMedium(context),
                 ),
               ),
@@ -31,7 +33,7 @@ class FranchiseCatalogPage extends StatelessWidget {
                 padding: MaterialStateProperty.all(
                   const EdgeInsets.symmetric(vertical: 2.0, horizontal: 15),
                 ),
-                hintText: 'Search',
+                hintText: l10n.searchHint,
               ),
               const SizedBox(height: 20),
               ClipRRect(
@@ -54,23 +56,23 @@ class FranchiseCatalogPage extends StatelessWidget {
                       width: double.infinity,
                       height: 250,
                     ),
-                    const Positioned(
+                    Positioned(
                       left: 20,
                       bottom: 10,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Find Your Perfect Franchise',
-                            style: TextStyle(
+                            l10n.findPerfectFranchise,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                           Text(
-                            'Explore top opportunities',
-                            style: TextStyle(
+                            l10n.exploreOpportunities,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -84,7 +86,7 @@ class FranchiseCatalogPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'Explore Our Franchise',
+                l10n.exploreFranchiseTitle,
                 style: FlutterTextTheme.titleLarge(context),
               ),
               const SizedBox(height: 20),
@@ -108,8 +110,8 @@ class FranchiseCatalogPage extends StatelessWidget {
                       imageUrl:
                       'https://imgs.search.brave.com/3HiHUNx5IdAHvGMgsSf5y5ti1ukAbCuvBJdLO2az3CI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3ZpdGUvYXNz/ZXRzL3Bob3RvLUM4/cTBLUUhHLndlYnA',
                       minInvestment: franchise.startupCost,
-                      paybackPeriod: '12-18 мес', // Можно добавить в модель
-                      roi: 25, // Можно рассчитывать через EconomicIndicators
+                      paybackPeriod: '12-18 мес',
+                      roi: 25,
                       description: franchise.description,
                       onTap: () {
                         Navigator.pushNamed(
@@ -122,9 +124,9 @@ class FranchiseCatalogPage extends StatelessWidget {
                   },
                 )
               else if (state is MyFranchisesError)
-                  Center(child: Text('Error: ${state.message}'))
+                  Center(child: Text(l10n.errorMessage(state.message)))
                 else
-                  const Center(child: Text('No franchises available')),
+                  Center(child: Text(l10n.noFranchisesAvailable)),
               const SizedBox(height: 20),
             ],
           );
